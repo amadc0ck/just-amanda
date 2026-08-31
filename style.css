@@ -147,7 +147,11 @@ section{padding:64px 0;}
 .tag.is-amethyst{background:rgba(141,121,166,.16);color:#5F5178;border-color:rgba(141,121,166,.35);}
 
 /* ---------- footer ---------- */
-footer{background:var(--bg-wash);border-top:1px solid var(--line);padding:36px 0;margin-top:24px;}
+footer{background:var(--bg-wash);border-top:1px solid var(--line);padding:36px 0 26px;margin-top:24px;}
+.legal{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;text-align:center;
+  font-size:12.5px;color:var(--ink-faint);}
+.legal a{color:var(--ink-faint);}
+.legal a:hover{color:var(--terracotta);}
 footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;}
 footer .brand-block{display:flex;align-items:center;gap:16px;}
 .tagline{font-size:14px;color:var(--ink-faint);margin-top:4px;}
