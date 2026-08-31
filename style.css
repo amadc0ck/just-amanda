@@ -67,7 +67,12 @@ nav a[aria-current="page"]{color:var(--terracotta);border-bottom-color:var(--ter
 section{padding:64px 0;}
 .sec-head{display:flex;align-items:center;gap:10px;margin:0 0 26px;}
 .sec-head h2{font-family:'Playfair Display',Georgia,serif;font-size:31px;font-weight:500;margin:0;}
-.sec-head .sprig{width:22px;height:22px;color:var(--gold);}
+.sec-head .sprig{width:26px;height:26px;object-fit:contain;flex-shrink:0;}
+
+/* Ornamental rule. The artwork carries a lot of transparent margin, so it is
+   held to a modest width and centred rather than stretched across the page. */
+.divider-wrap{display:flex;justify-content:center;padding:8px 24px 0;}
+.divider-wrap img{width:100%;max-width:420px;height:auto;opacity:.9;}
 
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:20px;}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
