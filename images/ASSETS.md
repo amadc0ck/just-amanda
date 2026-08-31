@@ -46,6 +46,18 @@ Soft watercolour. Muted sage greens, terracotta, warm cream. Visible paper
 texture, loose edges, no hard outlines, no drop shadows. Nothing photographic
 and nothing flat-vector — the whole look sits between those.
 
+## Compressing — do this to every new image
+
+`pngquant` is installed. Watercolour art is enormous as plain PNG and quantising
+to 256 colours is invisible on this kind of soft, gradient-heavy artwork:
+
+    pngquant --quality=65-90 --speed 1 --strip --force --output FILE -- FILE
+
+Measured on the first set: **-70% across ten images**, 3.9 MB down to 1.1 MB,
+with the hero going 1954 KB to 344 KB. Run it once per file, on the resized
+version, before committing. Do not re-run it on an already-quantised file —
+that compounds the loss for almost no further saving.
+
 ## Before anything goes in
 
 - **Strip EXIF from photographs.** Phone photos carry GPS. This is a public
