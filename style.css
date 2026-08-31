@@ -3,18 +3,24 @@
    sage. Deliberately NOT the garden app's palette; that one is a dark tool for
    working in, this is a light space for reading. */
 :root{
-  --bg:#FBF8F3;          /* warm off-white ground */
-  --bg-wash:#F4EDE2;     /* hero / band wash */
+  /* Exact values from the brand board, 2026-08-31. Do not eyeball these again. */
+  --forest:#2E3D2F;      /* Deep Forest    — text, primary button */
+  --terracotta:#C8644A;  /* Warm Terracotta— links, emphasis, secondary button */
+  --ivory:#F7F3EB;       /* Ivory          — page ground */
+  --sage:#A7B897;        /* Soft Sage      — quiet accents */
+  --amethyst:#8D79A6;    /* Muted Amethyst */
+  --lavender:#D8CFE5;    /* Soft Lavender  */
+
+  --bg:var(--ivory);
+  --bg-wash:#F1EADE;     /* a half-step deeper than ivory, for hero and footer bands */
   --card:#FFFFFF;
-  --ink:#2C3A2E;         /* deep green-black */
+  --ink:var(--forest);
   --ink-soft:#5E6857;
   --ink-faint:#8B9382;
-  --terracotta:#B4553F;  /* links, emphasis, primary action */
-  --terracotta-dim:#9C4632;
-  --sage:#7E8C6A;
-  --gold:#C0A15A;        /* the small sprig marks */
-  --line:rgba(44,58,46,0.10);
-  --shadow:0 1px 2px rgba(44,58,46,.04), 0 12px 28px -18px rgba(44,58,46,.30);
+  --terracotta-dim:#B0543C;
+  --gold:#C0A15A;
+  --line:rgba(46,61,47,0.10);
+  --shadow:0 1px 2px rgba(46,61,47,.04), 0 12px 28px -18px rgba(46,61,47,.30);
   --radius:14px;
 }
 *{box-sizing:border-box;}
@@ -55,12 +61,15 @@ nav a[aria-current="page"]{color:var(--terracotta);border-bottom-color:var(--ter
   aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
   box-shadow:var(--shadow);color:var(--ink-faint);font-size:14px;text-align:center;padding:24px;}
 
-.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 24px;border-radius:10px;
-  font-size:15.5px;font-weight:600;border:1px solid transparent;}
-.btn-primary{background:var(--terracotta);color:#fff;}
-.btn-primary:hover{background:var(--terracotta-dim);text-decoration:none;}
-.btn-ghost{background:transparent;color:var(--ink);border-color:rgba(44,58,46,.22);}
-.btn-ghost:hover{border-color:var(--ink);text-decoration:none;}
+/* Per the brand board: solid Deep Forest, or an outlined Terracotta. Both
+   uppercase and tracked out, with a trailing arrow. */
+.btn{display:inline-flex;align-items:center;gap:12px;padding:15px 28px;border-radius:9px;
+  font-size:13px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;
+  border:1.5px solid transparent;}
+.btn-primary{background:var(--forest);color:var(--ivory);}
+.btn-primary:hover{background:#26321F;text-decoration:none;}
+.btn-ghost{background:transparent;color:var(--terracotta);border-color:var(--terracotta);}
+.btn-ghost:hover{background:rgba(200,100,74,.07);text-decoration:none;}
 .btn-row{display:flex;gap:14px;flex-wrap:wrap;}
 
 /* ---------- sections ---------- */
@@ -110,8 +119,9 @@ section{padding:64px 0;}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
 .tag{font-size:13px;padding:6px 14px;border-radius:20px;background:var(--bg-wash);
   color:var(--ink-soft);border:1px solid var(--line);}
-.tag.is-sage{background:rgba(126,140,106,.16);color:#54603F;border-color:rgba(126,140,106,.3);}
-.tag.is-terra{background:rgba(180,85,63,.12);color:var(--terracotta-dim);border-color:rgba(180,85,63,.28);}
+.tag.is-sage{background:rgba(167,184,151,.24);color:#4F5D42;border-color:rgba(167,184,151,.55);}
+.tag.is-terra{background:rgba(200,100,74,.12);color:var(--terracotta-dim);border-color:rgba(200,100,74,.30);}
+.tag.is-amethyst{background:rgba(141,121,166,.16);color:#5F5178;border-color:rgba(141,121,166,.35);}
 
 /* ---------- footer ---------- */
 footer{background:var(--bg-wash);border-top:1px solid var(--line);padding:36px 0;margin-top:24px;}
