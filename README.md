@@ -31,6 +31,10 @@ The mockups this was built from lean on custom watercolour illustrations: the
 desk scene, the hen, the yarn, the potted plants. Those are generated art, not
 something CSS can produce, and they carry a lot of the warmth.
 
+**Amanda is producing these as of 2026-08-31.** The exact sizes, ratios and
+style notes are in `images/ASSETS.md` — follow that and they will drop straight
+in with no re-cropping.
+
 The hero currently holds a labelled placeholder box. Three ways to fill it:
 
 1. **Commission or generate proper illustrations.** Closest to the mockups.
