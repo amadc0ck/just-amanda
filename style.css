@@ -27,13 +27,17 @@ a:hover{text-decoration:underline;text-underline-offset:3px;}
 
 /* ---------- masthead ---------- */
 .masthead{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;}
-.masthead .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:16px;padding-bottom:16px;}
+.masthead .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:14px;padding-bottom:14px;}
 /* The logotype is artwork, not text. Height-constrained so the masthead sets
    the scale and the 3:1 image follows; the footer reuses it smaller. */
 .logo{display:inline-block;line-height:0;}
 .logo:hover{text-decoration:none;opacity:.82;}
-.logo img{height:46px;width:auto;}
-footer .logo img{height:34px;}
+.logo img{height:66px;width:auto;}
+footer .logo img{height:46px;}
+/* The artwork occupies roughly a quarter of the logotype's width, so the
+   wordmark reads smaller than its height suggests — it needs more than a
+   text logo would. */
+@media (max-width:900px){ .logo img{height:52px;} footer .logo img{height:40px;} }
 nav{display:flex;gap:26px;flex-wrap:wrap;}
 nav a{color:var(--ink-soft);font-size:15px;padding-bottom:4px;border-bottom:2px solid transparent;}
 nav a:hover{color:var(--ink);text-decoration:none;}
