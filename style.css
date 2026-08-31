@@ -63,17 +63,33 @@ section{padding:64px 0;}
 .sec-head h2{font-family:'Playfair Display',Georgia,serif;font-size:31px;font-weight:500;margin:0;}
 .sec-head .sprig{width:22px;height:22px;color:var(--gold);}
 
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:20px;}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-  padding:24px 22px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;}
+  padding:20px;box-shadow:var(--shadow);display:flex;gap:16px;align-items:flex-start;}
 .card:hover{border-color:rgba(180,85,63,.35);}
-.card h3{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:500;margin:0;color:var(--terracotta);}
-.card p{margin:0;font-size:14.5px;color:var(--ink-soft);flex:1;}
-.card .go{font-size:14px;color:var(--terracotta);font-weight:600;}
+/* Illustration beside the text, as in the mockups. Fixed box so a set of cards
+   keeps one baseline even though the artwork is loosely cropped. */
+.card img{width:78px;height:78px;object-fit:contain;flex-shrink:0;}
+.card-body{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.card h3{font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:500;margin:0;color:var(--terracotta);line-height:1.2;}
+.card p{margin:0;font-size:14px;color:var(--ink-soft);}
+.card .go{font-size:13.5px;color:var(--terracotta);font-weight:600;}
+/* The journal strip stacks instead — those cards carry no artwork. */
+.cards.stacked .card{flex-direction:column;gap:8px;}
+
+/* Hero art is the real illustration now, not a placeholder box. */
+.hero-art{background:none;border:none;box-shadow:none;aspect-ratio:auto;padding:0;display:block;}
+.hero-art img{width:100%;height:auto;}
 
 .two-col{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:start;}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
   padding:30px 32px;box-shadow:var(--shadow);}
+/* Circular portrait in the about panel, as in the mockup. */
+.about-row{display:flex;gap:20px;align-items:flex-start;}
+.about-row img{width:104px;height:104px;border-radius:50%;object-fit:cover;flex-shrink:0;
+  background:var(--bg-wash);border:1px solid var(--line);}
+@media (max-width:520px){.about-row{flex-direction:column;align-items:center;text-align:center;}}
+
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
 .tag{font-size:13px;padding:6px 14px;border-radius:20px;background:var(--bg-wash);
   color:var(--ink-soft);border:1px solid var(--line);}
