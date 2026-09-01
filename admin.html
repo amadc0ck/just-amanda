@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Write — just amanda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+  .admin-bar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;}
+  .admin-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding-top:12px;padding-bottom:12px;flex-wrap:wrap;}
+  .admin-bar h1{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:500;margin:0;}
+  .admin-bar .actions{display:flex;gap:10px;flex-wrap:wrap;}
+  .btn-sm{padding:9px 16px;font-size:11.5px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;
+    font-weight:600;color:var(--ink-faint);margin-bottom:6px;}
+  .field input,.field textarea{width:100%;padding:11px 13px;border:1px solid var(--line);
+    border-radius:9px;background:var(--card);color:var(--ink);font:inherit;font-size:15px;}
+  .field textarea{min-height:420px;resize:vertical;line-height:1.6;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;}
+  .field .hint{font-size:12.5px;color:var(--ink-faint);margin-top:5px;}
+  .editor-cols{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start;}
+  .preview{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);
+    padding:22px 24px;min-height:420px;overflow-x:auto;}
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .plist{display:grid;gap:10px;}
+  .prow{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);
+    border-radius:11px;padding:13px 16px;}
+  .prow .t{flex:1;min-width:0;}
+  .prow .t b{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:17px;display:block;}
+  .prow .t span{font-size:12.5px;color:var(--ink-faint);}
+  .pill{font-size:11px;letter-spacing:.8px;text-transform:uppercase;font-weight:600;
+    padding:4px 10px;border-radius:20px;}
+  .pill.draft{background:rgba(200,100,74,.12);color:var(--terracotta-dim);}
+  .pill.published{background:rgba(167,184,151,.28);color:#4A5A3E;}
+  .msg{padding:12px 16px;border-radius:10px;margin-bottom:16px;font-size:14.5px;}
+  .msg.err{background:rgba(200,100,74,.12);color:var(--terracotta-dim);}
+  .msg.ok{background:rgba(167,184,151,.28);color:#4A5A3E;}
+  .cover-prev{max-height:130px;border-radius:10px;margin-top:10px;}
+  @media (max-width:900px){ .editor-cols,.row-2{grid-template-columns:1fr;} .preview{min-height:0;} }
+</style>
+</head>
+<body>
+
+<div class="admin-bar">
+  <div class="wrap">
+    <h1>just amanda &middot; write</h1>
+    <div class="actions" id="bar-actions"></div>
+  </div>
+</div>
+
+<section><div class="wrap" id="app"><p class="muted">Loading&hellip;</p></div></section>
+
+<script src="site.js"></script>
+<script src="markdown.js"></script>
+<script>
+const KEY = "ja_auth";
+const app = document.getElementById("app");
+const barActions = document.getElementById("bar-actions");
+let posts = [];
+let editing = null;   // the post object being edited, or null on the list screen
+
+/* ---------- auth ---------- */
+const auth  = () => { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch { return null; } };
+const token = () => auth()?.access_token;
+const store = (d) => localStorage.setItem(KEY, JSON.stringify(d));
+
+async function signIn(email, password) {
+  const res = await fetch(`${SB.url}/auth/v1/token?grant_type=password`, {
+    method: "POST",
+    headers: { apikey: SB.key, "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  const d = await res.json();
+  if (!res.ok || !d.access_token) throw new Error(d.error_description || d.msg || "Sign in failed");
+  store(d);
+}
+
+async function refreshToken() {
+  const a = auth();
+  if (!a?.refresh_token) return false;
+  const res = await fetch(`${SB.url}/auth/v1/token?grant_type=refresh_token`, {
+    method: "POST",
+    headers: { apikey: SB.key, "Content-Type": "application/json" },
+    body: JSON.stringify({ refresh_token: a.refresh_token }),
+  });
+  const d = await res.json();
+  if (!res.ok || !d.access_token) return false;
+  store(d);
+  return true;
+}
+
+/* Every authenticated call goes through here so an expired access token costs
+   one silent refresh rather than an unexplained failure mid-edit. */
+async function api(path, opts = {}, retry = true) {
+  const res = await fetch(`${SB.url}/rest/v1/${path}`, {
+    ...opts,
+    headers: {
+      apikey: SB.key, Authorization: `Bearer ${token()}`,
+      "Content-Type": "application/json", ...(opts.headers || {}),
+    },
+  });
+  if (res.status === 401 && retry && (await refreshToken())) return api(path, opts, false);
+  if (!res.ok) throw new Error(`${res.status} — ${await res.text()}`);
+  return res.status === 204 ? null : res.json();
+}
+
+async function uploadImage(file) {
+  const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+  const name = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const res = await fetch(`${SB.url}/storage/v1/object/journal/${name}`, {
+    method: "POST",
+    headers: { apikey: SB.key, Authorization: `Bearer ${token()}`,
+               "Content-Type": file.type || "application/octet-stream" },
+    body: file,
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return `${SB.url}/storage/v1/object/public/journal/${name}`;
+}
+
+/* ---------- screens ---------- */
+function note(msg, bad) {
+  const el = document.getElementById("note");
+  if (el) el.innerHTML = `<div class="msg ${bad ? "err" : "ok"}">${escapeHtml(msg)}</div>`;
+}
+
+function screenLogin(err) {
+  barActions.innerHTML = "";
+  app.innerHTML = `<div class="panel" style="max-width:420px;margin:40px auto;">
+    <h2 style="font-family:'Playfair Display',Georgia,serif;font-weight:500;margin:0 0 18px;">Sign in</h2>
+    ${err ? `<div class="msg err">${escapeHtml(err)}</div>` : ""}
+    <div class="field"><label for="em">Email</label><input id="em" type="email" autocomplete="username"></div>
+    <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password"></div>
+    <button class="btn btn-primary" id="go">Sign in &rarr;</button></div>`;
+  const submit = async () => {
+    try {
+      await signIn(document.getElementById("em").value.trim(), document.getElementById("pw").value);
+      await screenList();
+    } catch (e) { screenLogin(e.message); }
+  };
+  document.getElementById("go").onclick = submit;
+  document.getElementById("pw").onkeydown = (e) => { if (e.key === "Enter") submit(); };
+}
+
+async function screenList() {
+  editing = null;
+  barActions.innerHTML = `<button class="btn btn-primary btn-sm" id="new">New post &rarr;</button>
+    <button class="btn btn-ghost btn-sm" id="out">Sign out</button>`;
+  document.getElementById("new").onclick = () => screenEdit(null);
+  document.getElementById("out").onclick = () => { localStorage.removeItem(KEY); screenLogin(); };
+
+  app.innerHTML = `<div id="note"></div><p class="muted">Loading posts&hellip;</p>`;
+  try {
+    posts = await api("posts?select=*&order=updated_at.desc");
+  } catch (e) { screenLogin("Session expired — sign in again."); return; }
+
+  app.innerHTML = `<div id="note"></div>` + (posts.length
+    ? `<div class="plist">${posts.map((p, i) => `
+        <div class="prow">
+          <span class="pill ${p.status}">${p.status}</span>
+          <span class="t"><b>${escapeHtml(p.title || "(untitled)")}</b>
+            <span>${p.status === "published" ? escapeHtml(fmtDate(p.published_at)) : "draft"}
+            &middot; /${escapeHtml(p.slug)}</span></span>
+          <button class="btn btn-ghost btn-sm" data-edit="${i}">Edit</button>
+        </div>`).join("")}</div>`
+    : `<p class="muted">No posts yet. Start one with <strong>New post</strong>.</p>`);
+
+  app.querySelectorAll("[data-edit]").forEach((b) => {
+    b.onclick = () => screenEdit(posts[+b.dataset.edit]);
+  });
+}
+
+function screenEdit(p) {
+  editing = p ? { ...p } : { title: "", slug: "", excerpt: "", body_md: "",
+                             cover_url: "", tags: [], status: "draft" };
+  const isNew = !editing.id;
+
+  barActions.innerHTML = `
+    <button class="btn btn-ghost btn-sm" id="back">&larr; All posts</button>
+    <button class="btn btn-ghost btn-sm" id="save">Save draft</button>
+    <button class="btn btn-primary btn-sm" id="pub">${editing.status === "published" ? "Update" : "Publish"} &rarr;</button>`;
+
+  app.innerHTML = `<div id="note"></div>
+    <div class="row-2">
+      <div class="field"><label for="f-title">Title</label>
+        <input id="f-title" value="${escapeHtml(editing.title)}"></div>
+      <div class="field"><label for="f-slug">Slug</label>
+        <input id="f-slug" value="${escapeHtml(editing.slug)}">
+        <div class="hint">The web address: /post.html?slug=<span id="slug-echo"></span></div></div>
+    </div>
+    <div class="field"><label for="f-excerpt">Excerpt</label>
+      <input id="f-excerpt" value="${escapeHtml(editing.excerpt || "")}">
+      <div class="hint">One or two sentences, shown on the journal index.</div></div>
+    <div class="row-2">
+      <div class="field"><label for="f-tags">Tags</label>
+        <input id="f-tags" value="${escapeHtml((editing.tags || []).join(", "))}">
+        <div class="hint">Comma separated.</div></div>
+      <div class="field"><label for="f-cover">Cover image</label>
+        <input id="f-cover" type="file" accept="image/*">
+        <div id="cover-wrap">${editing.cover_url
+          ? `<img class="cover-prev" src="${escapeHtml(editing.cover_url)}" alt="">` : ""}</div></div>
+    </div>
+    <div class="editor-cols">
+      <div class="field"><label for="f-body">Post &mdash; Markdown</label>
+        <textarea id="f-body">${escapeHtml(editing.body_md || "")}</textarea>
+        <div class="hint"><strong>Insert an image:</strong>
+          <input id="f-inline" type="file" accept="image/*" style="font-size:12px;"></div></div>
+      <div><label style="display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;
+        font-weight:600;color:var(--ink-faint);margin-bottom:6px;">Preview</label>
+        <div class="preview post-body" id="prev"></div></div>
+    </div>
+    ${isNew ? "" : `<p style="margin-top:26px;"><button class="btn btn-ghost btn-sm" id="del">Delete this post</button></p>`}`;
+
+  const $ = (id) => document.getElementById(id);
+  const draw = () => { $("prev").innerHTML = mdToHtml($("f-body").value); };
+  const echoSlug = () => { $("slug-echo").textContent = $("f-slug").value || "…"; };
+
+  $("f-body").addEventListener("input", draw);
+  $("f-slug").addEventListener("input", echoSlug);
+  // Only autofill the slug while it is untouched; renaming a live post would
+  // break every link already shared.
+  $("f-title").addEventListener("input", () => {
+    if (isNew && !$("f-slug").dataset.touched) { $("f-slug").value = slugify($("f-title").value); echoSlug(); }
+  });
+  $("f-slug").addEventListener("change", () => { $("f-slug").dataset.touched = "1"; });
+  draw(); echoSlug();
+
+  $("f-cover").onchange = async (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    note("Uploading cover…");
+    try {
+      editing.cover_url = await uploadImage(f);
+      $("cover-wrap").innerHTML = `<img class="cover-prev" src="${escapeHtml(editing.cover_url)}" alt="">`;
+      note("Cover uploaded.");
+    } catch (err) { note(`Cover upload failed: ${err.message}`, true); }
+  };
+
+  $("f-inline").onchange = async (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    note("Uploading image…");
+    try {
+      const url = await uploadImage(f);
+      const ta = $("f-body");
+      const at = ta.selectionStart ?? ta.value.length;
+      ta.value = `${ta.value.slice(0, at)}\n\n![](${url})\n\n${ta.value.slice(at)}`;
+      draw(); note("Image inserted.");
+      e.target.value = "";
+    } catch (err) { note(`Image upload failed: ${err.message}`, true); }
+  };
+
+  const collect = () => {
+    const body_md = $("f-body").value;
+    return {
+      title: $("f-title").value.trim(),
+      slug: ($("f-slug").value.trim() || slugify($("f-title").value)),
+      excerpt: $("f-excerpt").value.trim() || null,
+      tags: $("f-tags").value.split(",").map((t) => t.trim()).filter(Boolean),
+      cover_url: editing.cover_url || null,
+      body_md,
+      body_html: mdToHtml(body_md),
+    };
+  };
+
+  const save = async (status) => {
+    const row = { ...collect(), status };
+    if (!row.title) { note("Give it a title first.", true); return; }
+    if (!row.slug)  { note("Give it a slug first.", true); return; }
+    try {
+      note("Saving…");
+      if (editing.id) {
+        await api(`posts?id=eq.${editing.id}`, { method: "PATCH", body: JSON.stringify(row) });
+      } else {
+        const [created] = await api("posts", {
+          method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(row),
+        });
+        editing = created;
+      }
+      await screenList();
+      note(status === "published" ? "Published." : "Draft saved.");
+    } catch (e) {
+      note(/duplicate key/i.test(e.message) ? "That slug is already used by another post." : e.message, true);
+    }
+  };
+
+  $("back").onclick = () => screenList();
+  $("save").onclick = () => save("draft");
+  $("pub").onclick  = () => save("published");
+  if ($("del")) $("del").onclick = async () => {
+    if (!confirm("Delete this post permanently?")) return;
+    try { await api(`posts?id=eq.${editing.id}`, { method: "DELETE" }); await screenList(); note("Deleted."); }
+    catch (e) { note(e.message, true); }
+  };
+}
+
+(async () => { token() ? await screenList() : screenLogin(); })();
+</script>
+
+</body>
+</html>

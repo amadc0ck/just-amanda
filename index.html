@@ -25,7 +25,7 @@
       <a href="#">Chickens</a>
       <a href="#">Crochet</a>
       <a href="#">Books</a>
-      <a href="#">Journal</a>
+      <a href="journal.html">Journal</a>
     </nav>
   </div>
 </header>
@@ -37,7 +37,7 @@
       <p>Tech leader, plant collector, maker, reader, mom, and keeper of many projects.</p>
       <div class="btn-row">
         <a class="btn btn-primary" href="#explore">Explore the site &rarr;</a>
-        <a class="btn btn-ghost" href="#">Read my notes &rarr;</a>
+        <a class="btn btn-ghost" href="journal.html">Read my notes &rarr;</a>
       </div>
     </div>
     <div class="hero-art"><img src="images/hero.png" alt="Amanda at her desk, surrounded by plants, books and a notebook" width="1120" height="840"></div>
@@ -62,11 +62,10 @@
         <h2>Latest from the journal</h2>
         <img class="sprig" src="images/accent-lavender.png" alt="" width="300" height="300">
       </div>
-      <div class="cards stacked">
-        <a class="card" href="#"><span class="tagline">Coming soon</span><h3>Your first post</h3><p>The journal is wired up and waiting for words.</p><span class="go">Read more &rarr;</span></a>
-        <a class="card" href="#"><span class="tagline">Coming soon</span><h3>And a second</h3><p>Three across on desktop, stacking on a phone.</p><span class="go">Read more &rarr;</span></a>
-        <a class="card" href="#"><span class="tagline">Coming soon</span><h3>And a third</h3><p>Swap these for real entries whenever you like.</p><span class="go">Read more &rarr;</span></a>
+      <div class="cards stacked" id="home-posts">
+        <p class="muted">Loading&hellip;</p>
       </div>
+      <p style="margin-top:18px;"><a class="go" href="journal.html">All journal entries &rarr;</a></p>
     </div>
     <div>
       <div class="sec-head">
@@ -102,7 +101,7 @@
     <nav class="foot-nav">
       <a href="index.html">Home</a><a href="about.html">About</a><a href="plants.html">Plants</a>
       <a href="#">Chickens</a><a href="#">Crochet</a>
-      <a href="#">Books</a><a href="#">Journal</a>
+      <a href="#">Books</a><a href="journal.html">Journal</a>
     </nav>
   </div>
   <div class="wrap">
@@ -112,6 +111,27 @@
     </div>
   </div>
 </footer>
+
+<script src="site.js"></script>
+<script>
+(async () => {
+  const el = document.getElementById("home-posts");
+  try {
+    const posts = await sbGet("posts?select=slug,title,excerpt,published_at" +
+      "&status=eq.published&order=published_at.desc&limit=3");
+    el.innerHTML = posts.length
+      ? posts.map((p) => `<a class="card" href="${postHref(p.slug)}">
+          <span class="tagline">${escapeHtml(fmtDate(p.published_at))}</span>
+          <h3>${escapeHtml(p.title)}</h3>
+          ${p.excerpt ? `<p>${escapeHtml(p.excerpt)}</p>` : ""}
+          <span class="go">Read more &rarr;</span></a>`).join("")
+      : `<p class="muted">The journal is wired up and waiting for words.</p>`;
+  } catch (e) {
+    el.innerHTML = `<p class="muted">The journal could not load just now.</p>`;
+    console.error(e);
+  }
+})();
+</script>
 
 </body>
 </html>

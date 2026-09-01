@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journal — just amanda</title>
+<meta name="description" content="A post from the just amanda journal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<meta name="theme-color" content="#F7F3EB">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="images/logo.png" alt="just amanda" width="700" height="233"></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="plants.html">Plants</a>
+      <a href="#">Chickens</a>
+      <a href="#">Crochet</a>
+      <a href="#">Books</a>
+      <a href="journal.html" aria-current="page">Journal</a>
+    </nav>
+  </div>
+</header>
+
+<article id="post">
+  <div class="wrap"><p class="muted" style="padding:60px 0;">Loading&hellip;</p></div>
+</article>
+
+<div class="divider-wrap"><img src="images/divider.png" alt="" width="1400" height="466" loading="lazy"></div>
+
+<footer>
+  <div class="wrap">
+    <div class="brand-block">
+      <a class="logo" href="index.html"><img src="images/logo-badge.png" alt="just amanda" width="500" height="500" loading="lazy"></a>
+      <div class="tagline">A creative life,<br>thoughtfully collected.</div>
+    </div>
+    <nav class="foot-nav">
+      <a href="index.html">Home</a><a href="about.html">About</a><a href="plants.html">Plants</a>
+      <a href="#">Chickens</a><a href="#">Crochet</a>
+      <a href="#">Books</a><a href="journal.html">Journal</a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <div class="legal">
+      &copy; 2026 just amanda. All rights reserved.
+      &nbsp;&middot;&nbsp; Words and images are my own; please don&rsquo;t reuse them without asking.
+    </div>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script>
+(async () => {
+  const host = document.getElementById("post");
+  const slug = new URLSearchParams(location.search).get("slug");
+
+  const notFound = (msg) => {
+    host.innerHTML = `<div class="wrap" style="padding:70px 0;text-align:center;">
+      <h1 style="font-family:'Playfair Display',Georgia,serif;font-weight:500;">${escapeHtml(msg)}</h1>
+      <p class="muted">It may have been unpublished, or the link may be wrong.</p>
+      <p><a class="btn btn-ghost" href="journal.html">Back to the journal &rarr;</a></p></div>`;
+  };
+
+  if (!slug) { notFound("No post specified"); return; }
+
+  try {
+    const rows = await sbGet(
+      `posts?select=title,excerpt,body_html,cover_url,tags,published_at&slug=eq.${encodeURIComponent(slug)}` +
+      `&status=eq.published&limit=1`);
+    if (!rows.length) { notFound("Post not found"); return; }
+    const p = rows[0];
+
+    document.title = `${p.title} — just amanda`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta && p.excerpt) meta.setAttribute("content", p.excerpt);
+
+    const cover = p.cover_url
+      ? `<img class="post-cover" src="${escapeHtml(p.cover_url)}" alt="">` : "";
+    const tags = (p.tags || []).length
+      ? `<div class="tags">${p.tags.map((t) => `<span class="tag is-amethyst">${escapeHtml(t)}</span>`).join("")}</div>`
+      : "";
+
+    /* body_html was rendered from Markdown at save time by markdown.js and is
+       written only by the authenticated author, so it is inserted as-is. */
+    host.innerHTML = `<div class="wrap">
+      <div class="post-head">
+        <a class="back" href="journal.html">&larr; Journal</a>
+        <span class="eyebrow">${escapeHtml(fmtDate(p.published_at))}</span>
+        <h1>${escapeHtml(p.title)}</h1>
+      </div>
+      ${cover}
+      <div class="post-body">${p.body_html || ""}${tags}</div>
+    </div>`;
+  } catch (e) {
+    notFound("This post could not load");
+    console.error(e);
+  }
+})();
+</script>
+
+</body>
+</html>

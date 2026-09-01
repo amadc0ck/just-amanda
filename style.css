@@ -241,3 +241,55 @@ footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;
   .about-row.is-large img{align-self:center;}
   .about-row.is-large .prose{align-self:stretch;}
 }
+
+/* ---------- journal ----------
+   Amethyst, per the palette rule set out above: terracotta means "a place to
+   go", amethyst means "something to read". The journal is the only place
+   amethyst leads. */
+.muted{color:var(--ink-faint);font-size:15px;}
+
+.post-list{display:grid;gap:20px;}
+.post-card{display:block;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+.post-card:hover{border-color:rgba(141,121,166,.45);text-decoration:none;}
+.post-card .cover{width:100%;height:230px;object-fit:cover;}
+.post-card .pc-body{display:block;padding:22px 26px;}
+.post-card h3{font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:500;
+  margin:6px 0 8px;color:var(--amethyst);line-height:1.25;}
+.post-card p{margin:0;font-size:15px;color:var(--ink-soft);}
+.post-card .go{display:inline-block;margin-top:13px;color:var(--amethyst);}
+.eyebrow{display:block;font-size:11.5px;letter-spacing:1px;text-transform:uppercase;
+  font-weight:600;color:var(--amethyst);}
+
+/* ---------- a single post ---------- */
+.post-head{max-width:38em;margin:0 auto;padding:54px 0 26px;}
+.post-head .back{font-size:13.5px;color:var(--ink-faint);display:inline-block;margin-bottom:22px;}
+.post-head .back:hover{color:var(--terracotta);}
+.post-head h1{font-family:'Playfair Display',Georgia,serif;font-size:44px;line-height:1.12;
+  font-weight:500;margin:10px 0 0;letter-spacing:-.4px;}
+.post-cover{width:100%;max-width:980px;margin:0 auto 40px;border-radius:var(--radius);
+  max-height:460px;object-fit:cover;}
+
+/* Reading measure, set once. Everything inside inherits it. */
+.post-body{max-width:38em;margin:0 auto;padding-bottom:20px;}
+.post-body p{font-size:17.5px;line-height:1.75;color:var(--ink-soft);margin:0 0 21px;}
+.post-body h2{font-family:'Playfair Display',Georgia,serif;font-size:29px;font-weight:500;margin:40px 0 12px;}
+.post-body h3{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:500;margin:32px 0 10px;}
+.post-body ul,.post-body ol{font-size:17.5px;line-height:1.7;color:var(--ink-soft);
+  padding-left:22px;margin:0 0 21px;}
+.post-body li{margin-bottom:8px;}
+.post-body img{border-radius:var(--radius);margin:28px 0;}
+.post-body a{text-decoration:underline;text-underline-offset:3px;}
+.post-body blockquote{margin:28px 0;padding:2px 0 2px 22px;border-left:3px solid var(--lavender);}
+.post-body blockquote p{font-family:'Playfair Display',Georgia,serif;font-style:italic;
+  font-size:20px;color:var(--ink);}
+.post-body pre{background:var(--bg-wash);border:1px solid var(--line);border-radius:10px;
+  padding:16px 18px;overflow-x:auto;margin:0 0 21px;}
+.post-body code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;}
+.post-body hr{border:0;border-top:1px solid var(--line);margin:36px 0;}
+
+@media (max-width:900px){
+  .post-head{padding:34px 0 20px;}
+  .post-head h1{font-size:33px;}
+  .post-card .cover{height:180px;}
+}

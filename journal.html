@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Journal — just amanda</title>
+<meta name="description" content="Notes on plants, making, reading, and whatever I am in the middle of.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<meta name="theme-color" content="#F7F3EB">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="images/logo.png" alt="just amanda" width="700" height="233"></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="plants.html">Plants</a>
+      <a href="#">Chickens</a>
+      <a href="#">Crochet</a>
+      <a href="#">Books</a>
+      <a href="journal.html" aria-current="page">Journal</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <h1>The journal,<em>as it comes.</em></h1>
+      <p>Notes on whatever I am in the middle of. Irregular by design.</p>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div id="posts" class="post-list"><p class="muted">Loading&hellip;</p></div>
+  </div>
+</section>
+
+<div class="divider-wrap"><img src="images/divider.png" alt="" width="1400" height="466" loading="lazy"></div>
+
+<footer>
+  <div class="wrap">
+    <div class="brand-block">
+      <a class="logo" href="index.html"><img src="images/logo-badge.png" alt="just amanda" width="500" height="500" loading="lazy"></a>
+      <div class="tagline">A creative life,<br>thoughtfully collected.</div>
+    </div>
+    <nav class="foot-nav">
+      <a href="index.html">Home</a><a href="about.html">About</a><a href="plants.html">Plants</a>
+      <a href="#">Chickens</a><a href="#">Crochet</a>
+      <a href="#">Books</a><a href="journal.html">Journal</a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <div class="legal">
+      &copy; 2026 just amanda. All rights reserved.
+      &nbsp;&middot;&nbsp; Words and images are my own; please don&rsquo;t reuse them without asking.
+    </div>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script>
+(async () => {
+  const el = document.getElementById("posts");
+  try {
+    const posts = await sbGet(
+      "posts?select=slug,title,excerpt,cover_url,published_at&status=eq.published" +
+      "&order=published_at.desc&limit=50");
+    el.innerHTML = posts.length
+      ? posts.map(postCard).join("")
+      : `<p class="muted">Nothing published yet. The first post is coming.</p>`;
+  } catch (e) {
+    el.innerHTML = `<p class="muted">The journal could not load just now. Please try again shortly.</p>`;
+    console.error(e);
+  }
+})();
+</script>
+
+</body>
+</html>
