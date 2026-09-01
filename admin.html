@@ -268,7 +268,13 @@ function screenEdit(p) {
   };
 
   const save = async (status) => {
-    const row = { ...collect(), status };
+    /* published_at and updated_at are set here rather than by a database
+       trigger, so the schema stays plain DDL. The read policy requires a
+       non-null published_at, so a post published without one would be
+       invisible to the public. */
+    const now = new Date().toISOString();
+    const row = { ...collect(), status, updated_at: now };
+    if (status === "published" && !editing.published_at) row.published_at = now;
     if (!row.title) { note("Give it a title first.", true); return; }
     if (!row.slug)  { note("Give it a slug first.", true); return; }
     try {

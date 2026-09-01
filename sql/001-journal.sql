@@ -1,6 +1,8 @@
--- justamanda.net journal — runs in the adcock-plant-inventory Supabase project.
--- Safe to run more than once.
+-- justamanda.net journal. Runs in the adcock-plant-inventory Supabase project.
+-- Plain ASCII, no dollar-quoting, safe to run more than once.
+-- published_at and updated_at are set by admin.html, not by a trigger.
 
+-- STEP 1 ------------------------------------------------------------------
 create table if not exists public.posts (
   id           uuid primary key default gen_random_uuid(),
   slug         text unique not null,
@@ -19,43 +21,24 @@ create table if not exists public.posts (
 create index if not exists posts_published_idx
   on public.posts (status, published_at desc);
 
--- Keeps updated_at honest, and stamps published_at the first time a post goes
--- live so a published row can never be invisible for want of a date.
-create or replace function public.posts_touch() returns trigger
-language plpgsql as $fn$
-begin
-  new.updated_at := now();
-  if new.status = 'published' and new.published_at is null then
-    new.published_at := now();
-  end if;
-  return new;
-end
-$fn$;
-
-drop trigger if exists posts_touch on public.posts;
-create trigger posts_touch before insert or update on public.posts
-  for each row execute function public.posts_touch();
-
+-- STEP 2 ------------------------------------------------------------------
 alter table public.posts enable row level security;
 
--- The public sees published posts only, and only once their date has arrived —
--- which makes a future published_at act as scheduling.
 drop policy if exists posts_public_read on public.posts;
 create policy posts_public_read on public.posts
   for select to anon, authenticated
   using (status = 'published' and published_at is not null and published_at <= now());
 
--- Write access is scoped to one address, NOT to "any authenticated user".
--- Public signup is enabled on this project, so `to authenticated using (true)`
--- would let anyone who registers read the drafts and delete the posts.
--- To write from a different account, add its address to the list below.
+-- Write access is scoped to one address, NOT to any authenticated user.
+-- Public signup is open on this project, so "to authenticated using (true)"
+-- would let anyone who registers read drafts and delete posts.
 drop policy if exists posts_owner_all on public.posts;
 create policy posts_owner_all on public.posts
   for all to authenticated
   using      ((auth.jwt() ->> 'email') in ('me@justamanda.net'))
   with check ((auth.jwt() ->> 'email') in ('me@justamanda.net'));
 
--- Images for posts. Public bucket: reads go through the public URL.
+-- STEP 3 ------------------------------------------------------------------
 insert into storage.buckets (id, name, public)
   values ('journal', 'journal', true)
   on conflict (id) do update set public = true;
