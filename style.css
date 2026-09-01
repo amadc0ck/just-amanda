@@ -308,3 +308,25 @@ footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;
    mistaken for the live page. */
 .preview-banner{background:var(--amethyst);color:#fff;text-align:center;
   padding:9px 16px;font-size:12.5px;letter-spacing:.7px;text-transform:uppercase;font-weight:600;}
+
+/* ---------- distributing the two accents ----------
+   Reducing the amount of terracotta was not the fix. The page was ZONED: every
+   warm note above the fold, every cool note below it, so the halves read as two
+   different designs. Each accent now recurs down the whole page.
+
+   1. The hero's second button leads to the journal, so it takes the journal's
+      colour. That is the palette rule applied, not decoration — and it is what
+      puts a cool note at the top of the page. */
+.btn-ghost.is-read{color:var(--amethyst);border-color:var(--amethyst);}
+.btn-ghost.is-read:hover{background:rgba(141,121,166,.09);}
+
+/* 2. The hero closes on the same lavender hairline that sits under every
+      section heading, instead of the generic grey line. */
+.hero{border-bottom:1.5px solid rgba(216,207,229,.95);}
+
+/* 3. The section cards carry a terracotta top edge, which pulls warm colour
+      down into the middle band and rhymes with the lavender bar on the journal
+      cards. An inset shadow rather than a border, so the 1px outline and the
+      corner radius are left alone. */
+.cards:not(.stacked) .card{box-shadow:var(--shadow), inset 0 2.5px 0 rgba(200,100,74,.55);}
+.cards:not(.stacked) .card:hover{box-shadow:var(--shadow), inset 0 2.5px 0 var(--terracotta);}
