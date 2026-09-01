@@ -36,7 +36,10 @@ a:hover{text-decoration:underline;text-underline-offset:3px;}
 .masthead .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:14px;padding-bottom:14px;}
 /* The logotype is artwork, not text. Height-constrained so the masthead sets
    the scale and the 3:1 image follows; the footer reuses it smaller. */
-.logo{display:inline-block;line-height:0;}
+.logo{display:inline-block;line-height:0;flex-shrink:0;}
+/* flex-shrink:0 is load-bearing. As a flex item beside a seven-item nav the
+   anchor was being narrowed, and the global img{max-width:100%} then squashed
+   the logotype's width while its fixed height held — distorted on phones. */
 .logo:hover{text-decoration:none;opacity:.82;}
 .logo img{height:66px;width:auto;}
 /* The footer takes the circular badge rather than the wide logotype. The badge
@@ -146,17 +149,25 @@ section{padding:64px 0;}
 .tag.is-terra{background:rgba(200,100,74,.12);color:var(--terracotta-dim);border-color:rgba(200,100,74,.30);}
 .tag.is-amethyst{background:rgba(141,121,166,.16);color:#5F5178;border-color:rgba(141,121,166,.35);}
 
-/* ---------- footer ---------- */
-footer{background:var(--bg-wash);border-top:1px solid var(--line);padding:36px 0 26px;margin-top:24px;}
-.legal{border-top:1px solid var(--line);margin-top:26px;padding-top:18px;text-align:center;
+/* ---------- footer ----------
+   Centred rather than split left/right. With only a badge on one side and seven
+   short links on the other, space-between opened a canyon down the middle of an
+   1180px wrap. Symmetry is the fix, not a bigger gap.
+
+   display:block also matters: the old flex rule applied to BOTH .wrap children,
+   so the legal line sized to its own text and its border-top rule stopped
+   halfway across the page. */
+footer{background:var(--bg-wash);border-top:1px solid var(--line);padding:42px 0 26px;margin-top:24px;}
+footer .wrap{display:block;text-align:center;}
+footer .brand-block{display:flex;flex-direction:column;align-items:center;gap:8px;}
+/* Scoped to the footer — .tagline is also the journal cards' eyebrow label. */
+footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;}
+.foot-nav{display:flex;justify-content:center;gap:10px 22px;flex-wrap:wrap;font-size:14.5px;margin-top:24px;}
+.foot-nav a{color:var(--ink-soft);}
+.legal{border-top:1px solid var(--line);margin-top:28px;padding-top:18px;text-align:center;
   font-size:12.5px;color:var(--ink-faint);}
 .legal a{color:var(--ink-faint);}
 .legal a:hover{color:var(--terracotta);}
-footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;}
-footer .brand-block{display:flex;align-items:center;gap:16px;}
-.tagline{font-size:14px;color:var(--ink-faint);margin-top:4px;}
-.foot-nav{display:flex;gap:20px;flex-wrap:wrap;font-size:14.5px;}
-.foot-nav a{color:var(--ink-soft);}
 
 @media (max-width:900px){
   .hero .wrap,.two-col{grid-template-columns:1fr;gap:32px;}
@@ -206,4 +217,27 @@ footer .brand-block{display:flex;align-items:center;gap:16px;}
   .story + .story{margin-top:42px;}
   .story.is-flipped .story-art{order:0;}
   .beat{font-size:19px;}
+}
+
+/* ---------- phone masthead ----------
+   Below 700px the logotype and a seven-item nav cannot share a row without one
+   of them losing. The logo takes its own line and gets bigger for it; the nav
+   centres underneath. Un-sticking it keeps a two-row header from occupying a
+   third of a phone screen. */
+@media (max-width:700px){
+  .masthead{position:static;}
+  .masthead .wrap{flex-direction:column;align-items:center;gap:12px;}
+  .masthead .logo img{height:58px;}
+  nav{justify-content:center;gap:12px 18px;}
+  footer .logo img{height:72px;width:72px;}
+}
+
+/* The homepage's about panel is one short sentence and centres nicely on a
+   phone. The About page's is three paragraphs, and centred body copy at that
+   length is hard to read — so the large variant keeps the portrait centred and
+   sets the prose flush left. */
+@media (max-width:520px){
+  .about-row.is-large{text-align:left;}
+  .about-row.is-large img{align-self:center;}
+  .about-row.is-large .prose{align-self:stretch;}
 }
