@@ -96,10 +96,20 @@ section{padding:64px 0;}
    keeps one baseline even though the artwork is loosely cropped. */
 .card img{width:78px;height:78px;object-fit:contain;flex-shrink:0;}
 .card-body{display:flex;flex-direction:column;gap:6px;min-width:0;}
-.card h3{font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:500;margin:0;color:var(--terracotta);line-height:1.2;}
+/* Section-card headings sit in Deep Forest, not terracotta. Four large serif
+   headings in a row, under a hero that already carries a terracotta line, put
+   far too much of one warm colour on the page and left lavender and amethyst
+   looking like a different design. Terracotta now means action — the arrows,
+   the buttons, the links — and colour on a HEADING means "something to read",
+   which is amethyst and the journal alone. */
+.card h3{font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:500;margin:0;color:var(--ink);line-height:1.2;}
 .card p{margin:0;font-size:14px;color:var(--ink-soft);}
 .go,.card .go{font-size:13.5px;color:var(--terracotta);font-weight:600;}
-/* The journal strip stacks instead — those cards carry no artwork. */
+/* The journal strip stacks instead — those cards carry no artwork.
+   auto-FILL, not auto-fit: with a single published post, auto-fit collapses the
+   empty tracks and stretches that one card the full width of the page. The
+   300px floor gives three columns at desktop width. */
+.cards.stacked{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}
 .cards.stacked .card{flex-direction:column;gap:8px;}
 
 /* AMETHYST AND LAVENDER — given a job rather than sprinkled.
@@ -121,7 +131,7 @@ section{padding:64px 0;}
 .panel.is-soft .about-row img{border-color:rgba(141,121,166,.3);background:rgba(255,255,255,.55);}
 
 /* Section headings get a lavender hairline, which ties the ornament to the rule. */
-.sec-head{border-bottom:1px solid rgba(216,207,229,.7);padding-bottom:10px;}
+.sec-head{border-bottom:1.5px solid rgba(216,207,229,.95);padding-bottom:10px;}
 
 /* Hero art is the real illustration now, not a placeholder box. */
 .hero-art{background:none;border:none;box-shadow:none;aspect-ratio:auto;padding:0;display:block;}
