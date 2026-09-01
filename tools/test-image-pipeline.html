@@ -1,0 +1,62 @@
+<!doctype html><meta charset="utf-8"><title>image pipeline test</title>
+<pre id="out">running…</pre>
+<script>
+/* Pulls the image pipeline out of admin.html verbatim and exercises it, so the
+   thing under test is the shipped code rather than a copy of it. Open this
+   from a local server: python3 -m http.server, then /tools/. */
+const log = [];
+const say = (s) => { log.push(s); document.getElementById("out").textContent = log.join("\n"); };
+
+async function fileFrom(url, name) {
+  const r = await fetch(url);
+  const b = await r.blob();
+  return new File([b], name, { type: b.type });
+}
+
+(async () => {
+  try {
+    const src = await (await fetch("../admin.html")).text();
+    const code = src.split("/* --8<-- image-pipeline")[1].split("/* --8<-- end */")[0];
+    eval(code.slice(code.indexOf("*/") + 2));
+    say("pipeline extracted and evaluated OK");
+
+    // 1. a genuinely transparent illustration
+    const t = await fileFrom("../images/logo-badge.png", "badge.png");
+    const rt = await shrinkImage(t);
+    say(`\ntransparent PNG in : ${Math.round(t.size/1024)} KB`);
+    say(`  alpha detected   : ${rt.alpha}`);
+    say(`  blob type        : ${rt.blob.type}`);
+    say(`  extension        : ${rt.ext}`);
+    say(`  size out         : ${Math.round(rt.blob.size/1024)} KB  (${rt.w}x${rt.h})`);
+
+    // confirm alpha actually survived the round trip
+    const back = await createImageBitmap(rt.blob);
+    const cv = document.createElement("canvas");
+    cv.width = back.width; cv.height = back.height;
+    cv.getContext("2d").drawImage(back, 0, 0);
+    const corner = cv.getContext("2d").getImageData(0, 0, 1, 1).data;
+    say(`  top-left pixel   : rgba(${corner.join(",")})  -> ${corner[3] < 250 ? "STILL TRANSPARENT" : "OPAQUE (alpha lost)"}`);
+
+    // 2. an opaque photo-like image, built here so the test needs no fixture
+    const oc = document.createElement("canvas");
+    oc.width = 800; oc.height = 600;
+    const g = oc.getContext("2d");
+    g.fillStyle = "#7a9"; g.fillRect(0, 0, 800, 600);
+    g.fillStyle = "#c64"; g.fillRect(100, 100, 400, 300);
+    const ob = await new Promise((ok) => oc.toBlob(ok, "image/png"));
+    const ro = await shrinkImage(new File([ob], "flat.png", { type: "image/png" }));
+    say(`\nopaque image in    : ${Math.round(ob.size/1024)} KB`);
+    say(`  alpha detected   : ${ro.alpha}`);
+    say(`  blob type        : ${ro.blob.type}`);
+    say(`  extension        : ${ro.ext}`);
+
+    const pass = rt.alpha === true && ro.alpha === false && corner[3] < 250 && rt.ext !== "jpg";
+    say(`\nRESULT: ${pass ? "PASS" : "FAIL"}`);
+    fetch("/result", { method: "POST", body: log.join("\n") });
+  } catch (e) {
+    say("ERROR: " + (e && e.stack || e));
+    say("\nRESULT: FAIL");
+    fetch("/result", { method: "POST", body: log.join("\n") });
+  }
+})();
+</script>

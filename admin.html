@@ -128,13 +128,30 @@ async function api(path, opts = {}, retry = true) {
 
    imageOrientation:"from-image" matters: without it a portrait phone photo
    whose rotation lives only in EXIF comes out sideways once the EXIF is gone. */
+/* --8<-- image-pipeline (extracted verbatim by tools/test-image-pipeline.html) */
 const MAX_EDGE = 1920;
+
+/* JPEG has no alpha channel, so encoding a transparent PNG as JPEG flattens
+   every transparent pixel to black. Illustrations on this site are cut out on
+   transparency, so the format has to follow the image, not the other way
+   round: WebP when there is alpha to keep, JPEG when there is not. */
+function canvasHasAlpha(cv) {
+  const { width: w, height: h } = cv;
+  const d = cv.getContext("2d").getImageData(0, 0, w, h).data;
+  const step = Math.max(1, Math.floor(Math.min(w, h) / 96));
+  for (let y = 0; y < h; y += step) {
+    for (let x = 0; x < w; x += step) {
+      if (d[(y * w + x) * 4 + 3] < 250) return true;
+    }
+  }
+  return false;
+}
 
 async function shrinkImage(file) {
   let bmp;
   try {
     bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
-  } catch {
+  } catch (e) {
     bmp = await new Promise((ok, no) => {
       const img = new Image();
       img.onload = () => ok(img);
@@ -148,27 +165,34 @@ async function shrinkImage(file) {
   cv.width = Math.round(w * scale);
   cv.height = Math.round(h * scale);
   cv.getContext("2d").drawImage(bmp, 0, 0, cv.width, cv.height);
-  const blob = await new Promise((ok) => cv.toBlob(ok, "image/jpeg", 0.82));
-  if (!blob) throw new Error("Could not process that image");
-  return { blob, w: cv.width, h: cv.height, was: file.size };
-}
 
-/* Filenames are part of how an image is found, so they are built from a
-   description rather than a timestamp: "shelf-of-echeveria-a3f9.jpg", not
-   "1788286188709-fx4smj.png". The short suffix only guarantees uniqueness —
-   uploading twice must not silently overwrite. */
+  const alpha = canvasHasAlpha(cv);
+  let blob = alpha
+    ? await new Promise((ok) => cv.toBlob(ok, "image/webp", 0.85))
+    : await new Promise((ok) => cv.toBlob(ok, "image/jpeg", 0.82));
+
+  // A browser that cannot write WebP returns PNG from toBlob, or null. Either
+  // way the extension must describe what is actually in the blob.
+  if (!blob) blob = await new Promise((ok) => cv.toBlob(ok, "image/png"));
+  if (!blob) throw new Error("Could not process that image");
+
+  const ext = { "image/webp": "webp", "image/jpeg": "jpg", "image/png": "png" }[blob.type] || "png";
+  return { blob, w: cv.width, h: cv.height, was: file.size, ext, alpha };
+}
+/* --8<-- end */
+
 async function uploadImage(file, base) {
-  const { blob, w, h, was } = await shrinkImage(file);
+  const { blob, w, h, was, ext, alpha } = await shrinkImage(file);
   const stem = slugify(base) || "image";
-  const name = `${stem}-${Math.random().toString(36).slice(2, 6)}.jpg`;
+  const name = `${stem}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
   const res = await fetch(`${SB.url}/storage/v1/object/journal/${name}`, {
     method: "POST",
-    headers: { apikey: SB.key, Authorization: `Bearer ${token()}`, "Content-Type": "image/jpeg" },
+    headers: { apikey: SB.key, Authorization: `Bearer ${token()}`, "Content-Type": blob.type },
     body: blob,
   });
   if (!res.ok) throw new Error(await res.text());
   const kb = (n) => `${Math.round(n / 1024)} KB`;
-  lastUpload = `${w}x${h}, ${kb(was)} to ${kb(blob.size)}`;
+  lastUpload = `${w}x${h} ${ext}${alpha ? " with transparency" : ""}, ${kb(was)} to ${kb(blob.size)}`;
   return `${SB.url}/storage/v1/object/public/journal/${name}`;
 }
 let lastUpload = "";
