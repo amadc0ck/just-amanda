@@ -15,6 +15,8 @@
   .admin-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
     padding-top:12px;padding-bottom:12px;flex-wrap:wrap;}
   .admin-bar h1{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:500;margin:0;}
+  .admin-bar h1 span{font-family:'Inter',system-ui,sans-serif;font-size:11px;color:var(--ink-faint);
+    letter-spacing:.5px;vertical-align:middle;margin-left:6px;}
   .admin-bar .actions{display:flex;gap:10px;flex-wrap:wrap;}
   .btn-sm{padding:9px 16px;font-size:11.5px;}
   .field{margin-bottom:16px;}
@@ -57,7 +59,7 @@
 
 <div class="admin-bar">
   <div class="wrap">
-    <h1>just amanda &middot; write</h1>
+    <h1>just amanda &middot; write <span id="build"></span></h1>
     <div class="actions" id="bar-actions"></div>
   </div>
 </div>
@@ -67,6 +69,12 @@
 <script src="site.js"></script>
 <script src="markdown.js"></script>
 <script>
+/* Bumped on every deploy, and shown in the admin bar. Browsers cache this page
+   aggressively, and a stale tab silently running old code has already cost one
+   batch of images their transparency. If the stamp on screen is not the newest,
+   hard-refresh before uploading anything. */
+const BUILD = "2026-09-01.4";
+
 const KEY = "ja_auth";
 const app = document.getElementById("app");
 const barActions = document.getElementById("bar-actions");
@@ -524,6 +532,7 @@ function screenEdit(p) {
   };
 }
 
+document.getElementById("build").textContent = BUILD;
 (async () => { token() ? await screenList() : screenLogin(); })();
 </script>
 
