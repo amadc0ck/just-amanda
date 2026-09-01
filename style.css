@@ -293,3 +293,8 @@ footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;
   .post-head h1{font-size:33px;}
   .post-card .cover{height:180px;}
 }
+
+/* Preview mode on post.html — a clear, unmissable band so a draft can never be
+   mistaken for the live page. */
+.preview-banner{background:var(--amethyst);color:#fff;text-align:center;
+  padding:9px 16px;font-size:12.5px;letter-spacing:.7px;text-transform:uppercase;font-weight:600;}

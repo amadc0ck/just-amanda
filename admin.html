@@ -43,6 +43,13 @@
   .msg.err{background:rgba(200,100,74,.12);color:var(--terracotta-dim);}
   .msg.ok{background:rgba(167,184,151,.28);color:#4A5A3E;}
   .cover-prev{max-height:130px;border-radius:10px;margin-top:10px;}
+  .igrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;}
+  .icard{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:10px;}
+  .icard img{width:100%;height:110px;object-fit:cover;border-radius:7px;background:var(--bg-wash);}
+  .iname{font-size:11.5px;word-break:break-all;margin-top:8px;line-height:1.35;}
+  .imeta{font-size:11.5px;color:var(--ink-faint);margin-top:2px;}
+  .iacts{display:flex;gap:6px;margin-top:8px;}
+  .iacts .btn{padding:6px 10px;font-size:10.5px;}
   @media (max-width:900px){ .editor-cols,.row-2{grid-template-columns:1fr;} .preview{min-height:0;} }
 </style>
 </head>
@@ -146,9 +153,14 @@ async function shrinkImage(file) {
   return { blob, w: cv.width, h: cv.height, was: file.size };
 }
 
-async function uploadImage(file) {
+/* Filenames are part of how an image is found, so they are built from a
+   description rather than a timestamp: "shelf-of-echeveria-a3f9.jpg", not
+   "1788286188709-fx4smj.png". The short suffix only guarantees uniqueness —
+   uploading twice must not silently overwrite. */
+async function uploadImage(file, base) {
   const { blob, w, h, was } = await shrinkImage(file);
-  const name = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
+  const stem = slugify(base) || "image";
+  const name = `${stem}-${Math.random().toString(36).slice(2, 6)}.jpg`;
   const res = await fetch(`${SB.url}/storage/v1/object/journal/${name}`, {
     method: "POST",
     headers: { apikey: SB.key, Authorization: `Bearer ${token()}`, "Content-Type": "image/jpeg" },
@@ -160,6 +172,57 @@ async function uploadImage(file) {
   return `${SB.url}/storage/v1/object/public/journal/${name}`;
 }
 let lastUpload = "";
+
+async function deleteImage(url) {
+  const name = String(url || "").split("/journal/").pop();
+  if (!name) throw new Error("Unrecognised image URL");
+  const res = await fetch(`${SB.url}/storage/v1/object/journal/${name}`, {
+    method: "DELETE", headers: { apikey: SB.key, Authorization: `Bearer ${token()}` },
+  });
+  if (!res.ok) throw new Error(await res.text());
+}
+
+async function listImages() {
+  const res = await fetch(`${SB.url}/storage/v1/object/list/journal`, {
+    method: "POST",
+    headers: { apikey: SB.key, Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ prefix: "", limit: 200, sortBy: { column: "created_at", order: "desc" } }),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+const imgUrl = (name) => `${SB.url}/storage/v1/object/public/journal/${name}`;
+
+/* Renaming moves the object AND rewrites every reference to it — cover_url,
+   body_md and body_html across all posts. A rename that only moved the file
+   would silently break the posts using it, which is the whole reason people
+   avoid renaming images at all. */
+async function renameImage(oldName, newBase) {
+  const stem = slugify(newBase);
+  if (!stem) throw new Error("Give it a descriptive name");
+  const ext = (oldName.split(".").pop() || "jpg").toLowerCase();
+  const newName = `${stem}.${ext}`;
+  if (newName === oldName) return oldName;
+
+  const res = await fetch(`${SB.url}/storage/v1/object/move`, {
+    method: "POST",
+    headers: { apikey: SB.key, Authorization: `Bearer ${token()}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ bucketId: "journal", sourceKey: oldName, destinationKey: newName }),
+  });
+  if (!res.ok) throw new Error(await res.text());
+
+  const oldUrl = imgUrl(oldName), newUrl = imgUrl(newName);
+  let touched = 0;
+  for (const p of await api("posts?select=id,body_md,body_html,cover_url")) {
+    const patch = {};
+    if (p.cover_url === oldUrl) patch.cover_url = newUrl;
+    if ((p.body_md || "").includes(oldUrl)) patch.body_md = p.body_md.split(oldUrl).join(newUrl);
+    if ((p.body_html || "").includes(oldUrl)) patch.body_html = p.body_html.split(oldUrl).join(newUrl);
+    if (Object.keys(patch).length) { await api(`posts?id=eq.${p.id}`, { method: "PATCH", body: JSON.stringify(patch) }); touched++; }
+  }
+  return { newName, touched };
+}
 
 /* ---------- screens ---------- */
 function note(msg, bad) {
@@ -211,6 +274,61 @@ async function screenList() {
   app.querySelectorAll("[data-edit]").forEach((b) => {
     b.onclick = () => screenEdit(posts[+b.dataset.edit]);
   });
+
+  app.insertAdjacentHTML("beforeend", `<div id="images" style="margin-top:44px;">
+    <div class="sec-head"><h2>Images</h2></div>
+    <p class="muted">Loading images&hellip;</p></div>`);
+  drawImages();
+}
+
+async function drawImages() {
+  const host = document.getElementById("images");
+  if (!host) return;
+  let files = [];
+  try { files = await listImages(); }
+  catch (e) { host.innerHTML = `<div class="msg err">Could not list images: ${escapeHtml(e.message)}</div>`; return; }
+
+  const kb = (n) => `${Math.round((n || 0) / 1024)} KB`;
+  host.innerHTML = `<div class="sec-head"><h2>Images</h2></div>` + (files.length
+    ? `<div class="igrid">${files.map((f, i) => `
+        <div class="icard">
+          <img src="${escapeHtml(imgUrl(f.name))}" alt="" loading="lazy">
+          <div class="iname">${escapeHtml(f.name)}</div>
+          <div class="imeta">${kb(f.metadata?.size)}</div>
+          <div class="iacts">
+            <button class="btn btn-ghost btn-sm" data-ren="${i}">Rename</button>
+            <button class="btn btn-ghost btn-sm" data-del="${i}">Delete</button>
+          </div>
+        </div>`).join("")}</div>`
+    : `<p class="muted">No images uploaded yet.</p>`);
+
+  host.querySelectorAll("[data-ren]").forEach((b) => {
+    b.onclick = async () => {
+      const f = files[+b.dataset.ren];
+      const base = prompt("Describe this image. It becomes the file name.\n\ne.g. shelf of echeveria in morning light",
+                          f.name.replace(/-[a-z0-9]{4}\.[a-z]+$/, "").replace(/-/g, " "));
+      if (!base) return;
+      try {
+        const { newName, touched } = await renameImage(f.name, base);
+        note(`Renamed to ${newName}${touched ? ` and updated ${touched} post${touched > 1 ? "s" : ""}` : ""}.`);
+        drawImages();
+      } catch (e) { note(`Rename failed: ${e.message}`, true); }
+    };
+  });
+
+  host.querySelectorAll("[data-del]").forEach((b) => {
+    b.onclick = async () => {
+      const f = files[+b.dataset.del];
+      const url = imgUrl(f.name);
+      const used = posts.filter((p) => p.cover_url === url || (p.body_md || "").includes(url));
+      const warn = used.length
+        ? `\n\nWARNING: this image is used by ${used.length} post(s):\n${used.map((p) => p.title).join("\n")}\nDeleting it will leave a broken image there.`
+        : "";
+      if (!confirm(`Delete ${f.name} permanently?${warn}`)) return;
+      try { await deleteImage(url); note(`Deleted ${f.name}.`); drawImages(); }
+      catch (e) { note(`Delete failed: ${e.message}`, true); }
+    };
+  });
 }
 
 function screenEdit(p) {
@@ -220,6 +338,7 @@ function screenEdit(p) {
 
   barActions.innerHTML = `
     <button class="btn btn-ghost btn-sm" id="back">&larr; All posts</button>
+    <button class="btn btn-ghost btn-sm" id="preview">Preview</button>
     <button class="btn btn-ghost btn-sm" id="save">Save draft</button>
     <button class="btn btn-primary btn-sm" id="pub">${editing.status === "published" ? "Update" : "Publish"} &rarr;</button>`;
 
@@ -240,13 +359,17 @@ function screenEdit(p) {
         <div class="hint">Comma separated.</div></div>
       <div class="field"><label for="f-cover">Cover image</label>
         <input id="f-cover" type="file" accept="image/*">
-        <div id="cover-wrap">${editing.cover_url
-          ? `<img class="cover-prev" src="${escapeHtml(editing.cover_url)}" alt="">` : ""}</div></div>
+        <div id="cover-wrap"></div></div>
     </div>
     <div class="editor-cols">
       <div class="field"><label for="f-body">Post &mdash; Markdown</label>
         <textarea id="f-body">${escapeHtml(editing.body_md || "")}</textarea>
-        <div class="hint"><strong>Insert an image:</strong>
+        <div class="hint" style="margin-top:10px;">
+          <label for="f-imgdesc" style="text-transform:none;letter-spacing:0;font-size:12.5px;
+            color:var(--ink-faint);font-weight:400;">Describe the image, then choose it. The
+            description becomes the file name and the alt text.</label>
+          <input id="f-imgdesc" placeholder="shelf of echeveria in morning light"
+            style="margin:6px 0;font-size:13px;">
           <input id="f-inline" type="file" accept="image/*" style="font-size:12px;"></div></div>
       <div><label style="display:block;font-size:12px;letter-spacing:.6px;text-transform:uppercase;
         font-weight:600;color:var(--ink-faint);margin-bottom:6px;">Preview</label>
@@ -268,26 +391,47 @@ function screenEdit(p) {
   $("f-slug").addEventListener("change", () => { $("f-slug").dataset.touched = "1"; });
   draw(); echoSlug();
 
+  const drawCover = () => {
+    $("cover-wrap").innerHTML = editing.cover_url
+      ? `<img class="cover-prev" src="${escapeHtml(editing.cover_url)}" alt="">
+         <p style="margin:9px 0 0;"><button class="btn btn-ghost btn-sm" id="cover-rm">Remove cover</button></p>`
+      : "";
+    const rm = $("cover-rm");
+    if (!rm) return;
+    rm.onclick = async () => {
+      const url = editing.cover_url;
+      editing.cover_url = null;
+      drawCover();
+      // Clear the field first, delete the file second: a failed delete leaves
+      // an orphan in the bucket, which the Images panel can mop up. A failed
+      // clear would leave the post pointing at a file that is already gone.
+      try { await deleteImage(url); note("Cover removed, and the file deleted. Save to keep the change."); }
+      catch (err) { note(`Cover cleared, but the file remains: ${err.message}`, true); }
+    };
+  };
+  drawCover();
+
   $("f-cover").onchange = async (e) => {
     const f = e.target.files[0]; if (!f) return;
     note("Uploading cover…");
     try {
-      editing.cover_url = await uploadImage(f);
-      $("cover-wrap").innerHTML = `<img class="cover-prev" src="${escapeHtml(editing.cover_url)}" alt="">`;
+      editing.cover_url = await uploadImage(f, `${$("f-slug").value || $("f-title").value || "post"}-cover`);
+      drawCover();
       note(`Cover uploaded, EXIF stripped — ${lastUpload}.`);
     } catch (err) { note(`Cover upload failed: ${err.message}`, true); }
   };
 
   $("f-inline").onchange = async (e) => {
     const f = e.target.files[0]; if (!f) return;
-    note("Uploading image…");
+    const desc = $("f-imgdesc").value.trim();
+    note(desc ? "Uploading image…" : "Uploading image — add a description next time for better alt text…");
     try {
-      const url = await uploadImage(f);
+      const url = await uploadImage(f, desc || `${$("f-slug").value || "post"}-image`);
       const ta = $("f-body");
       const at = ta.selectionStart ?? ta.value.length;
-      ta.value = `${ta.value.slice(0, at)}\n\n![](${url})\n\n${ta.value.slice(at)}`;
+      ta.value = `${ta.value.slice(0, at)}\n\n![${desc}](${url})\n\n${ta.value.slice(at)}`;
       draw(); note(`Image inserted, EXIF stripped — ${lastUpload}.`);
-      e.target.value = "";
+      e.target.value = ""; $("f-imgdesc").value = "";
     } catch (err) { note(`Image upload failed: ${err.message}`, true); }
   };
 
@@ -329,6 +473,21 @@ function screenEdit(p) {
     } catch (e) {
       note(/duplicate key/i.test(e.message) ? "That slug is already used by another post." : e.message, true);
     }
+  };
+
+  /* A true preview: the actual post.html, with its real stylesheet, masthead
+     and measure. The draft is handed over in sessionStorage rather than being
+     saved first, so what opens is exactly what is in the editor right now,
+     unsaved edits included. */
+  $("preview").onclick = () => {
+    const p = collect();
+    sessionStorage.setItem("ja_preview", JSON.stringify({
+      title: p.title || "(untitled)", excerpt: p.excerpt, body_html: p.body_html,
+      cover_url: p.cover_url, tags: p.tags,
+      published_at: editing.published_at || new Date().toISOString(),
+      status: editing.status || "draft",
+    }));
+    window.open("post.html?preview=1", "ja_preview_win");
   };
 
   $("back").onclick = () => screenList();
