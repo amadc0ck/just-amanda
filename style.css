@@ -95,7 +95,7 @@ section{padding:64px 0;}
 .card-body{display:flex;flex-direction:column;gap:6px;min-width:0;}
 .card h3{font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:500;margin:0;color:var(--terracotta);line-height:1.2;}
 .card p{margin:0;font-size:14px;color:var(--ink-soft);}
-.card .go{font-size:13.5px;color:var(--terracotta);font-weight:600;}
+.go,.card .go{font-size:13.5px;color:var(--terracotta);font-weight:600;}
 /* The journal strip stacks instead — those cards carry no artwork. */
 .cards.stacked .card{flex-direction:column;gap:8px;}
 
@@ -164,4 +164,46 @@ footer .brand-block{display:flex;align-items:center;gap:16px;}
   nav{gap:16px;}
   nav a{font-size:14px;}
   section{padding:44px 0;}
+}
+
+/* ---------- about page: alternating story rows ----------
+   Each section is one row: her words on one side, the illustration on the
+   other, sides alternating down the page. Source order is always text-then-art
+   so a screen reader and a phone both get the words first; .is-flipped only
+   moves the art visually. */
+.story{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center;}
+.story + .story{margin-top:58px;}
+.story-art img{width:100%;height:auto;}
+.story.is-flipped .story-art{order:-1;}
+
+.prose p{font-size:17px;color:var(--ink-soft);margin:0 0 16px;max-width:36em;}
+.prose p:last-child{margin-bottom:0;}
+.prose strong{color:var(--ink);font-weight:600;}
+
+/* A one-line paragraph used as a beat — "That escalated." Set in the display
+   face so it lands as a pause rather than as another sentence. Four on the
+   page, deliberately; a fifth would stop reading as emphasis at all. */
+.beat{font-family:'Playfair Display',Georgia,serif;font-style:italic;
+  font-size:22px;line-height:1.4;color:var(--terracotta);
+  margin:24px 0 24px !important;max-width:none;}
+
+/* The closing turns and the sign-off, centred under the last card row. */
+.closing{max-width:34em;margin:0 auto;text-align:center;}
+.closing p{max-width:none;margin:0 0 10px;}
+.closing .beat{margin:18px 0 22px !important;}
+.signature{font-family:'Playfair Display',Georgia,serif;font-size:27px;
+  color:var(--ink);margin:0;}
+
+/* Six cards read better 3-and-3 than 4-and-2, so this row sets a wider floor. */
+.cards.trio{grid-template-columns:repeat(auto-fit,minmax(316px,1fr));}
+
+/* Slightly larger portrait than the homepage panel — this is the page where
+   her face belongs. */
+.about-row.is-large img{width:132px;height:132px;}
+
+@media (max-width:900px){
+  .story{grid-template-columns:1fr;gap:26px;}
+  .story + .story{margin-top:42px;}
+  .story.is-flipped .story-art{order:0;}
+  .beat{font-size:19px;}
 }

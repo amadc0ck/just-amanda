@@ -73,3 +73,42 @@ that compounds the loss for almost no further saving.
 
 Put files here with these exact names and tell me — the swap is one line per
 image, already scaffolded. Nothing else needs to change.
+
+---
+
+## About-page illustrations — added 2026-08-31
+
+Nine came in; seven are on the page. All 1448 × 1086 originals, transparent,
+resized to **900 wide** and quantised at `--quality=60-85`.
+
+| File | Where it appears |
+| --- | --- |
+| `about-hobbies.png` | About hero — yarn and books |
+| `about-rabbit-holes.png` | "The rabbit holes are kind of the point" |
+| `about-journal.png` | "I tend to want to understand things" |
+| `about-geocities.png` | "A little corner of the internet" |
+| `about-building.png` | "And lately, I build things" |
+| `about-archive.png` | "A living archive" |
+| `section-3dprint.png` | "What lives here" card (600 wide, card-sized) |
+| `about-succulents.png` | **spare** |
+| `about-3dprint-desk.png` | **spare** — alternate printer scene |
+
+### Why these are 900 wide and the first batch was not
+
+This batch has far finer linework than the first — notebook handwriting, a
+keyboard, a CRT screen — and it quantises much worse. At 1100 wide the seven
+came to 2.7 MB. Dropping to 900 and tightening the quality floor got the page
+to about 2.4 MB total, still above the 1.5 MB target set above.
+
+Two things make that acceptable rather than a problem:
+
+- Everything below the hero carries `loading="lazy"`, so the **first paint is
+  about 350 KB** — masthead logo, hero art, stylesheet, fonts. The rest arrives
+  as she scrolls.
+- The alternative is WebP, which would roughly third the total. `cwebp` is not
+  installed and `sips` on this machine cannot write WebP, so it was not an
+  option today. **If the page ever needs to get lighter, that is the lever** —
+  `brew install webp`, convert the whole `images/` folder, and update the
+  `<img>` tags. Do the whole folder at once rather than mixing formats.
+
+Do not re-run `pngquant` on these files; they are already quantised.
