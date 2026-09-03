@@ -131,9 +131,9 @@ undercut it.
 | Favourite 1 | `plant-agave-albopilosa.jpg` | The acquisition photo, Flora Grubb, 22 Feb 2019 |
 | Favourite 2 | `plant-opuntia-santa-rita.jpg` | Either the original three pads or it now — one image, not both |
 | Favourite 3 | `plant-coffee-cactus.jpg` | ~~Before/after. Species still unidentified~~ **Filled 2026-09-03.** Identified as *Ferocactus glaucescens*; a current photo would still make the before/after true |
-| App shot 1 | `app-specimen.png` | A specimen and its photographic timeline |
-| App shot 2 | `app-health.png` | A health check |
-| App shot 3 | `app-frost.png` | The frost list |
+| App shot 1 | `app-todo.jpg` | **Filled 2026-09-03** — the To Do queue |
+| App shot 2 | `app-plants.jpg` | **Filled 2026-09-03** — the plant catalogue |
+| App shot 3 | `app-gallery.jpg` | **Filled 2026-09-03** — the gallery and its counts |
 
 | | Favourites | App shots |
 | --- | --- | --- |
@@ -181,3 +181,19 @@ the ICC colour profile, so colours are unaffected.
 The journal's upload path in `admin.html` already strips EXIF via a canvas
 re-encode. Files hand-committed to `images/` never touch that path — hence the
 tool.
+
+### App screenshots — added 2026-09-03
+
+`app-todo.jpg` · `app-plants.jpg` · `app-gallery.jpg` are on the page.
+`app-checkin.jpg` (the "Due for a check-in" list) is a **spare** — swap it in for
+any of the three, they are interchangeable.
+
+iPhone screenshots, 1179x2556, run through `tools/prep-photo.py` at 600px wide.
+**8.3 MB of PNGs became 160 KB of JPEG** — the originals were 2-3 MB each and
+would have tripled the page on their own.
+
+The screenshot row is full width under the prose rather than in a side column.
+At ~130px in a column they were texture, not screenshots: you could see there
+was an app and read nothing on it. Full width they are legible at desktop and
+the screen names still read on a phone. The prose is centred so the space this
+frees does not read as a hole beside the text.

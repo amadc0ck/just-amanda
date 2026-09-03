@@ -353,6 +353,9 @@ footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;
 .shot-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
   gap:18px;max-width:36em;margin:26px 0;}
 .photo-slot.is-phone{aspect-ratio:9/19;border-radius:20px;padding:22px 14px;}
+/* The real screenshots, once they land. Same frame as the placeholder. */
+.shot-row img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);
+  box-shadow:0 6px 18px -10px rgba(46,61,47,.5);}
 
 /* Links inside a card's running prose — the resource notes. Colour alone is
    not enough to mark a link mid-sentence, and these are the only cards where
@@ -373,15 +376,20 @@ article.card:hover{border-color:var(--line);}
 /* The app panel runs two columns on desktop: what the app does on the left at a
    reading measure, the phone screenshots on the right. A single 36em column of
    prose in an 1180px panel left the whole right half of the card empty. */
-.app-panel{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
-  gap:44px;align-items:start;}
-.app-panel .shot-row{grid-template-columns:repeat(3,1fr);max-width:none;margin:4px 0 0;}
-/* The colophon runs under both columns — it is about the build, not the feature
-   list, so it wants the full width and a quieter size. */
-.app-panel .colophon{grid-column:1/-1;margin:8px 0 0;font-size:15px;
-  line-height:1.7;color:var(--ink-faint);}
+/* Narrow text column, wider figure beneath — the ordinary article shape. The
+   screenshots were in a side column at ~130px wide, which is not a screenshot,
+   it is texture: you could see there was an app and read nothing on it. Full
+   width makes them legible; centring the prose stops the freed space reading as
+   a hole beside the text. */
+.app-panel{display:block;}
+.app-panel .prose{max-width:36em;margin:0 auto;}
+.app-panel .shot-row{grid-template-columns:repeat(3,1fr);max-width:880px;
+  margin:32px auto 0;gap:24px;}
+.app-panel .colophon{max-width:880px;margin:26px auto 0;}
+/* The colophon is about the build, not the feature list, so it sits apart and
+   quieter, on the figure's measure rather than the text's. */
+.app-panel .colophon{font-size:15px;line-height:1.7;color:var(--ink-faint);}
 
 @media (max-width:900px){
-  .app-panel{grid-template-columns:1fr;gap:26px;}
-  .app-panel .shot-row{max-width:400px;}
+  .app-panel .shot-row{max-width:420px;gap:12px;}
 }
