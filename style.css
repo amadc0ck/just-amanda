@@ -491,3 +491,104 @@ article.card:hover{border-color:var(--line);}
 
 /* Two links now, so they need separating. */
 .inv-verify{display:flex;gap:16px;}
+
+/* ---------- books page ----------
+   Caveat carries the handwritten asides from the mockup. Third face on the
+   site, and it earns its place: the annotations are the voice of the page, and
+   setting them in Inter italic would read as a caption rather than a margin
+   note. */
+.script{font-family:'Caveat',cursive;font-weight:500;}
+.aside{font-family:'Caveat',cursive;font-size:1.15em;color:var(--ink-faint);}
+
+.bk-hero .hero-art img{max-width:560px;margin-left:auto;}
+@media (max-width:900px){ .bk-hero .hero-art img{max-width:420px;margin:0 auto;} }
+
+.bk-head{text-align:center;margin:0 0 30px;}
+.bk-head h2{font-family:'Playfair Display',Georgia,serif;font-size:29px;font-weight:500;
+  margin:0;letter-spacing:.4px;text-transform:uppercase;}
+.bk-head .script{margin:4px 0 0;font-size:22px;color:var(--terracotta);}
+
+/* A book without its cover. The spine bar carries the colour so a row of these
+   still reads as a shelf; swapping in real cover art later means replacing the
+   span with an <img> and nothing else moves. */
+/* No minimum height on the list variant: a six-book column with a 74px floor
+   ran to twice the height of its neighbours and broke the timeline row. The
+   colour bar carries the "spine" read on its own. */
+.bookcard{display:flex;flex-direction:column;justify-content:flex-end;
+  padding:8px 11px 9px;border-radius:6px;
+  background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
+  font-size:12.5px;font-weight:600;line-height:1.25;color:var(--ink);
+  border-left:5px solid var(--sage);}
+.bookcard b{display:block;font-weight:400;font-size:11px;color:var(--ink-faint);
+  margin-top:3px;}
+.bookcard.is-1{border-left-color:#4A5D45;}
+.bookcard.is-2{border-left-color:var(--terracotta);}
+.bookcard.is-3{border-left-color:var(--amethyst);}
+.bookcard.is-4{border-left-color:var(--gold);}
+.bookcard.is-tall{min-height:104px;justify-content:flex-end;}
+.bookrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));
+  gap:7px;margin:10px 0 0;}
+
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;align-items:start;}
+.tl-col{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 18px 20px;box-shadow:var(--shadow);}
+.tl-label{font-family:'Caveat',cursive;font-size:23px;color:var(--ink-soft);margin:0;}
+.tl-note{margin:12px 0 0;font-size:13px;font-style:italic;color:var(--ink-soft);line-height:1.5;}
+.tl-aside{margin:8px 0 0;font-size:18px;color:var(--terracotta);}
+
+.obsess{display:grid;grid-template-columns:1fr 1.1fr;gap:34px;align-items:start;}
+.sec-label{font-size:12px;letter-spacing:1px;text-transform:uppercase;font-weight:600;
+  color:var(--ink-soft);margin:0 0 12px;}
+.author-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 20px 20px;box-shadow:var(--shadow);margin-bottom:16px;}
+.author-card h3{font-family:'Playfair Display',Georgia,serif;font-size:21px;font-weight:500;
+  margin:0;letter-spacing:.6px;text-transform:uppercase;}
+.author-card p{margin:6px 0 0;font-size:13.5px;color:var(--ink-soft);}
+/* Capped. At full column width this ran to 500px and left the right-hand
+   column ending a third of the way up the section, with a dead zone beside it.
+   It is a grace note under the author cards, not a second hero. */
+.obsess-art{width:100%;max-width:300px;height:auto;margin:14px auto 0;display:block;}
+
+.brainrot{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 16px;}
+.brainrot figure{margin:0;}
+.brainrot figcaption{margin-top:7px;font-size:16.5px;line-height:1.3;color:var(--ink-soft);}
+
+.dna{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;}
+.dna-item{text-align:center;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius);padding:14px 10px 16px;box-shadow:var(--shadow);}
+.dna-item img{width:66px;height:66px;object-fit:contain;margin:0 auto 8px;}
+.dna-item h3{font-size:11.5px;letter-spacing:.6px;text-transform:uppercase;font-weight:600;
+  margin:0 0 4px;color:var(--ink);line-height:1.3;}
+.dna-item p{margin:0;font-size:12px;color:var(--ink-soft);line-height:1.4;}
+
+.notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;}
+.note-card{display:block;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+.note-card:hover{border-color:rgba(141,121,166,.45);text-decoration:none;}
+.note-card .cover{width:100%;height:120px;object-fit:cover;}
+.note-card .nc-body{display:block;padding:14px 16px 16px;}
+.note-card h3{font-family:'Playfair Display',Georgia,serif;font-size:16px;font-weight:500;
+  margin:5px 0 6px;color:var(--amethyst);line-height:1.3;}
+.note-card .nc-date{font-size:11.5px;color:var(--ink-faint);}
+.note-card.is-soon{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:22px 18px;background:var(--bg-wash);}
+.note-card.is-soon p{margin:0;font-size:14px;color:var(--ink-soft);}
+.note-card.is-soon .script{font-size:19px;color:var(--ink-faint);margin-top:4px;}
+.note-card.is-soon img{width:54px;height:54px;object-fit:contain;margin-top:10px;}
+
+@media (max-width:1100px){
+  .dna{grid-template-columns:repeat(4,1fr);}
+  .timeline{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:900px){
+  .obsess{grid-template-columns:1fr;gap:26px;}
+  .brainrot{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:700px){
+  .timeline{grid-template-columns:1fr;}
+  .dna{grid-template-columns:repeat(2,1fr);}
+  .brainrot{grid-template-columns:repeat(2,1fr);}
+}
+/* Nothing tagged "books" yet: the coming-soon card centres instead of clinging
+   to the left of a five-column grid. */
+.notes-grid.is-empty{grid-template-columns:minmax(240px,330px);justify-content:center;}
