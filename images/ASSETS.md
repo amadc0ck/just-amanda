@@ -112,3 +112,72 @@ Two things make that acceptable rather than a problem:
   `<img>` tags. Do the whole folder at once rather than mixing formats.
 
 Do not re-run `pngquant` on these files; they are already quantised.
+
+---
+
+## Plants page — photographs still open, 2026-09-03
+
+The Plants page is written and laid out. Six pictures are the only thing left,
+and each one has a frame waiting for it on the page: a dashed cream box that
+names the picture it wants. Nothing is broken while they are missing — the
+frames read as deliberate — but they are the last gap.
+
+**These are photographs, not illustrations.** The favourites are the actual
+plants, which is the whole point of the section; an illustration there would
+undercut it.
+
+| Slot | Suggested filename | What it is |
+| --- | --- | --- |
+| Favourite 1 | `plant-agave-albopilosa.jpg` | The acquisition photo, Flora Grubb, 22 Feb 2019 |
+| Favourite 2 | `plant-opuntia-santa-rita.jpg` | Either the original three pads or it now — one image, not both |
+| Favourite 3 | `plant-coffee-cactus.jpg` | Before/after. Species still unidentified |
+| App shot 1 | `app-specimen.png` | A specimen and its photographic timeline |
+| App shot 2 | `app-health.png` | A health check |
+| App shot 3 | `app-frost.png` | The frost list |
+
+| | Favourites | App shots |
+| --- | --- | --- |
+| **Ratio** | 4:3 landscape (cropped to fill) | phone screen, roughly 9:19 |
+| **Size** | 1200 × 900 | whatever the phone exports |
+| **Weight** | under 250 KB each | under 250 KB each |
+
+### Dropping one in
+
+Replace the `<div class="photo-slot">…</div>` in `plants.html` with an `<img>`.
+The CSS already sizes and crops it, so nothing else changes:
+
+    <img src="images/plant-agave-albopilosa.jpg"
+         alt="Agave albopilosa in a terracotta pot"
+         width="1200" height="900" loading="lazy">
+
+Slots can be filled one at a time — a card with a real photograph sits happily
+beside a card still showing its frame.
+
+### STRIP EXIF FIRST — this one is not optional
+
+These are phone photographs of plants **at her house**, and the site is a public
+personal domain. Phone photos carry GPS. Publishing home coordinates is not
+recoverable once indexed.
+
+Use the tool. It resizes, strips, verifies, and refuses to write the file if the
+location data is still reachable:
+
+    python3 tools/prep-photo.py ~/Desktop/IMG_4821.jpg images/plant-coffee-cactus.jpg
+
+**Do not substitute a sips one-liner.** Measured 2026-09-03 against a JPEG built
+with a known GPS IFD — every obvious command fails, and every one fails silently:
+
+| Command | What it actually does |
+| --- | --- |
+| `sips -d GPS f.jpg` | Exits 0. Changes nothing. GPS still there. |
+| `sips -d IPTC f.jpg` | Errors: "Cannot do --deleteProperty IPTC on file" |
+| `sips -g all f.jpg \| grep -i gps` | Prints nothing **even when GPS is present** — so empty output is not evidence of anything |
+| `sips -Z 1200` / `-s format jpeg` | Carries the GPS IFD straight through, and rewrites it big-endian, which also defeats grepping for the tag bytes |
+
+There is no exiftool, ImageMagick or Pillow on this machine, which is why the
+tool removes the APP1/APP13 segments itself rather than shelling out. It keeps
+the ICC colour profile, so colours are unaffected.
+
+The journal's upload path in `admin.html` already strips EXIF via a canvas
+re-encode. Files hand-committed to `images/` never touch that path — hence the
+tool.

@@ -186,6 +186,12 @@ footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;
 .story.is-flipped .story-art{order:-1;}
 
 .prose p{font-size:17px;color:var(--ink-soft);margin:0 0 16px;max-width:36em;}
+/* Lists share the paragraphs' measure — the app panel runs prose, bullets and
+   screenshots down one column, and a full-width list beside a 36em paragraph
+   reads as a mistake. */
+.prose ul{font-size:17px;color:var(--ink-soft);margin:0 0 16px;max-width:36em;
+  padding-left:22px;}
+.prose li{margin-bottom:8px;}
 .prose p:last-child{margin-bottom:0;}
 .prose strong{color:var(--ink);font-weight:600;}
 
@@ -311,3 +317,64 @@ footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;
    towering over it, and pushed right so it hugs the page edge. */
 .hero-art.is-portrait img{max-width:400px;margin-left:auto;}
 @media (max-width:900px){ .hero-art.is-portrait img{max-width:300px;margin:0 auto;} }
+
+/* ---------- plants page: favourite cards carry photographs ----------
+   The section marks are 78px objects beside the text, which is right for an
+   icon and wrong for a plant. These cards put the picture on top at 4:3 and
+   run the story underneath, so the photograph is the point of the card. */
+.cards.photos{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));}
+.cards.photos .card{flex-direction:column;gap:14px;padding:14px 14px 20px;
+  align-items:stretch;}
+/* align-items:stretch is load-bearing. .card sets flex-start for the icon-beside-
+   text layout; left alone in a column card it shrinks the photo and the story to
+   their content width instead of filling the card. */
+.cards.photos .card img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;
+  border-radius:10px;}
+.cards.photos .card-body{padding:0 6px;}
+
+/* An empty picture frame, for a card whose photograph has not been chosen yet.
+   Naming the picture it wants makes an unfinished card read as deliberate
+   rather than broken — and it is the swap list. Replace the div with an
+   <img> and nothing else on the page has to change. */
+.photo-slot{background:var(--bg-wash);border:1px dashed rgba(46,61,47,.20);
+  border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;
+  justify-content:center;text-align:center;padding:18px;
+  font-size:12.5px;line-height:1.6;color:var(--ink-faint);}
+
+/* App screenshots sit in phone-shaped frames. Capped so three of them read as
+   a row of phones rather than three columns of the panel. */
+.shot-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:18px;max-width:36em;margin:26px 0;}
+.photo-slot.is-phone{aspect-ratio:9/19;border-radius:20px;padding:22px 14px;}
+
+/* Links inside a card's running prose — the resource notes. Colour alone is
+   not enough to mark a link mid-sentence, and these are the only cards where
+   the text itself is clickable rather than the whole card. */
+.card p a{text-decoration:underline;text-underline-offset:2px;}
+
+/* Cards that are NOT links. The favourites and the resource notes hold their
+   own text and go nowhere, so they must not offer a hover affordance — both
+   the border and the terracotta top edge stay put. */
+article.card:hover{border-color:var(--line);}
+.cards:not(.stacked) article.card:hover{
+  box-shadow:var(--shadow), inset 0 2.5px 0 rgba(200,100,74,.55);}
+
+@media (max-width:900px){
+  .shot-row{max-width:none;}
+}
+
+/* The app panel runs two columns on desktop: what the app does on the left at a
+   reading measure, the phone screenshots on the right. A single 36em column of
+   prose in an 1180px panel left the whole right half of the card empty. */
+.app-panel{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  gap:44px;align-items:start;}
+.app-panel .shot-row{grid-template-columns:repeat(3,1fr);max-width:none;margin:4px 0 0;}
+/* The colophon runs under both columns — it is about the build, not the feature
+   list, so it wants the full width and a quieter size. */
+.app-panel .colophon{grid-column:1/-1;margin:8px 0 0;font-size:15px;
+  line-height:1.7;color:var(--ink-faint);}
+
+@media (max-width:900px){
+  .app-panel{grid-template-columns:1fr;gap:26px;}
+  .app-panel .shot-row{max-width:400px;}
+}
