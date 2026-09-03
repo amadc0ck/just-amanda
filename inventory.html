@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The collection — just amanda</title>
+<meta name="description" content="Every species in the collection, and how many of each. Read live from the catalogue.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<meta name="theme-color" content="#F7F3EB">
+<link rel="stylesheet" href="style.css?v=2026-09-03.2">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="images/logo.png" alt="just amanda" width="700" height="233"></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="plants.html" aria-current="page">Plants</a>
+      <a href="#">Chickens</a>
+      <a href="#">Crochet</a>
+      <a href="#">Books</a>
+      <a href="journal.html">Journal</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <h1>The collection,<em>species by species.</em></h1>
+      <p>Every kind of plant I currently grow, and how many of each. Read straight from
+         the catalogue, so it is current rather than a snapshot &mdash; and still being
+         filled in, which is why some entries carry more than others.</p>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <a class="back-to" href="plants.html">&larr; Plants</a>
+
+    <div class="inv-controls">
+      <input id="inv-search" class="search-input" type="search" autocomplete="off"
+             placeholder="Search a name, genus or family&hellip;" aria-label="Search the collection">
+      <p id="inv-count" class="muted" aria-live="polite">Loading the catalogue&hellip;</p>
+    </div>
+
+    <div id="inv-list"></div>
+  </div>
+</section>
+
+<div class="divider-wrap"><img src="images/divider.png" alt="" width="1400" height="466" loading="lazy"></div>
+
+<footer>
+  <div class="wrap">
+    <div class="brand-block">
+      <a class="logo" href="index.html"><img src="images/logo-badge.png" alt="just amanda" width="500" height="500" loading="lazy"></a>
+      <div class="tagline">A creative life,<br>thoughtfully collected.</div>
+    </div>
+    <nav class="foot-nav">
+      <a href="index.html">Home</a><a href="about.html">About</a><a href="plants.html">Plants</a>
+      <a href="#">Chickens</a><a href="#">Crochet</a>
+      <a href="#">Books</a><a href="journal.html">Journal</a>
+    </nav>
+  </div>
+  <div class="wrap">
+    <div class="legal">
+      &copy; 2026 just amanda.
+      &nbsp;&middot;&nbsp; Words and photographs are my own; please don&rsquo;t reuse them without asking.
+      &nbsp;&middot;&nbsp; Illustrations were made with AI, from my direction.
+    </div>
+  </div>
+</footer>
+
+<script src="site.js?v=2026-09-03.2"></script>
+<script>
+/* The inventory is read live from public_plant_inventory — a view, so the page
+   can only ever see the columns that view exposes. Locations, health, notes and
+   accession numbers are not in it and cannot be reached from here. */
+
+/* Botanical convention: genus and epithet italic, the hybrid sign and the
+   cultivar upright. Composed from parts when they exist, because only the parts
+   can be marked up correctly; the free-text name is the fallback. */
+function taxonName(t) {
+  const g = (t.genus || "").trim();
+  const ep = (t.species_epithet || "").trim();
+  const cv = (t.cultivar || "").trim();
+  const infra = (t.infraspecific || "").trim();
+  if (g && (ep || cv)) {
+    let out = `<em>${escapeHtml(g)}</em>`;
+    if (t.is_hybrid) out += " &times;";
+    if (ep) out += ` <em>${escapeHtml(ep)}</em>`;
+    if (infra) out += " " + infraHtml(infra);
+    if (cv) out += ` &lsquo;${escapeHtml(cv)}&rsquo;`;
+    return out;
+  }
+  const bn = (t.botanical_name || "").trim();
+  if (bn) return `<em>${escapeHtml(bn)}</em>`;
+  const wl = (t.working_label || "").trim();
+  return wl ? escapeHtml(wl) : "<span class='muted'>Unidentified</span>";
+}
+
+/* Stored with the rank as written on the tag — "var. erinacea". The rank is
+   upright and the epithet italic. A bare word with no rank reads as var.,
+   which is overwhelmingly the common case. */
+function infraHtml(s) {
+  const m = s.match(/^\s*(var\.|subsp\.|ssp\.|f\.)?\s*(.+)$/i);
+  const rank = m && m[1] ? m[1] : "var.";
+  const ep = m ? m[2] : s;
+  return `${escapeHtml(rank)} <em>${escapeHtml(ep)}</em>`;
+}
+
+function humanize(v) {
+  if (Array.isArray(v)) return v.map(humanize).join(", ");
+  return String(v).replace(/_/g, " ").replace(/^./, (c) => c.toUpperCase());
+}
+
+function filled(v) {
+  if (v == null) return false;
+  if (Array.isArray(v)) return v.length > 0;
+  return String(v).trim() !== "";
+}
+
+/* Only the fields this species actually carries. The records are still being
+   filled in, so a blank field is an unfinished record, not a fact — printing a
+   row of em-dashes would dress absence up as information. */
+const FIELDS = [
+  ["growth_habit",     "Habit"],
+  ["mature_size",      "Mature size"],
+  ["bloom_season",     "Blooms"],
+  ["native_range",     "Native to"],
+  ["hardy_to",         "Hardy to"],
+  ["water_needs",      "Water"],
+  ["light_conditions", "Light"],
+  ["origin",           "Origin"],
+];
+
+function card(t) {
+  const rows = FIELDS.filter(([k]) => filled(t[k]))
+    .map(([k, label]) =>
+      `<div class="inv-row"><dt>${label}</dt><dd>${escapeHtml(humanize(t[k]))}</dd></div>`)
+    .join("");
+  const meta = [
+    filled(t.family) ? escapeHtml(t.family) : null,
+    `${t.specimens} ${t.specimens === 1 ? "specimen" : "specimens"}`,
+  ].filter(Boolean).join(" &middot; ");
+
+  return `<article class="inv-card">
+    <div class="inv-head">
+      <h2>${taxonName(t)}</h2>
+      ${filled(t.common_name) ? `<p class="inv-common">${escapeHtml(t.common_name)}</p>` : ""}
+      <p class="inv-meta">${meta}${t.frost_tender ? ` &middot; <span class="inv-tender">frost tender</span>` : ""}</p>
+    </div>
+    ${filled(t.description) ? `<p class="inv-desc">${escapeHtml(t.description)}</p>` : ""}
+    ${rows ? `<dl class="inv-fields">${rows}</dl>` : ""}
+    <p class="inv-verify"><a href="https://www.smgrowers.com/search.asp?txtsearch=${
+      encodeURIComponent(searchTerm(t))}" rel="nofollow">Check this on San&nbsp;Marcos&nbsp;Growers &rarr;</a></p>
+  </article>`;
+}
+
+/* The plain botanical name, for an outbound search — no markup, no quotes. */
+function searchTerm(t) {
+  const g = (t.genus || "").trim(), ep = (t.species_epithet || "").trim();
+  if (g && ep) return `${g} ${ep}`;
+  if (g) return g;
+  return (t.botanical_name || t.working_label || "").trim();
+}
+
+function haystack(t) {
+  return [t.botanical_name, t.common_name, t.family, t.genus, t.species_epithet,
+          t.cultivar, t.working_label]
+    .filter(Boolean).join(" ").toLowerCase();
+}
+
+let ALL = [];
+
+function draw() {
+  const q = (document.getElementById("inv-search").value || "").trim().toLowerCase();
+  const shown = q ? ALL.filter((t) => haystack(t).includes(q)) : ALL;
+  const specimens = shown.reduce((n, t) => n + (t.specimens || 0), 0);
+  document.getElementById("inv-count").innerHTML = shown.length
+    ? `<strong>${shown.length}</strong> ${shown.length === 1 ? "species" : "species"}
+       &middot; <strong>${specimens}</strong> ${specimens === 1 ? "specimen" : "specimens"}${
+       q ? ` matching &ldquo;${escapeHtml(q)}&rdquo;` : ""}`
+    : `Nothing matches &ldquo;${escapeHtml(q)}&rdquo;.`;
+  document.getElementById("inv-list").innerHTML = shown.map(card).join("");
+}
+
+(async () => {
+  try {
+    ALL = await sbGet("public_plant_inventory?select=*");
+    // Sorted here rather than in the query: the display name is composed from
+    // parts, so ordering by any single column puts the list in an order the
+    // reader cannot see.
+    // Unnamed taxa sort last. They are real — six specimens are genuinely not
+    // identified yet — but an empty card is a poor thing to open on, and
+    // alphabetically a blank name sorts to the very front.
+    ALL.sort((a, b) => {
+      const an = searchTerm(a), bn = searchTerm(b);
+      if (!an !== !bn) return an ? -1 : 1;
+      return an.localeCompare(bn);
+    });
+    draw();
+    document.getElementById("inv-search").addEventListener("input", draw);
+  } catch (e) {
+    document.getElementById("inv-count").textContent = "";
+    document.getElementById("inv-list").innerHTML =
+      `<div class="panel"><p style="margin:0;">The catalogue could not be reached just now.
+       <span class="muted">(${escapeHtml(e.message)})</span></p></div>`;
+  }
+})();
+</script>
+</body>
+</html>

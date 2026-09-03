@@ -425,3 +425,56 @@ article.card:hover{border-color:var(--line);}
 @media (max-width:900px){
   .app-panel .shot-row{max-width:420px;gap:12px;}
 }
+
+/* ---------- the collection inventory ----------
+   Read live from public_plant_inventory. The records are still being filled in,
+   so the card renders only the fields a species actually carries: a blank field
+   is an unfinished record, not a fact, and a row of em-dashes would dress
+   absence up as information. */
+.back-to{display:inline-block;font-size:13.5px;color:var(--ink-faint);margin-bottom:20px;}
+.back-to:hover{color:var(--terracotta);}
+
+.inv-controls{margin-bottom:22px;}
+.search-input{width:100%;max-width:520px;font:inherit;font-size:15px;
+  padding:12px 15px;border:1px solid var(--line);border-radius:10px;
+  background:var(--card);color:var(--ink);}
+.search-input:focus{outline:2px solid rgba(200,100,74,.35);outline-offset:1px;
+  border-color:var(--terracotta);}
+.inv-controls .muted{margin:10px 0 0;font-size:14px;}
+.inv-controls .muted strong{color:var(--ink);font-weight:600;}
+
+/* auto-fill, not auto-fit: a single search result should stay a card, not
+   stretch to the full width of the page. */
+/* align-items:start, not the default stretch. These entries range from a full
+   description with eight fields to a bare name, and equalising the row height
+   leaves a short card as a tall white hole. */
+#inv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+  gap:18px;align-items:start;}
+.inv-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 22px;box-shadow:var(--shadow);
+  box-shadow:var(--shadow), inset 0 2.5px 0 rgba(167,184,151,.6);}
+.inv-card h2{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:500;
+  margin:0;line-height:1.25;color:var(--ink);}
+.inv-card h2 em{font-style:italic;}
+.inv-common{margin:3px 0 0;font-size:14px;color:var(--ink-soft);}
+.inv-meta{margin:6px 0 0;font-size:11.5px;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--ink-faint);}
+.inv-tender{color:var(--terracotta-dim);}
+.inv-desc{margin:14px 0 0;font-size:14px;line-height:1.6;color:var(--ink-soft);}
+
+.inv-fields{margin:14px 0 0;padding:0;}
+.inv-row{display:flex;gap:12px;padding:6px 0;border-top:1px solid var(--line);}
+.inv-row:first-child{border-top:none;}
+.inv-row dt{flex:0 0 84px;margin:0;font-size:11.5px;letter-spacing:.4px;
+  text-transform:uppercase;color:var(--ink-faint);padding-top:2px;}
+.inv-row dd{margin:0;font-size:13.5px;line-height:1.45;color:var(--ink-soft);min-width:0;}
+
+.inv-verify{margin:14px 0 0;font-size:12.5px;}
+.inv-verify a{color:var(--sage);}
+.inv-verify a:hover{color:var(--terracotta);}
+
+@media (max-width:700px){
+  #inv-list{grid-template-columns:1fr;}
+  .inv-row{flex-direction:column;gap:2px;}
+  .inv-row dt{flex:none;}
+}
