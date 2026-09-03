@@ -130,7 +130,7 @@ undercut it.
 | --- | --- | --- |
 | Favourite 1 | `plant-agave-albopilosa.jpg` | The acquisition photo, Flora Grubb, 22 Feb 2019 |
 | Favourite 2 | `plant-opuntia-santa-rita.jpg` | Either the original three pads or it now — one image, not both |
-| Favourite 3 | `plant-coffee-cactus.jpg` | Before/after. Species still unidentified |
+| Favourite 3 | `plant-coffee-cactus.jpg` | ~~Before/after. Species still unidentified~~ **Filled 2026-09-03.** Identified as *Ferocactus glaucescens*; a current photo would still make the before/after true |
 | App shot 1 | `app-specimen.png` | A specimen and its photographic timeline |
 | App shot 2 | `app-health.png` | A health check |
 | App shot 3 | `app-frost.png` | The frost list |

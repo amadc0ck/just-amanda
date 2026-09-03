@@ -335,6 +335,10 @@ footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;
   border-radius:10px;}
 .cards.photos .card-body{padding:0 6px;}
 
+/* The story name, under the botanical one. Only the coffee cactus carries one —
+   the other two favourites are known by their species and nothing else. */
+.cards.photos .nickname{font-size:12.5px;color:var(--ink-faint);letter-spacing:.2px;}
+
 /* An empty picture frame, for a card whose photograph has not been chosen yet.
    Naming the picture it wants makes an unfinished card read as deliberate
    rather than broken — and it is the swap list. Replace the div with an
