@@ -197,3 +197,20 @@ At ~130px in a column they were texture, not screenshots: you could see there
 was an app and read nothing on it. Full width they are legible at desktop and
 the screen names still read on a phone. The prose is centred so the space this
 frees does not read as a hole beside the text.
+
+### Her own photographs — added 2026-09-03
+
+| File | Where |
+| --- | --- |
+| `plant-fred-ives.jpg` | Under the collection numbers — the plant the page opens on |
+| `collection-wall.jpg` | Full-width band under "How this started" — the front yard today |
+
+**`frontyard.jpeg` carried GPS.** It is the first photo in this batch that did —
+the plant photos had been through the garden app's upload path, which strips it,
+but this one came straight off the phone. `tools/prep-photo.py` removed it and
+verified the output before writing. **This is exactly the case the tool exists
+for**, and it is the reason not to hand-copy a phone photo into `images/`.
+
+Note the published photograph shows the house exterior. No street number is
+visible and the surname is already the app's name, but it is a recognisable
+picture of where she lives — worth a conscious decision rather than an accident.
