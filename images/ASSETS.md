@@ -236,3 +236,28 @@ exactly what it shows.
 bar read `Meraki_GSuiteMigration > Personal > Succulents > Office` — a former
 employer's name on a public page, and no part of what the picture is about. The
 top 70px are gone; the grid of folders is the whole story.
+
+---
+
+## Books-page illustrations — added 2026-09-03
+
+26 pieces, all transparent PNG. **Do not run these through `tools/prep-photo.py`** —
+it writes JPEG and would flatten the alpha to a white box. The pipeline for
+illustrations is `sips -Z <width>` then `pngquant --quality=60-88`, which is what
+produced these: **42.1 MB of originals down to 3.3 MB**.
+
+| File | Use |
+| --- | --- |
+| `books-hero.png` | Books hero — the titled stack, open book, succulent, glasses |
+| `dna-worlds.png` · `dna-magic.png` · `dna-stakes.png` · `dna-yearning.png` · `dna-gray.png` · `dna-heroines.png` · `dna-series.png` | The seven Reader DNA marks, in mockup order |
+| `books-reader.png` | Figure reading, portrait — spare hero |
+| `books-stack-journal.png` · `books-shelf-open.png` · `books-journal-lavender.png` · `books-library-card.png` · `books-story-collage.png` | Book scenes, 4:3 — section marks and spares |
+| `books-banner.png` | Wide 3:1 book scene — banner |
+| `ornament-corner-a.png` · `ornament-corner-b.png` | Corner sprays, opposite orientations |
+| `ornament-lavender.png` · `ornament-amethyst.png` · `ornament-succulent.png` · `ornament-violets.png` | Small marks |
+| `divider-amethyst.png` · `divider-moon.png` · `divider-book.png` · `divider-succulent.png` · `divider-slim.png` | Horizontal rules, 3:1 |
+
+**The colour fringing is not real.** Viewed on black these look like they have red
+and yellow halos at the edges. On the site's cream they are clean — it is the
+transparency rendering against a dark ground, not an artefact. Checked on
+`#F7F3EB` before committing; do not "fix" it.
