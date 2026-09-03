@@ -137,10 +137,13 @@ section{padding:64px 0;}
 /* The collection as it actually is, full width. The Fred Ives above is the
    beginning and this is the same story's other end, so it gets the whole
    measure rather than a column. */
-.wall-photo{margin:36px 0 0;}
-.wall-photo img{width:100%;height:auto;border-radius:var(--radius);
+.wall-photo{margin:0;}
+.attempt-photo{margin:18px 0 20px;}
+.wall-photo img,.attempt-photo img{width:100%;height:auto;border-radius:var(--radius);
   border:1px solid var(--line);box-shadow:var(--shadow);}
-.wall-photo figcaption{font-size:13px;color:var(--ink-faint);margin-top:10px;}
+.wall-photo figcaption,.attempt-photo figcaption{font-size:13px;color:var(--ink-faint);
+  margin-top:10px;line-height:1.5;}
+.attempt-photo figcaption{font-size:12.5px;}
 
 /* The plant the page opens on. It sits under the collection numbers rather than
    in the story panel, because the right column runs out of content long before

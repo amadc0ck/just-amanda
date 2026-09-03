@@ -203,7 +203,7 @@ frees does not read as a hole beside the text.
 | File | Where |
 | --- | --- |
 | `plant-fred-ives.jpg` | Under the collection numbers — the plant the page opens on |
-| `collection-wall.jpg` | Full-width band under "How this started" — the front yard today |
+| `collection-wall.jpg` | Wide band directly under the hero — the front yard today |
 
 **`frontyard.jpeg` carried GPS.** It is the first photo in this batch that did —
 the plant photos had been through the garden app's upload path, which strips it,
@@ -214,3 +214,25 @@ for**, and it is the reason not to hand-copy a phone photo into `images/`.
 Note the published photograph shows the house exterior. No street number is
 visible and the surname is already the app's name, but it is a recognisable
 picture of where she lives — worth a conscious decision rather than an accident.
+
+### Two revisions, 2026-09-03
+
+**`collection-wall.jpg` was recropped and moved.** As shot it was 4:3 and mostly
+ceiling and driveway — the collection is a horizontal band across the middle.
+Recropped from the original at `--cropOffset 950 0`, 4032x1350 (about 3:1),
+which keeps the roofline and the whole wall of pots with minimal concrete. It
+now sits directly under the hero rather than buried mid-page: it is the best
+photograph on the page and a 3:1 crop is a banner, so it opens instead of
+interrupting. **Note the crop step preserved the original's GPS** — sips carries
+EXIF through a crop — and `prep-photo.py` caught and stripped it on the way out.
+Crop first, then always run the tool.
+
+**`first-attempt-folders.jpg`** — the manual catalogue from July 2019, forty
+numbered folders matching the popsicle sticks, most of them empty. Sits inline
+in the app section beside "I attempted it manually and gave up", which is
+exactly what it shows.
+
+**Its breadcrumb was cropped off deliberately.** The original screenshot's path
+bar read `Meraki_GSuiteMigration > Personal > Succulents > Office` — a former
+employer's name on a public page, and no part of what the picture is about. The
+top 70px are gone; the grid of folders is the whole story.
