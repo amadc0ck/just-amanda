@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <meta name="theme-color" content="#F7F3EB">
-<link rel="stylesheet" href="style.css?v=2026-09-03.2">
+<link rel="stylesheet" href="style.css?v=2026-09-03.3">
 </head>
 <body>
 
@@ -52,6 +52,43 @@
     </div>
 
     <div id="inv-list"></div>
+
+    <div class="panel sources">
+      <h2>Where to check</h2>
+      <p class="sources-intro">Every entry above links to two of these: <strong>Name</strong>
+         goes to Kew for the botany, <strong>Growing</strong> to San Marcos for the
+         horticulture. They answer different questions and it is worth keeping them
+         apart.</p>
+      <dl>
+        <div><dt><a href="https://powo.science.kew.org/">Plants of the World Online</a></dt>
+          <dd>Kew. The accepted name and its synonyms &mdash; the closest thing to a source
+              of truth for species. Kew themselves call it advisory. <strong>It does not
+              cover cultivars</strong>, so a good part of this list is out of its scope.</dd></div>
+        <div><dt><a href="https://www.ipni.org/">IPNI</a></dt>
+          <dd>Who published a name, where and when. An index of names, not a ruling on
+              which are accepted &mdash; a different question from the one above.</dd></div>
+        <div><dt><a href="https://www.rhs.org.uk/plants/search-form">RHS</a></dt>
+          <dd>Cultivar names in cultivation. Most succulent genera have no registration
+              authority at all, so for a plant like &lsquo;Fred Ives&rsquo; the trade name
+              simply is the name.</dd></div>
+        <div><dt><a href="https://www.smgrowers.com/">San Marcos Growers</a></dt>
+          <dd>Care detail, hardiness, and what a plant is actually called in California
+              horticulture. A nursery, not a taxonomic authority &mdash; which is exactly
+              why it is useful.</dd></div>
+        <div><dt><a href="https://mountaincrestgardens.com/">Mountain Crest Gardens</a></dt>
+          <dd>Succulents specifically. Good photographs and plain care notes, which is
+              often what you actually want.</dd></div>
+        <div><dt><a href="https://www.floragrubb.com/">Flora Grubb Gardens</a></dt>
+          <dd>Rich plant pages, and where more than one plant in this collection came
+              from.</dd></div>
+        <div><dt><a href="https://www.ruthbancroftgarden.org/">Ruth Bancroft Garden</a></dt>
+          <dd>A real dry-garden collection in the East Bay. The place to see what a
+              mature specimen actually becomes, which no database will tell you.</dd></div>
+      </dl>
+      <p class="sources-warn"><strong>The Plant List is retired.</strong> It has been static
+         since 2013 and is still cited everywhere. A name &ldquo;confirmed&rdquo; there is a
+         thirteen-year-old snapshot.</p>
+    </div>
   </div>
 </section>
 
@@ -78,7 +115,7 @@
   </div>
 </footer>
 
-<script src="site.js?v=2026-09-03.2"></script>
+<script src="site.js?v=2026-09-03.3"></script>
 <script>
 /* The inventory is read live from public_plant_inventory — a view, so the page
    can only ever see the columns that view exposes. Locations, health, notes and
@@ -159,8 +196,12 @@ function card(t) {
     </div>
     ${filled(t.description) ? `<p class="inv-desc">${escapeHtml(t.description)}</p>` : ""}
     ${rows ? `<dl class="inv-fields">${rows}</dl>` : ""}
-    <p class="inv-verify"><a href="https://www.smgrowers.com/search.asp?txtsearch=${
-      encodeURIComponent(searchTerm(t))}" rel="nofollow">Check this on San&nbsp;Marcos&nbsp;Growers &rarr;</a></p>
+    <p class="inv-verify">
+      <a href="https://powo.science.kew.org/results?q=${encodeURIComponent(searchTerm(t))}"
+         rel="nofollow">Name &rarr;</a>
+      <a href="https://www.smgrowers.com/search.asp?txtsearch=${encodeURIComponent(searchTerm(t))}"
+         rel="nofollow">Growing &rarr;</a>
+    </p>
   </article>`;
 }
 

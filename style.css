@@ -478,3 +478,23 @@ article.card:hover{border-color:var(--line);}
   .inv-row{flex-direction:column;gap:2px;}
   .inv-row dt{flex:none;}
 }
+
+/* The sources block under the inventory. Two links per species answer two
+   different questions — the name and the growing — and this says which is
+   which, because conflating a nursery with a taxonomic authority is how wrong
+   names spread. */
+.sources{margin-top:34px;}
+.sources h2{font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:500;
+  margin:0 0 8px;}
+.sources-intro{margin:0 0 18px;font-size:15px;color:var(--ink-soft);max-width:46em;}
+.sources dl{margin:0;}
+.sources dl > div{padding:11px 0;border-top:1px solid var(--line);}
+.sources dl > div:first-child{border-top:none;}
+.sources dt{font-size:14.5px;font-weight:600;margin:0 0 2px;}
+.sources dd{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft);max-width:52em;}
+.sources-warn{margin:18px 0 0;padding-top:14px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--ink-faint);}
+.sources-warn strong{color:var(--terracotta-dim);}
+
+/* Two links now, so they need separating. */
+.inv-verify{display:flex;gap:16px;}
