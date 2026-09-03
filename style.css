@@ -328,7 +328,10 @@ footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;
 /* align-items:stretch is load-bearing. .card sets flex-start for the icon-beside-
    text layout; left alone in a column card it shrinks the photo and the story to
    their content width instead of filling the card. */
-.cards.photos .card img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;
+/* Square, not 4:3. Every photograph of the collection is a portrait phone
+   shot, and a landscape crop takes a band out of the middle — the top of the
+   plant goes first, which is the part worth seeing. */
+.cards.photos .card img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;
   border-radius:10px;}
 .cards.photos .card-body{padding:0 6px;}
 
@@ -337,7 +340,7 @@ footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;
    rather than broken — and it is the swap list. Replace the div with an
    <img> and nothing else on the page has to change. */
 .photo-slot{background:var(--bg-wash);border:1px dashed rgba(46,61,47,.20);
-  border-radius:10px;aspect-ratio:4/3;display:flex;align-items:center;
+  border-radius:10px;aspect-ratio:1;display:flex;align-items:center;
   justify-content:center;text-align:center;padding:18px;
   font-size:12.5px;line-height:1.6;color:var(--ink-faint);}
 
