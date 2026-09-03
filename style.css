@@ -592,3 +592,12 @@ article.card:hover{border-color:var(--line);}
 /* Nothing tagged "books" yet: the coming-soon card centres instead of clinging
    to the left of a five-column grid. */
 .notes-grid.is-empty{grid-template-columns:minmax(240px,330px);justify-content:center;}
+/* Series grouping on the author cards, and the series line on a book card.
+   Both come from content/books-series-reference.md — "One Dark Window" and
+   "The Knight and the Moth" are different Gillig series, and the page said
+   nothing about that before. */
+.series-name{margin:14px 0 0;font-size:11px;letter-spacing:.9px;text-transform:uppercase;
+  font-weight:600;color:var(--ink-faint);}
+.series-name:first-of-type{margin-top:10px;}
+.bookcard i{display:block;font-style:normal;font-size:10px;letter-spacing:.5px;
+  text-transform:uppercase;color:var(--sage);margin-top:3px;}
