@@ -294,3 +294,25 @@ requests. It needs a free API key, which would probably close most of the gap.
 The seven without covers keep the typographic card. Both variants are the same
 shape and sit in the same row, so a missing cover reads as a card without art
 rather than as a hole.
+
+### Covers completed — 2026-09-03, later
+
+All 27 book cards now carry a cover. The last seven came from sources Amanda
+supplied, and the routes matter for next time:
+
+| Source | Result |
+| --- | --- |
+| **Goodreads book page** | **Works.** The cover is in the page's JSON-LD `image` field, not the `<img>` soup, which is all user photos and author avatars. `og:image` is a fallback. |
+| **Goodreads search by ISBN** | **Works**, and is the best route when you have an ISBN — it lands on the right edition and the returned title confirms the series position. |
+| harrypotterfanzone.com | Works; a plain page scrape for the US children's edition. |
+| Barnes & Noble | **Blocked.** `prodimage.images-bn.com` returns 403 to scripts *and* to a real headless browser — Akamai serves an "Access Denied" page. A referer does not help. Only useful for the ISBN in the URL. |
+| Open Library by ISBN | Nothing for the 2026 Parker reissues — a 43-byte placeholder. |
+| Google Books | **Daily quota exhausted**, not merely rate-limited: "Quota exceeded for quota metric 'Queries' and limit 'Queries per day'". Needs a free API key. |
+
+**The useful pattern:** a Barnes & Noble URL is worth having even though B&N
+blocks images, because the `?ean=` parameter is the ISBN, and an ISBN searched on
+Goodreads resolves to the exact edition.
+
+Two of the Parker covers (*To Snap a Silver Stem*, *To Flame a Wild Flower*) are
+3D book renders rather than flat cover art. At a 34px thumbnail it does not read,
+but they are not like-for-like with the rest.
