@@ -521,24 +521,38 @@ article.card:hover{border-color:var(--line);}
    17 of the 24 books have a cover worth using: Open Library's coverage of
    recent romantasy is thin, and a layout where a missing cover left a hole
    would have looked broken rather than unfinished. */
-.bookcard{display:flex;align-items:center;gap:9px;
-  padding:8px 11px 9px;border-radius:6px;
+/* The cover leads. These were 34x51 thumbnails beside a title, which made the
+   card mostly text and chrome; a page about books should show the books. The
+   card is a shelf slot now — full-bleed cover at 2:3, title and author on the
+   board beneath it, colour kept as a thin spine down the left edge. */
+.bookcard{display:block;border-radius:6px;overflow:hidden;
   background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
   font-size:12.5px;font-weight:600;line-height:1.25;color:var(--ink);
-  border-left:5px solid var(--sage);}
-.bc-txt{display:flex;flex-direction:column;justify-content:center;min-width:0;}
-.bookcard img{width:34px;height:51px;object-fit:cover;border-radius:2px;flex-shrink:0;
-  box-shadow:0 1px 3px rgba(46,61,47,.28);}
-.bookcard.is-tall img{width:44px;height:66px;}
+  border-left:4px solid var(--sage);}
+/* height:auto is load-bearing. The markup carries width/height attributes so the
+   browser can reserve space before the image lands, and a presentational height
+   beats aspect-ratio — without this the covers render 500px tall and object-fit
+   crops them to a vertical strip. */
+.bookcard img{display:block;width:100%;height:auto;aspect-ratio:2/3;object-fit:cover;}
+.bc-txt{display:block;padding:8px 10px 10px;}
+/* Six titles have no cover art worth using — mostly indie romance that neither
+   Open Library nor Google Books indexes. A tinted board with the title set in
+   the display face reads as a cloth binding rather than a missing image, and
+   the row still scans as a shelf. */
+.bc-plate{display:flex;aspect-ratio:2/3;align-items:center;justify-content:center;
+  padding:14px 12px;text-align:center;background:var(--bg-wash);
+  border-bottom:1px solid var(--line);}
+.bc-plate span{font-family:'Playfair Display',Georgia,serif;font-weight:500;
+  font-size:15px;line-height:1.25;color:var(--ink-soft);}
+.no-cover .bc-txt{padding-top:7px;}
 .bookcard b{display:block;font-weight:400;font-size:11px;color:var(--ink-faint);
   margin-top:3px;}
 .bookcard.is-1{border-left-color:#4A5D45;}
 .bookcard.is-2{border-left-color:var(--terracotta);}
 .bookcard.is-3{border-left-color:var(--amethyst);}
 .bookcard.is-4{border-left-color:var(--gold);}
-.bookcard.is-tall{min-height:88px;}
 .bookrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));
-  gap:7px;margin:10px 0 0;}
+  gap:12px 10px;margin:10px 0 0;}
 
 /* The reading timeline. Four eras holding 3, 7, 1 and 1 books cannot be four
    equal columns: the grid forced a quarter-width column to stack seven cards
@@ -563,7 +577,7 @@ article.card:hover{border-color:var(--line);}
   background:var(--terracotta);border:2.5px solid var(--bg);}
 /* Capped tracks: a three-book era should read as three books on a shelf, not
    three cards inflated to fill the row. */
-.era-body .bookrow{margin:0;grid-template-columns:repeat(auto-fill,minmax(132px,168px));}
+.era-body .bookrow{margin:0;grid-template-columns:repeat(auto-fill,minmax(124px,150px));}
 /* Held to a readable measure. The body runs past 1000px on a wide screen and
    the notes are one or two sentences. */
 .era-body .tl-note{max-width:36em;}
@@ -575,7 +589,8 @@ article.card:hover{border-color:var(--line);}
   .era-body::before{display:none;}
 }
 
-.tl-label{font-family:'Caveat',cursive;font-size:23px;color:var(--ink-soft);margin:0;}
+.tl-label{font-family:'Caveat',cursive;font-size:23px;color:var(--ink-soft);margin:0;
+  line-height:1.15;}
 .tl-note{margin:12px 0 0;font-size:13px;font-style:italic;color:var(--ink-soft);line-height:1.5;}
 .tl-aside{margin:8px 0 0;font-size:18px;color:var(--terracotta);}
 
@@ -602,7 +617,7 @@ article.card:hover{border-color:var(--line);}
 .author-card p{margin:6px 0 0;font-size:13.5px;color:var(--ink-soft);}
 /* Wider tracks than the default shelf. At 118px "To Flame a Wild Flower" broke
    over four lines and the card was mostly leading. */
-.author-card .bookrow{grid-template-columns:repeat(auto-fill,minmax(152px,1fr));}
+.author-card .bookrow{grid-template-columns:repeat(auto-fill,minmax(112px,132px));}
 /* Capped. At full column width this ran to 500px and left the right-hand
    column ending a third of the way up the section, with a dead zone beside it.
    It is a grace note under the author cards, not a second hero. */
@@ -614,8 +629,12 @@ article.card:hover{border-color:var(--line);}
    captions were a second copy of books already filed under their author, so
    they moved onto the books themselves. Noted cards come first in a row: a
    full-width item placed mid-row would leave holes in the auto-fill grid. */
-.bookcard.is-noted{grid-column:1/-1;align-items:flex-start;padding:11px 13px 12px;}
-.bookcard.is-noted img{width:44px;height:66px;}
+.bookcard.is-noted{grid-column:1/-1;display:flex;align-items:stretch;}
+.bookcard.is-noted img{width:78px;height:auto;aspect-ratio:2/3;flex-shrink:0;}
+.bookcard.is-noted .bc-plate{width:78px;flex-shrink:0;border-bottom:none;
+  border-right:1px solid var(--line);}
+.bookcard.is-noted .bc-txt{display:flex;flex-direction:column;justify-content:center;
+  padding:10px 14px;min-width:0;}
 .bc-note{display:block;font-size:17px;line-height:1.3;color:var(--ink-soft);
   margin-top:5px;font-weight:500;}
 
