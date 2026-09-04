@@ -629,3 +629,67 @@ article.card:hover{border-color:var(--line);}
 .books-page .timeline{gap:18px;}
 .books-page .obsess{gap:28px;}
 .books-page .obsess-art{max-width:330px;margin-top:22px;}
+/* Chickens and crochet: the small meta line on a profile or project card. */
+.bird-breed,.made-meta{font-size:11.5px;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--ink-faint);margin:0;}
+.eyebrow-script{font-family:'Caveat',cursive;font-size:23px;color:var(--ink-soft);
+  margin:0 0 2px;}
+.pin-row{display:flex;justify-content:flex-end;margin-top:22px;}
+/* A section card with nowhere to go yet. Says so, instead of offering an arrow
+   that leads back to the same page. */
+.go.is-soon{color:var(--ink-faint);font-size:11.5px;letter-spacing:.8px;text-transform:uppercase;}
+
+/* ---------- numbered steps ----------
+   "The story so far" on chickens and "So you want to learn to crochet" are the
+   same component: an ordered sequence where the number is the ornament. Shared
+   because they are the same idea, and because a third page will want it. */
+.steps{list-style:none;display:grid;gap:0;margin:0;padding:0;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));}
+.steps li{padding:16px 20px;border-left:1px solid var(--line);}
+.steps li:first-child{border-left:none;padding-left:0;}
+.step-n{display:block;font-family:'Playfair Display',Georgia,serif;font-size:15px;
+  color:var(--terracotta);letter-spacing:1px;margin-bottom:6px;}
+.steps h3{font-size:12.5px;letter-spacing:.7px;text-transform:uppercase;font-weight:600;
+  margin:0 0 6px;line-height:1.35;color:var(--ink);}
+.steps p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft);}
+@media (max-width:900px){
+  .steps{grid-template-columns:repeat(2,1fr);}
+  .steps li{border-left:none;border-top:1px solid var(--line);padding:14px 0;}
+  .steps li:first-child{border-top:none;}
+}
+@media (max-width:560px){ .steps{grid-template-columns:1fr;} }
+
+/* ---------- what is on the hook right now ----------
+   A short record of a thing in progress. The labels are set like a form and the
+   values in the handwriting face, because it is a note to herself more than a
+   specification. */
+.status-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px 24px 24px;box-shadow:var(--shadow);
+  box-shadow:var(--shadow), inset 0 2.5px 0 rgba(141,121,166,.5);}
+.sc-label{font-size:11px;letter-spacing:1.1px;text-transform:uppercase;font-weight:600;
+  color:var(--amethyst);margin-bottom:14px;}
+.status-card dl{margin:0;}
+.status-card dl > div{display:flex;gap:14px;align-items:baseline;padding:7px 0;
+  border-bottom:1px solid var(--line);}
+.status-card dl > div:last-child{border-bottom:none;}
+.status-card dt{flex:0 0 74px;margin:0;font-size:10.5px;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--ink-faint);}
+.status-card dd{margin:0;font-family:'Caveat',cursive;font-size:20px;line-height:1.25;
+  color:var(--ink);min-width:0;}
+.bar{display:inline-block;width:150px;height:9px;border-radius:5px;
+  background:var(--bg-wash);border:1px solid var(--line);vertical-align:middle;
+  overflow:hidden;margin-right:9px;}
+.bar i{display:block;height:100%;background:var(--terracotta);}
+
+/* A pinned note. One per page at most — it stops being a note otherwise. */
+.pinned{background:rgba(200,100,74,.10);border:1px solid rgba(200,100,74,.25);
+  border-radius:4px;padding:16px 20px;max-width:250px;transform:rotate(-1.4deg);
+  font-family:'Caveat',cursive;font-size:20px;line-height:1.35;color:var(--terracotta-dim);}
+
+/* A plain numbered list of things, for the tool kit. */
+.kit{list-style:none;margin:0;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px 18px;}
+.kit li{font-size:13.5px;color:var(--ink-soft);padding:5px 0;
+  border-bottom:1px solid var(--line);}
+.kit li b{color:var(--terracotta);font-weight:500;margin-right:7px;
+  font-family:'Playfair Display',Georgia,serif;}
