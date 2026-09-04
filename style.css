@@ -511,21 +511,28 @@ article.card:hover{border-color:var(--line);}
 /* A book without its cover. The spine bar carries the colour so a row of these
    still reads as a shelf; swapping in real cover art later means replacing the
    span with an <img> and nothing else moves. */
-/* No minimum height on the list variant: a six-book column with a 74px floor
-   ran to twice the height of its neighbours and broke the timeline row. The
-   colour bar carries the "spine" read on its own. */
-.bookcard{display:flex;flex-direction:column;justify-content:flex-end;
+/* Two variants, one shape. A card either carries its cover as a small portrait
+   thumbnail or it does not, and the row reads the same either way — the colour
+   bar stands in for the spine when there is no art. That matters because only
+   17 of the 24 books have a cover worth using: Open Library's coverage of
+   recent romantasy is thin, and a layout where a missing cover left a hole
+   would have looked broken rather than unfinished. */
+.bookcard{display:flex;align-items:center;gap:9px;
   padding:8px 11px 9px;border-radius:6px;
   background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
   font-size:12.5px;font-weight:600;line-height:1.25;color:var(--ink);
   border-left:5px solid var(--sage);}
+.bc-txt{display:flex;flex-direction:column;justify-content:center;min-width:0;}
+.bookcard img{width:34px;height:51px;object-fit:cover;border-radius:2px;flex-shrink:0;
+  box-shadow:0 1px 3px rgba(46,61,47,.28);}
+.bookcard.is-tall img{width:44px;height:66px;}
 .bookcard b{display:block;font-weight:400;font-size:11px;color:var(--ink-faint);
   margin-top:3px;}
 .bookcard.is-1{border-left-color:#4A5D45;}
 .bookcard.is-2{border-left-color:var(--terracotta);}
 .bookcard.is-3{border-left-color:var(--amethyst);}
 .bookcard.is-4{border-left-color:var(--gold);}
-.bookcard.is-tall{min-height:104px;justify-content:flex-end;}
+.bookcard.is-tall{min-height:88px;}
 .bookrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));
   gap:7px;margin:10px 0 0;}
 

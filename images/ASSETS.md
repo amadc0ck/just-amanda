@@ -261,3 +261,36 @@ produced these: **42.1 MB of originals down to 3.3 MB**.
 and yellow halos at the edges. On the site's cream they are clean — it is the
 transparency rendering against a dark ground, not an artefact. Checked on
 `#F7F3EB` before committing; do not "fix" it.
+
+### Book covers — added 2026-09-03
+
+`images/covers/` holds **17** cover thumbnails, sourced from the **Open Library
+Covers API** (Internet Archive), resized to 180px and re-encoded at q78 — 324 KB
+down to 183 KB. Book covers are the publishers' copyright; thumbnails used to
+identify books being discussed is the ordinary editorial use, the same as any
+book blog.
+
+**Every one was checked by eye before committing, and that pass was not
+optional.** The first automated fetch was wrong roughly a quarter of the time:
+
+| Wanted | What the API returned |
+| --- | --- |
+| Harry Potter | a Scholastic study guide |
+| City of Bones | a solid black image, then a box-set photo |
+| The Knight and the Moth | the French edition |
+| To Snap a Silver Stem | the Spanish edition |
+| The Ballad of Falling Dragons | a "final cover to be revealed" placeholder |
+| When the Moon Hatched | an unrelated art-nouveau illustration |
+| To Flame a Wild Flower | nothing at all |
+
+Adding `language=eng` and taking more candidates did not fix any of them — Open
+Library's coverage of 2024-2026 romantasy is simply thin, and four of the seven
+gaps are Sarah A. Parker. **Never wire this API straight into a page; render a
+contact sheet and look at it first.**
+
+Google Books was tried as a second source and returns HTTP 429 to unauthenticated
+requests. It needs a free API key, which would probably close most of the gap.
+
+The seven without covers keep the typographic card. Both variants are the same
+shape and sit in the same row, so a missing cover reads as a card without art
+rather than as a hole.
