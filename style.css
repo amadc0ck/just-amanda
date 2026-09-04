@@ -616,3 +616,21 @@ article.card:hover{border-color:var(--line);}
 .legal-tools{text-align:center;margin-top:10px;font-size:11.5px;}
 .legal-tools a{color:var(--ink-faint);opacity:.75;margin:0 9px;}
 .legal-tools a:hover{color:var(--terracotta);opacity:1;}
+
+/* ---------- books page: vertical rhythm ----------
+   Between two sections the page was stacking a 64px section end, a divider with
+   its own padding, and a 34px section start — about 200px of nothing, three
+   times over. Scoped to this page rather than changed globally, because the
+   other pages are mostly prose and want the air. */
+.books-page .hero .wrap{padding-top:48px;padding-bottom:40px;}
+.books-page section{padding:34px 0;}
+.books-page section.tight{padding-top:14px;}
+.books-page section.closing-band{padding:6px 0 34px;}
+.books-page .divider-wrap{padding:0 24px;}
+.books-page .divider-wrap img{max-width:330px;}
+.books-page .bk-head{margin:0 0 22px;}
+.books-page .timeline{gap:18px;}
+.books-page .obsess{gap:28px;}
+/* Now that the art sits under the brain-rot grid it is closing the shorter
+   column, so it can run a little wider. */
+.books-page .obsess-art{max-width:330px;margin-top:22px;}
