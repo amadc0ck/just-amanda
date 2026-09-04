@@ -57,7 +57,7 @@ nav a[aria-current="page"]{color:var(--terracotta);border-bottom-color:var(--ter
 /* ---------- hero ---------- */
 .hero{background:linear-gradient(180deg,var(--bg-wash),var(--bg));border-bottom:1px solid var(--line);}
 .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;
-  padding-top:72px;padding-bottom:72px;}
+  padding-top:48px;padding-bottom:40px;}
 .hero h1{font-family:'Playfair Display',Georgia,serif;font-size:60px;line-height:1.05;
   font-weight:500;margin:0 0 20px;letter-spacing:-.5px;}
 .hero h1 em{font-style:italic;color:var(--terracotta);display:block;}
@@ -78,15 +78,17 @@ nav a[aria-current="page"]{color:var(--terracotta);border-bottom-color:var(--ter
 .btn-row{display:flex;gap:14px;flex-wrap:wrap;}
 
 /* ---------- sections ---------- */
-section{padding:64px 0;}
-.sec-head{display:flex;align-items:center;gap:10px;margin:0 0 26px;}
+section{padding:34px 0;}
+/* flex-end, not center: several headings wrap to two lines, and a centred sprig
+   then floats in the gap between them instead of sitting with the words. */
+.sec-head{display:flex;align-items:flex-end;gap:10px;margin:0 0 22px;}
 .sec-head h2{font-family:'Playfair Display',Georgia,serif;font-size:31px;font-weight:500;margin:0;}
 .sec-head .sprig{width:26px;height:26px;object-fit:contain;flex-shrink:0;}
 
 /* Ornamental rule. The artwork carries a lot of transparent margin, so it is
    held to a modest width and centred rather than stretched across the page. */
-.divider-wrap{display:flex;justify-content:center;padding:8px 24px 0;}
-.divider-wrap img{width:100%;max-width:420px;height:auto;opacity:.9;}
+.divider-wrap{display:flex;justify-content:center;padding:0 24px;}
+.divider-wrap img{width:100%;max-width:330px;height:auto;opacity:.9;}
 
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:20px;}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
@@ -126,6 +128,11 @@ section{padding:64px 0;}
 
 /* Section headings get a lavender hairline, which ties the ornament to the rule. */
 .sec-head{border-bottom:1.5px solid rgba(216,207,229,.95);padding-bottom:10px;}
+/* The second voice a section can have, under the rule rather than beside the
+   heading — the books page had this and nothing else did. Handwriting, so it
+   reads as an aside rather than a subheading. */
+.sec-sub{font-family:'Caveat',cursive;font-weight:500;font-size:22px;
+  color:var(--terracotta);margin:-16px 0 22px;}
 
 /* Hero art is the real illustration now, not a placeholder box. */
 .hero-art{background:none;border:none;box-shadow:none;aspect-ratio:auto;padding:0;display:block;}
@@ -219,9 +226,9 @@ footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;
 /* A one-line paragraph used as a beat — "That escalated." Set in the display
    face so it lands as a pause rather than as another sentence. Four on the
    page, deliberately; a fifth would stop reading as emphasis at all. */
-.beat{font-family:'Playfair Display',Georgia,serif;font-style:italic;
-  font-size:22px;line-height:1.4;color:var(--terracotta);
-  margin:24px 0 24px !important;max-width:none;}
+.beat,.prose p.beat{font-family:'Caveat',cursive;font-weight:600;font-style:normal;
+  font-size:27px;line-height:1.35;color:var(--terracotta);
+  margin:20px 0 !important;max-width:none;}
 
 /* The closing turns and the sign-off, centred under the last card row. */
 .closing{max-width:34em;margin:0 auto;text-align:center;}
@@ -503,10 +510,7 @@ article.card:hover{border-color:var(--line);}
 .bk-hero .hero-art img{max-width:560px;margin-left:auto;}
 @media (max-width:900px){ .bk-hero .hero-art img{max-width:420px;margin:0 auto;} }
 
-.bk-head{text-align:center;margin:0 0 30px;}
-.bk-head h2{font-family:'Playfair Display',Georgia,serif;font-size:29px;font-weight:500;
-  margin:0;letter-spacing:.4px;text-transform:uppercase;}
-.bk-head .script{margin:4px 0 0;font-size:22px;color:var(--terracotta);}
+/* .bk-head retired — the books page uses the shared .sec-head + .sec-sub now. */
 
 /* A book without its cover. The spine bar carries the colour so a row of these
    still reads as a shelf; swapping in real cover art later means replacing the
@@ -617,20 +621,11 @@ article.card:hover{border-color:var(--line);}
 .legal-tools a{color:var(--ink-faint);opacity:.75;margin:0 9px;}
 .legal-tools a:hover{color:var(--terracotta);opacity:1;}
 
-/* ---------- books page: vertical rhythm ----------
-   Between two sections the page was stacking a 64px section end, a divider with
-   its own padding, and a 34px section start — about 200px of nothing, three
-   times over. Scoped to this page rather than changed globally, because the
-   other pages are mostly prose and want the air. */
-.books-page .hero .wrap{padding-top:48px;padding-bottom:40px;}
-.books-page section{padding:34px 0;}
+/* ---------- books page ----------
+   The rhythm these rules used to set is now the site default; what is left is
+   only what this page genuinely needs differently. */
 .books-page section.tight{padding-top:14px;}
 .books-page section.closing-band{padding:6px 0 34px;}
-.books-page .divider-wrap{padding:0 24px;}
-.books-page .divider-wrap img{max-width:330px;}
-.books-page .bk-head{margin:0 0 22px;}
 .books-page .timeline{gap:18px;}
 .books-page .obsess{gap:28px;}
-/* Now that the art sits under the brain-rot grid it is closing the shorter
-   column, so it can run a little wider. */
 .books-page .obsess-art{max-width:330px;margin-top:22px;}
