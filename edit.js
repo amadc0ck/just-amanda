@@ -14,10 +14,29 @@
   "use strict";
 
   var KEY = "ja_auth";
+  /* Unsaved edits are kept in localStorage, per page, and restored on load.
+
+     This exists because they were not, and it cost real writing: a save threw
+     partway, the queue lived only in memory, and a reload took the rest with
+     it. Work in progress must outlive the tab. */
+  var DRAFT = "ja_draft:" + (location.pathname.split("/").pop() || "index.html");
   var pending = new Map();   // key -> markdown ("" means revert to the HTML)
   var authored = new Map();  // key -> words as written in the file
   var saved = new Map();     // key -> row currently in site_text
   var on = false;
+
+  function saveDraft() {
+    try {
+      if (pending.size) localStorage.setItem(DRAFT, JSON.stringify(Array.from(pending.entries())));
+      else localStorage.removeItem(DRAFT);
+    } catch (e) { /* private mode, a full quota: never let this break editing */ }
+  }
+  function loadDraft() {
+    try {
+      var raw = localStorage.getItem(DRAFT);
+      if (raw) JSON.parse(raw).forEach(function (p) { pending.set(p[0], p[1]); });
+    } catch (e) { /* a corrupt draft is not worth failing over */ }
+  }
 
   function auth() { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; } }
   function token() { var a = auth(); return a && a.access_token; }
@@ -151,6 +170,7 @@
     if (on) {
       if (pending.size && !confirm(pending.size + " unsaved change(s). Turn editing off anyway?")) return;
       pending.clear();
+      saveDraft();
       document.body.classList.remove("ja-edit");
       var p = document.querySelector(".ja-panel"); if (p) p.remove();
       on = false; bar(); placeChrome();
@@ -178,6 +198,8 @@
       toast("Could not load your overrides: " + e.message, true);
     }
 
+    loadDraft();
+
     document.querySelectorAll("[data-edit]").forEach(function (el) {
       if (el.dataset.wired) return;
       el.dataset.wired = "1";
@@ -191,6 +213,19 @@
         panel(el);
       });
     });
+
+    /* Anything restored from a draft is painted back onto the page, so unsaved
+       work looks exactly as it did before the tab closed. */
+    if (pending.size) {
+      pending.forEach(function (v, k) {
+        var el = document.querySelector('[data-edit="' + k.replace(/"/g, '\\"') + '"]');
+        if (!el) return;
+        el.innerHTML = v ? md(v) : el.dataset.orig;
+        el.classList.toggle("ja-over", !!v);
+      });
+      bar();
+      toast("Restored " + pending.size + " unsaved edit(s) from last time. Save when ready.");
+    }
 
     /* While editing, a link would navigate away mid-sentence. */
     document.addEventListener("click", function (ev) {
@@ -259,6 +294,7 @@
         }
         el.classList.remove("ja-on");
         p.remove();
+        saveDraft();
         bar();
         placeChrome();
       };
@@ -288,6 +324,7 @@
           saved.set(key, { key: key, value_md: value, default_text: authored.get(key) || "" });
         }
         pending.delete(key);
+        saveDraft();          /* after EACH row, so a throw cannot lose the rest */
         okCount++;
       } catch (e) { failed = e; break; }   /* keep what is left in pending */
     }
@@ -301,6 +338,6 @@
   css();
   bar();
   window.addEventListener("beforeunload", function (e) {
-    if (pending.size) { e.preventDefault(); e.returnValue = ""; }
+    if (pending.size) { saveDraft(); e.preventDefault(); e.returnValue = ""; }
   });
 })();
