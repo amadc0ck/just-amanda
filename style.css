@@ -60,7 +60,23 @@ nav a[aria-current="page"]{color:var(--terracotta);border-bottom-color:var(--ter
   padding-top:48px;padding-bottom:40px;}
 .hero h1{font-family:'Playfair Display',Georgia,serif;font-size:60px;line-height:1.05;
   font-weight:500;margin:0 0 20px;letter-spacing:-.5px;}
-.hero h1 em{font-style:italic;color:var(--terracotta);display:block;}
+/* The only lavender above the fold, and it is load-bearing. Without it the page
+   ran terracotta and forest all the way down to the journal strip and then went
+   lavender at once, which read as two designs stacked rather than one.
+   A background-image band rather than a positioned pseudo-element: .hero paints
+   a background but opens no stacking context, so a z-index:-1 layer would sit
+   behind the section itself and never be seen. width:fit-content keeps the band
+   on the words instead of running the full column. */
+.hero h1 em{font-style:italic;color:var(--terracotta);display:inline;
+  background-image:linear-gradient(to top,rgba(216,207,229,.9) 0 .34em,transparent .34em);
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;}
+/* The em has to stay INLINE for the band to work, because only an inline box
+   fragments per line — and box-decoration-break:clone is what redraws the
+   background on each fragment so it hugs the words. As a block it drew one band
+   the width of the longest line, which under a two-line headline (the Tech page)
+   left a lavender bar running off into empty space. The forced newline here is
+   what keeps the italic line on its own row now that display:block is gone. */
+.hero h1 em::before{content:"\A";white-space:pre;}
 .hero p{font-size:18.5px;color:var(--ink-soft);max-width:34em;margin:0 0 30px;}
 .hero-art{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
   aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
@@ -126,6 +142,34 @@ section{padding:34px 0;}
 .cards.stacked .card::before{content:"";display:block;width:34px;height:2px;
   background:var(--lavender);border-radius:2px;margin-bottom:2px;}
 
+/* ---------- the explore row: five doors, not four ----------
+   The horizontal card could not hold its shape at a fifth of 1132px — 78px of
+   illustration plus 40px of padding left under 80px for words. So this row
+   stacks its artwork above the text instead of setting it beside. The narrower
+   column is the point rather than a cost: these are doors, not summaries, and
+   the copy is one line each.
+
+   Explicit column counts rather than auto-fit. auto-fit lands on four at tablet
+   width and leaves a single orphan card on its own row; stepping 5 -> 3 -> 2
+   keeps the last row at worst half full. */
+.cards.explore{grid-template-columns:repeat(5,1fr);gap:18px;}
+.cards.explore .card{flex-direction:column;align-items:center;text-align:center;
+  gap:10px;padding:22px 16px;}
+.cards.explore .card img{width:84px;height:84px;}
+.cards.explore .card-body{align-items:center;gap:6px;}
+.cards.explore .card p{font-size:13.5px;}
+@media (max-width:1080px){ .cards.explore{grid-template-columns:repeat(3,1fr);} }
+@media (max-width:640px){  .cards.explore{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:400px){  .cards.explore{grid-template-columns:1fr;} }
+
+/* Books is the one section card wearing amethyst, and that does not break the
+   rule above — it keeps it. Amethyst means "something to read", and the books
+   card is exactly that, so the colour reaches the top of the page still
+   attached to the meaning it carries in the journal strip below. */
+.cards.explore .card.is-reading h3{color:var(--amethyst);}
+.cards.explore .card.is-reading .go{color:var(--amethyst);}
+.cards.explore .card.is-reading:hover{border-color:rgba(141,121,166,.45);}
+
 /* Section headings get a lavender hairline, which ties the ornament to the rule. */
 .sec-head{border-bottom:1.5px solid rgba(216,207,229,.95);padding-bottom:10px;}
 /* The second voice a section can have, under the rule rather than beside the
@@ -190,6 +234,20 @@ footer .brand-block{display:flex;flex-direction:column;align-items:center;gap:8p
 footer .tagline{font-size:14px;color:var(--ink-faint);margin:0;line-height:1.45;}
 .foot-nav{display:flex;justify-content:center;gap:10px 22px;flex-wrap:wrap;font-size:14.5px;margin-top:24px;}
 .foot-nav a{color:var(--ink-soft);}
+
+/* Three brand marks, sitting between the nav and the legal rule. Framed in a
+   ring rather than set bare: at 18px an unframed glyph reads as debris beside
+   seven text links, and the circle gives the row the same optical weight the
+   nav above it already has. currentColor on the paths is what lets one hover
+   rule move the icon, the ring and the wash together. */
+.social{display:flex;justify-content:center;gap:14px;margin-top:22px;}
+.social a{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
+  transition:color .15s ease,border-color .15s ease,background-color .15s ease;}
+.social a:hover{color:var(--terracotta);border-color:rgba(200,100,74,.35);
+  background:rgba(200,100,74,.08);}
+.social a:focus-visible{outline:2px solid var(--terracotta);outline-offset:2px;}
+.social svg{width:18px;height:18px;fill:currentColor;display:block;}
 .legal{border-top:1px solid var(--line);margin-top:28px;padding-top:18px;text-align:center;
   font-size:12.5px;color:var(--ink-faint);}
 .legal a{color:var(--ink-faint);}

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Journal — just amanda</title>
-<meta name="description" content="Longer thoughts and project notes on plants, making, reading, and building things.">
+<title>Tech — just amanda</title>
+<meta name="description" content="Apps I have built, web design, 3D printing, AI, and gaming — the nerd half of a creative life.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
@@ -25,8 +25,8 @@
       <a href="chickens.html">Chickens</a>
       <a href="crochet.html">Crochet</a>
       <a href="books.html">Books</a>
-      <a href="tech.html">Tech</a>
-      <a href="journal.html" aria-current="page">Journal</a>
+      <a href="tech.html" aria-current="page">Tech</a>
+      <a href="journal.html">Journal</a>
     </nav>
   </div>
 </header>
@@ -34,19 +34,51 @@
 <div class="hero">
   <div class="wrap">
     <div>
-      <h1>The journal,<em>as it comes.</em></h1>
-      <p>Longer thoughts, project notes, and the things worth writing down properly.</p>
+      <p class="eyebrow-script">all my nerd stuff</p>
+      <h1>Tech,<em>and every rabbit hole it opens.</em></h1>
+      <p>Software is the hobby that lets me have the other hobbies. It is how the
+         plants got a catalogue, how this site exists, and how a passing question
+         turns into a weekend and a working thing.</p>
+      <p><a class="btn btn-primary" href="#areas">What I am into &rarr;</a></p>
     </div>
+    <div class="hero-art"><img src="images/about-building.png"
+         alt="A desk with a laptop, a 3D printer and a notebook" width="400" height="400"></div>
   </div>
 </div>
 
-<section>
+<section id="areas">
   <div class="wrap">
-    <div id="posts" class="post-list"><p class="muted">Loading&hellip;</p></div>
+    <div class="sec-head"><h2>Where it goes</h2>
+      <img class="sprig" src="images/accent-lavender.png" alt="" width="300" height="300"></div>
+    <p class="sec-sub">Five doors, all of them open at once.</p>
+    <ol class="steps">
+      <li><span class="step-n">01</span>
+        <h3>Apps I have built</h3>
+        <p>The Adcock Botanical Garden catalogue is the big one &mdash; every plant with
+           an accession number and a photographic record, the way a real botanical
+           garden keeps them.</p></li>
+      <li><span class="step-n">02</span>
+        <h3>Web design</h3>
+        <p>I wanted my own corner of the internet back rather than another profile on
+           someone else&rsquo;s platform. This site is the result, and designing it is
+           half of why it exists.</p></li>
+      <li><span class="step-n">03</span>
+        <h3>3D printing</h3>
+        <p>Started because I wanted one specific object. Stayed because there is always
+           one more specific object.</p></li>
+      <li><span class="step-n">04</span>
+        <h3>AI</h3>
+        <p>Where I actually use it, where it earns its keep, and where I have decided it
+           does not. Including the honest version of how much of this site it wrote.</p></li>
+      <li><span class="step-n">05</span>
+        <h3>Gaming</h3>
+        <p>The games I keep going back to, and what they have in common with the books
+           I love &mdash; a world with rules, and enough of it to settle into.</p></li>
+    </ol>
   </div>
 </section>
 
-<div class="divider-wrap"><img src="images/divider.png" alt="" width="1400" height="466" loading="lazy"></div>
+<div class="divider-wrap"><img src="images/divider-slim.png" alt="" width="1200" height="400"></div>
 
 <footer>
   <div class="wrap">
@@ -77,24 +109,6 @@
     </div>
   </div>
 </footer>
-
-<script src="site.js?v=2026-09-10.1"></script>
-<script>
-(async () => {
-  const el = document.getElementById("posts");
-  try {
-    const posts = await sbGet(
-      "posts?select=slug,title,excerpt,cover_url,published_at&status=eq.published" +
-      "&order=published_at.desc&limit=50");
-    el.innerHTML = posts.length
-      ? posts.map(postCard).join("")
-      : `<p class="muted">Nothing published yet. The first post is coming.</p>`;
-  } catch (e) {
-    el.innerHTML = `<p class="muted">The journal could not load just now. Please try again shortly.</p>`;
-    console.error(e);
-  }
-})();
-</script>
 
 </body>
 </html>
