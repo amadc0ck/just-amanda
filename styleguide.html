@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Style guide — just amanda</title>
+<title>Style guide · just amanda</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
@@ -14,11 +14,11 @@
 <!-- The whole point: this page wears the real stylesheet. Every specimen below
      is the live rule, not a screenshot or a copy. Change style.css and this
      page changes with it. -->
-<link rel="stylesheet" href="style.css?v=2026-09-11.4">
+<link rel="stylesheet" href="style.css?v=2026-09-11.5">
 
 <style>
   /* Chrome for the guide itself. Prefixed .sg- and kept here rather than in
-     style.css, because none of it is part of the design system — it is the
+     style.css, because none of it is part of the design system, it is the
      scaffolding that lets you see the design system. */
   .sg-bar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;}
   .sg-bar .wrap{display:flex;align-items:center;justify-content:space-between;
@@ -110,7 +110,7 @@
     <p class="eyebrow-script">the design system, rendered</p>
     <h2 style="border:none;padding:0;font-size:34px;">Everything in <code style="font-family:ui-monospace,monospace;font-size:.62em;">style.css</code>, looked at directly.</h2>
     <p class="sg-lede">This page loads the real stylesheet rather than repeating it. Every swatch,
-       heading and button below is the live rule, so nothing here can drift out of date &mdash;
+       heading and button below is the live rule, so nothing here can drift out of date...
        if it looks wrong on this page, it is wrong on the site. 828 lines, one file, no build step.</p>
   </div>
 </section>
@@ -120,8 +120,8 @@
   <div class="wrap">
     <h2>Colour</h2>
     <p class="sg-lede">The six brand colours are fixed by the brand board and are not to be
-       eyeballed again. Everything below them is derived &mdash; grounds, ink weights and the
-       hairline &mdash; and exists so that no component ever needs a raw hex.</p>
+       eyeballed again. Everything below them is derived: grounds, ink weights and the
+       hairline. They exist so that no component ever needs a raw hex.</p>
 
     <div class="sg-item">
       <div class="sg-name"><code>brand</code> <span>from the brand board, 2026-08-31</span></div>
@@ -129,7 +129,7 @@
     </div>
 
     <div class="sg-item">
-      <div class="sg-name"><code>derived</code> <span>grounds, ink and line — built from the six</span></div>
+      <div class="sg-name"><code>derived</code> <span>grounds, ink and line, built from the six</span></div>
       <div class="sg-swatches" id="sg-derived"></div>
     </div>
   </div>
@@ -146,8 +146,7 @@
       <div class="sg-rule is-forest"><b>Deep Forest</b>
         <p>Text, and the primary button. The default ink for anything that is simply words.</p></div>
       <div class="sg-rule is-terra"><b>Warm Terracotta</b>
-        <p><b>A place to go.</b> Links, arrows, the buttons, section cards. Terracotta means action —
-           if it is not clickable, it is not terracotta.</p></div>
+        <p><b>A place to go.</b> Links, arrows, the buttons, section cards. Terracotta means action: if it is not clickable, it is not terracotta.</p></div>
       <div class="sg-rule is-amethyst"><b>Muted Amethyst</b>
         <p><b>Something to read.</b> The journal, post cards, and the Books card on the home page.
            Nothing else earns it.</p></div>
@@ -155,7 +154,7 @@
         <p>Ornament, never content. Section hairlines, the dash above a journal card, the band
            under the hero headline.</p></div>
       <div class="sg-rule is-sage"><b>Soft Sage</b>
-        <p>The Succulents card, the sage tag — and, deepened to <code>--sage-deep</code>, the footer
+        <p>The Succulents card, the sage tag, and (deepened to <code>--sage-deep</code>) the footer
            ground. Note that <b>gold does not survive that move</b>: <code>#C0A15A</code> on
            <code>#4C5B3E</code> is 2.95:1. Only cream and lavender read down there.</p></div>
       <div class="sg-rule is-gold"><b>Gold</b>
@@ -188,7 +187,7 @@
          <code>.hero</code> paints a background but opens no stacking context, so a
          <code>z-index:-1</code> layer would sit behind the section and never be seen. The em stays
          <code>display:inline</code> with <code>box-decoration-break:clone</code> so each line of a
-         wrapping headline gets its own band — as a block it drew one bar the width of the longest
+         wrapping headline gets its own band. As a block it drew one bar the width of the longest
          line and trailed off into empty space.</p>
     </div>
 
@@ -215,7 +214,7 @@
           <p class="beat">And then it becomes a whole page.</p>
         </div>
       </div>
-      <p class="sg-note">The <code>36em</code> cap is doing real work — it is the measure, not a
+      <p class="sg-note">The <code>36em</code> cap is doing real work: it is the measure, not a
          guess. <code>.beat</code> is the Caveat interjection between paragraphs.</p>
     </div>
 
@@ -225,7 +224,7 @@
         <p class="eyebrow-script">the chicken chapter</p>
         <span class="eyebrow">September 1, 2026</span>
         <p class="muted" style="margin:12px 0 0;">The quiet grey used for counts, captions and empty states.</p>
-        <p class="signature" style="margin:14px 0 0;">— Amanda</p>
+        <p class="signature" style="margin:14px 0 0;">Amanda</p>
       </div>
       <p class="sg-note"><code>.eyebrow-script</code> is Caveat and sits above a hero headline;
          <code>.eyebrow</code> is uppercase amethyst and dates a post. They are not interchangeable.</p>
@@ -241,7 +240,7 @@
        or in the footer, where it recedes. Hover always adds an underline at a 3px offset.</p>
 
     <div class="sg-item">
-      <div class="sg-name"><code>a</code> <span>the default — terracotta, underline on hover</span></div>
+      <div class="sg-name"><code>a</code> <span>the default, terracotta, underline on hover</span></div>
       <div class="sg-demo">
         <p style="margin:0;">A sentence with <a href="#links">an ordinary link</a> in it, which is
            terracotta because terracotta means a place to go.</p>
@@ -250,12 +249,12 @@
         <p style="margin:12px 0 0;"><a class="back-to" href="#links">&larr; Back to somewhere</a></p>
       </div>
       <p class="sg-note"><code>.go</code> is the 13.5px bold arrow that ends a card.
-         <code>.go.is-soon</code> is the same slot when there is nowhere to go yet — it says so,
+         <code>.go.is-soon</code> is the same slot when there is nowhere to go yet: it says so,
          rather than offering an arrow that leads back to the same page.</p>
     </div>
 
     <div class="sg-item">
-      <div class="sg-name"><code>nav a</code> <span>masthead — current page is terracotta with a 2px rule</span></div>
+      <div class="sg-name"><code>nav a</code> <span>masthead, current page is terracotta with a 2px rule</span></div>
       <div class="sg-demo">
         <nav>
           <a href="#links">Home</a><a href="#links" aria-current="page">Succulents</a>
@@ -281,7 +280,7 @@
         </div>
       </div>
       <p class="sg-note"><code>.btn-ghost.is-read</code> is the amethyst variant, used only where the
-         destination is the journal — the colour rule holds even on a button.</p>
+         destination is the journal: the colour rule holds even on a button.</p>
     </div>
   </div>
 </section>
@@ -308,14 +307,14 @@
     </div>
 
     <div class="sg-item">
-      <div class="sg-name"><code>.cards</code> <span>artwork beside the text — the original arrangement</span></div>
+      <div class="sg-name"><code>.cards</code> <span>artwork beside the text, the original arrangement</span></div>
       <div class="cards" style="grid-template-columns:repeat(2,1fr);">
         <a class="card" href="#cards"><img src="images/section-crochet.png" alt="" width="400" height="400"><span class="card-body"><h3>Crochet</h3><p>What I am making, what to buy first, and how to start.</p><span class="go">&rarr;</span></span></a>
         <a class="card" href="#cards"><img src="images/section-3dprint.png" alt="" width="400" height="400"><span class="card-body"><h3>Tech</h3><p>Apps, printing, AI, and the rest of the nerd stuff.</p><span class="go">&rarr;</span></span></a>
       </div>
       <p class="sg-note"><b>Every card that is not a journal card carries a 2.5px terracotta bar
          along its top edge.</b> It is an <code>inset box-shadow</code>, not a border, so the 1px
-         outline and the corner radius are left alone — and it deepens to full terracotta on hover.
+         outline and the corner radius are left alone, and it deepens to full terracotta on hover.
          It is what carries the accent colour down into the middle band, and it rhymes with the
          lavender dash on the journal cards.</p>
       <p class="sg-note">Headings sit in Deep Forest, not terracotta. Four large serif headings in a
@@ -335,7 +334,7 @@
     </div>
 
     <div class="sg-item">
-      <div class="sg-name"><code>.panel</code> <span>the plain container — white, hairline, soft shadow</span></div>
+      <div class="sg-name"><code>.panel</code> <span>the plain container, white, hairline, soft shadow</span></div>
       <div class="panel">
         <p class="prose" style="margin:0;">A panel is what holds anything that is not a card: a list
            of resources, an app screenshot, a colophon.</p>
@@ -349,8 +348,8 @@
   <div class="wrap">
     <h2>Colour on the page</h2>
     <p class="sg-lede">Three components added together, after the home page read as washed out. The
-       diagnosis was not a shortage of colour: it was <b>white cards on an ivory ground</b> — two
-       shades of the same non-colour, so nothing had an edge — plus four brand colours that appeared
+       diagnosis was not a shortage of colour: it was <b>white cards on an ivory ground</b>: two
+       shades of the same non-colour, so nothing had an edge. Plus four brand colours that appeared
        almost nowhere in the stylesheet.</p>
 
     <div class="sg-item">
@@ -358,9 +357,9 @@
         <span>a section ground, so the cards have something to sit on</span></div>
       <div class="sg-demo is-plain" style="padding:0;overflow:hidden;">
         <div class="band is-wash" style="padding:18px 22px;"><b style="font-size:13.5px;">.band.is-wash</b>
-          <span class="muted"> — the half-step-deeper cream. Carries the explore row.</span></div>
+          <span class="muted">: the half-step-deeper cream. Carries the explore row.</span></div>
         <div class="band is-reading" style="padding:18px 22px;"><b style="font-size:13.5px;">.band.is-reading</b>
-          <span class="muted"> — lavender, under the journal only.</span></div>
+          <span class="muted">: lavender, under the journal only.</span></div>
       </div>
       <p class="sg-note">The lavender band is not decoration for its own sake: the journal is the one
          place the site already means purple, so the ground carries the reading colour underneath the
@@ -379,7 +378,7 @@
         </div>
       </div>
       <p class="sg-note">One colour per obsession, fading to paper by 60% so the text still sits on
-         white. <b>Classes, not <code>:nth-child</code></b> — reordering the row would otherwise
+         white. <b>Classes, not <code>:nth-child</code></b>: reordering the row would otherwise
          silently reassign every colour. The top bar takes the card's own colour, which is the one
          place “terracotta means a place to go” is relaxed: here the bar identifies rather than
          invites.</p>
@@ -392,7 +391,7 @@
         <div class="wrap"><div class="sec-head"><h2>Latest from the journal</h2></div></div>
       </div>
       <p class="sg-note">The illustrations are the richest thing the brand owns and every other
-         instance of them is postage-stamp sized. Decoration only — <code>aria-hidden</code>, never
+         instance of them is postage-stamp sized. Decoration only, <code>aria-hidden</code>, never
          under body copy, and dropped below 900px where there is no margin for it to live in.</p>
     </div>
   </div>
@@ -454,11 +453,11 @@
       <p class="sg-note">Framed in a ring rather than set bare: at 18px an unframed mark reads as
          debris beside the text links. <code>currentColor</code> on the paths is what lets one hover
          rule move the icon, the ring and the wash together. The footer keeps its own smaller, paler
-         copy of this rule — <code>footer .social a</code> — because the ground down there is dark;
+         copy of this rule, <code>footer .social a</code>, because the ground down there is dark;
          scoping rather than folding it in is what keeps this specimen visible on cream.</p>
       <p class="sg-note"><b><code>padding:0</code> is load-bearing.</b> This row is a
          <code>&lt;nav&gt;</code>, so it inherited <code>nav a{padding-bottom:4px}</code> from the
-         masthead and sat every icon 2px above the centre of its own circle — 8px above, 12px below.
+         masthead and sat every icon 2px above the centre of its own circle, 8px above, 12px below.
          It reads as “the circles are off” long before anyone thinks to blame the main navigation.</p>
     </div>
   </div>
@@ -498,8 +497,8 @@
         <tr><td><code>--radius</code></td><td id="t-radius"></td><td>Cards, panels, buttons use 9px.</td></tr>
         <tr><td><code>--shadow</code></td><td><code>two-layer, tinted forest</code></td><td>A 1px contact shadow plus a wide soft one.</td></tr>
         <tr><td><code>--line</code></td><td id="t-line"></td><td>Every hairline. Forest at 10%, never grey.</td></tr>
-        <tr><td><code>.two-col</code></td><td><code>1.15fr .85fr</code></td><td>Story rows — text wider than art.</td></tr>
-        <tr><td><code>.hero .wrap</code></td><td><code>1.1fr .9fr</code></td><td>Hero — collapses to one column at 900px.</td></tr>
+        <tr><td><code>.two-col</code></td><td><code>1.15fr .85fr</code></td><td>Story rows, text wider than art.</td></tr>
+        <tr><td><code>.hero .wrap</code></td><td><code>1.1fr .9fr</code></td><td>Hero, collapses to one column at 900px.</td></tr>
       </table></div>
     </div>
     <div class="sg-item">
@@ -519,7 +518,7 @@
     <div class="sg-item">
       <div class="sg-name"><code>page-specific</code> <span>in style.css, but not part of the shared system</span></div>
       <p class="sg-note" style="max-width:none;">Roughly half the stylesheet belongs to one page each
-         and is deliberately not documented above — reusing it elsewhere would be a mistake. Books:
+         and is deliberately not documented above: reusing it elsewhere would be a mistake. Books:
          <code>.bookcard</code>, <code>.era-*</code>, <code>.dna</code>, <code>.author-tier</code>,
          <code>.note-card</code>, <code>.bookrow</code>. Inventory: <code>.inv-*</code>,
          <code>.sources*</code>. Journal posts: <code>.post-body</code>, <code>.post-head</code>,
@@ -536,7 +535,7 @@
   <div class="wrap">
     <div class="legal" style="border:none;margin:0;padding:0;">
       <span>This page renders <code style="font-family:ui-monospace,monospace;">style.css</code>
-        directly — it has no styles of its own beyond its own scaffolding, so it cannot fall
+        directly. It has no styles of its own beyond its own scaffolding, so it cannot fall
         out of date.</span>
       <span class="legal-tools">
         <a href="index.html">Site</a>
@@ -548,7 +547,7 @@
 
 <script>
 /* Swatch hexes are READ from the live stylesheet rather than typed here. A
-   hand-maintained colour table is exactly the thing that goes stale — the
+   hand-maintained colour table is exactly the thing that goes stale: the
    README's already has, listing --bg as #FBF8F3 when the CSS says #F7F3EB. */
 const css = getComputedStyle(document.documentElement);
 const val = (t) => css.getPropertyValue(t).trim();
@@ -575,7 +574,7 @@ const DERIVED = [
 ];
 const swatch = ([token, name, use]) => `<div class="sg-sw">
   <div class="sg-chip" style="background:var(${token});"></div>
-  <b>${name}</b><code>${val(token) || "—"}</code><em>${use}</em>
+  <b>${name}</b><code>${val(token) || "not set"}</code><em>${use}</em>
   <code style="opacity:.7;">${token}</code></div>`;
 
 document.getElementById("sg-brand").innerHTML = BRAND.map(swatch).join("");

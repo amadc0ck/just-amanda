@@ -1,4 +1,4 @@
-# justamanda.net — Books Series Reference
+# justamanda.net: Books Series Reference
 
 **Purpose:** Working reference for the Books section of justamanda.net  
 **Updated:** September 3, 2026
@@ -86,7 +86,7 @@ This file consolidates the book series Amanda has named during Books-page curati
 ## Uglies
 
 **Author:** Scott Westerfeld  
-**Series:** Uglies — original quartet
+**Series:** Uglies: original quartet
 
 | # | Title | Series | Author |
 |---:|---|---|---|
@@ -228,7 +228,7 @@ Amanda referred to the "Shadow Hunter Series" and later confirmed recognition of
 **Amanda context:** gateway back into fantasy/romantasy, but not an endorsement of Sarah J. Maas's writing. Working site annotation:  
 > ACOTAR absolutely helped shove me down the romantasy rabbit hole. I also think Sarah J. Maas is wildly overrated as a writer. Both things can be true.
 
-### Announced continuation — not part of Amanda's historical read list
+### Announced continuation: not part of Amanda's historical read list
 
 | Status | Title | Series | Author |
 |---|---|---|---|
@@ -429,16 +429,16 @@ Amanda referred to the "Shadow Hunter Series" and later confirmed recognition of
 
 Current / changing series information was checked against author and publisher sources on September 3, 2026, including:
 
-- Cassandra Clare — The Shadowhunter Chronicles and individual series pages
-- Scott Westerfeld — Uglies
-- Leigh Bardugo — Grishaverse / Shadow and Bone reading order
-- J.K. Rowling — Harry Potter FAQ
-- Suzanne Collins — official Hunger Games materials
-- Rachel Gillig — author site and Orbit / Hachette
-- Sarah A. Parker — Realm of Relics and current publisher listings
-- Rebecca Yarros — official Empyrean book pages
-- Rachel Schneider — official Fire & Metal book pages
-- Callie Hart / Hachette — Fae & Alchemy
-- Bloomsbury — A Court of Thorns and Roses
+- Cassandra Clare: The Shadowhunter Chronicles and individual series pages
+- Scott Westerfeld: Uglies
+- Leigh Bardugo: Grishaverse / Shadow and Bone reading order
+- J.K. Rowling: Harry Potter FAQ
+- Suzanne Collins: official Hunger Games materials
+- Rachel Gillig: author site and Orbit / Hachette
+- Sarah A. Parker: Realm of Relics and current publisher listings
+- Rebecca Yarros: official Empyrean book pages
+- Rachel Schneider: official Fire & Metal book pages
+- Callie Hart / Hachette: Fae & Alchemy
+- Bloomsbury: A Court of Thorns and Roses
 
 This is intended as a **justamanda.net content reference**, not a definitive read-status export from Romance.io.

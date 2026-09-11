@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Write — just amanda</title>
+<title>Write · just amanda</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="images/favicon.png">
-<link rel="stylesheet" href="style.css?v=2026-09-11.4">
+<link rel="stylesheet" href="style.css?v=2026-09-11.5">
 <style>
   .admin-bar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;}
   .admin-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
@@ -66,14 +66,14 @@
 
 <section><div class="wrap" id="app"><p class="muted">Loading&hellip;</p></div></section>
 
-<script src="site.js?v=2026-09-11.4"></script>
-<script src="markdown.js?v=2026-09-11.4"></script>
+<script src="site.js?v=2026-09-11.5"></script>
+<script src="markdown.js?v=2026-09-11.5"></script>
 <script>
 /* Bumped on every deploy, and shown in the admin bar. Browsers cache this page
    aggressively, and a stale tab silently running old code has already cost one
    batch of images their transparency. If the stamp on screen is not the newest,
    hard-refresh before uploading anything. */
-const BUILD = "2026-09-11.4";
+const BUILD = "2026-09-11.5";
 
 const KEY = "ja_auth";
 const app = document.getElementById("app");
@@ -122,7 +122,7 @@ async function api(path, opts = {}, retry = true) {
     },
   });
   if (res.status === 401 && retry && (await refreshToken())) return api(path, opts, false);
-  if (!res.ok) throw new Error(`${res.status} — ${await res.text()}`);
+  if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`);
   return res.status === 204 ? null : res.json();
 }
 
@@ -130,7 +130,7 @@ async function api(path, opts = {}, retry = true) {
    both load-bearing:
 
    1. PRIVACY. Phone photos carry EXIF with GPS coordinates. This bucket is
-      public, so an untouched upload would publish where the picture was taken —
+      public, so an untouched upload would publish where the picture was taken,
       usually home. A canvas re-encode carries no EXIF at all.
    2. WEIGHT. A 4 MB original is served to every reader at 980px wide.
 
@@ -226,7 +226,7 @@ async function listImages() {
 
 const imgUrl = (name) => `${SB.url}/storage/v1/object/public/journal/${name}`;
 
-/* Renaming moves the object AND rewrites every reference to it — cover_url,
+/* Renaming moves the object AND rewrites every reference to it: cover_url,
    body_md and body_html across all posts. A rename that only moved the file
    would silently break the posts using it, which is the whole reason people
    avoid renaming images at all. */
@@ -283,14 +283,17 @@ function screenLogin(err) {
 async function screenList() {
   editing = null;
   barActions.innerHTML = `<button class="btn btn-primary btn-sm" id="new">New post &rarr;</button>
+    <button class="btn btn-ghost btn-sm" id="cards">Home cards</button>
+    <a class="btn btn-ghost btn-sm" href="styleguide.html">Style guide</a>
     <button class="btn btn-ghost btn-sm" id="out">Sign out</button>`;
   document.getElementById("new").onclick = () => screenEdit(null);
+  document.getElementById("cards").onclick = () => screenCards();
   document.getElementById("out").onclick = () => { localStorage.removeItem(KEY); screenLogin(); };
 
   app.innerHTML = `<div id="note"></div><p class="muted">Loading posts&hellip;</p>`;
   try {
     posts = await api("posts?select=*&order=updated_at.desc");
-  } catch (e) { screenLogin("Session expired — sign in again."); return; }
+  } catch (e) { screenLogin("Session expired. Sign in again."); return; }
 
   app.innerHTML = `<div id="note"></div>` + (posts.length
     ? `<div class="plist">${posts.map((p, i) => `
@@ -394,7 +397,7 @@ function screenEdit(p) {
         <div id="cover-wrap"></div></div>
     </div>
     <div class="editor-cols">
-      <div class="field"><label for="f-body">Post &mdash; Markdown</label>
+      <div class="field"><label for="f-body">Post &middot; Markdown</label>
         <textarea id="f-body">${escapeHtml(editing.body_md || "")}</textarea>
         <div class="hint" style="margin-top:10px;">
           <label for="f-imgdesc" style="text-transform:none;letter-spacing:0;font-size:12.5px;
@@ -449,20 +452,20 @@ function screenEdit(p) {
     try {
       editing.cover_url = await uploadImage(f, `${$("f-slug").value || $("f-title").value || "post"}-cover`);
       drawCover();
-      note(`Cover uploaded, EXIF stripped — ${lastUpload}.`);
+      note(`Cover uploaded, EXIF stripped: ${lastUpload}.`);
     } catch (err) { note(`Cover upload failed: ${err.message}`, true); }
   };
 
   $("f-inline").onchange = async (e) => {
     const f = e.target.files[0]; if (!f) return;
     const desc = $("f-imgdesc").value.trim();
-    note(desc ? "Uploading image…" : "Uploading image — add a description next time for better alt text…");
+    note(desc ? "Uploading image…" : "Uploading image. Add a description next time for better alt text…");
     try {
       const url = await uploadImage(f, desc || `${$("f-slug").value || "post"}-image`);
       const ta = $("f-body");
       const at = ta.selectionStart ?? ta.value.length;
       ta.value = `${ta.value.slice(0, at)}\n\n![${desc}](${url})\n\n${ta.value.slice(at)}`;
-      draw(); note(`Image inserted, EXIF stripped — ${lastUpload}.`);
+      draw(); note(`Image inserted, EXIF stripped: ${lastUpload}.`);
       e.target.value = ""; $("f-imgdesc").value = "";
     } catch (err) { note(`Image upload failed: ${err.message}`, true); }
   };
@@ -529,6 +532,81 @@ function screenEdit(p) {
     if (!confirm("Delete this post permanently?")) return;
     try { await api(`posts?id=eq.${editing.id}`, { method: "DELETE" }); await screenList(); note("Deleted."); }
     catch (e) { note(e.message, true); }
+  };
+}
+
+/* ---------- home cards ----------
+   The five cards on the front page. Their text lives in index.html as authored
+   and this table only overrides it, so a failure here is a page that shows the
+   original copy rather than a page with five empty cards.
+
+   No add and no delete on purpose: the cards are structural, each one tied to a
+   real page and an illustration, so the only thing worth editing from a form is
+   the words. Adding a sixth is a change to index.html, not a row. */
+async function screenCards() {
+  editing = null;
+  barActions.innerHTML = `<button class="btn btn-ghost btn-sm" id="back">&larr; Posts</button>
+    <button class="btn btn-primary btn-sm" id="saveall">Save all</button>`;
+  document.getElementById("back").onclick = () => screenList();
+
+  app.innerHTML = `<div id="note"></div><p class="muted">Loading cards&hellip;</p>`;
+
+  let rows = [];
+  try { rows = await api("home_cards?select=slug,title,blurb,sort_order&order=sort_order"); }
+  catch (e) {
+    app.innerHTML = `<div id="note"></div><div class="msg err">Could not load cards:
+      ${escapeHtml(e.message)}<br>If this says the relation does not exist, run
+      <strong>sql/002-home-cards.sql</strong> in the Supabase SQL editor first.</div>`;
+    return;
+  }
+
+  if (!rows.length) {
+    app.innerHTML = `<div id="note"></div><div class="msg err">The table is empty.
+      Run STEP 3 of <strong>sql/002-home-cards.sql</strong> to seed the five cards.</div>`;
+    return;
+  }
+
+  app.innerHTML = `<div id="note"></div>
+    <div class="sec-head"><h2>Home cards</h2></div>
+    <p class="muted" style="margin:0 0 20px;">The five cards on the front page. These override
+      what is written in <code>index.html</code>; clear a field and the authored text comes
+      back. Changes are live as soon as you save.</p>
+    <div class="plist">${rows.map((r, i) => `
+      <div class="prow" style="display:block;">
+        <div class="field" style="margin-bottom:12px;">
+          <label for="t${i}">${escapeHtml(r.slug)} &middot; heading</label>
+          <input id="t${i}" data-slug="${escapeHtml(r.slug)}" data-k="title"
+                 value="${escapeHtml(r.title)}" maxlength="40">
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label for="b${i}">blurb</label>
+          <input id="b${i}" data-slug="${escapeHtml(r.slug)}" data-k="blurb"
+                 value="${escapeHtml(r.blurb)}" maxlength="120">
+          <div class="hint">One line. It sits under the heading on a narrow card, so
+            shorter reads better.</div>
+        </div>
+      </div>`).join("")}</div>`;
+
+  document.getElementById("saveall").onclick = async () => {
+    const edits = {};
+    app.querySelectorAll("[data-slug]").forEach((el) => {
+      (edits[el.dataset.slug] ||= {})[el.dataset.k] = el.value.trim();
+    });
+    const changed = rows.filter((r) =>
+      edits[r.slug] && (edits[r.slug].title !== r.title || edits[r.slug].blurb !== r.blurb));
+    if (!changed.length) { note("Nothing changed."); return; }
+    const empty = changed.find((r) => !edits[r.slug].title || !edits[r.slug].blurb);
+    if (empty) { note(`${empty.slug}: heading and blurb cannot be empty.`, true); return; }
+    try {
+      for (const r of changed) {
+        await api(`home_cards?slug=eq.${encodeURIComponent(r.slug)}`, {
+          method: "PATCH",
+          body: JSON.stringify({ ...edits[r.slug], updated_at: new Date().toISOString() }),
+        });
+      }
+      await screenCards();
+      note(`Saved ${changed.length} card${changed.length > 1 ? "s" : ""}.`);
+    } catch (e) { note(e.message, true); }
   };
 }
 

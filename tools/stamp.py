@@ -8,7 +8,7 @@ admin.html:
 
 GitHub Pages serves HTML with cache-control: max-age=600 and we cannot change
 that. So a visitor can hold a stale index.html while fetching a fresh
-stylesheet, and the mismatch renders as a broken page — rules referenced by the
+stylesheet, and the mismatch renders as a broken page. Rules referenced by the
 old markup have been deleted, or vice versa. Versioning the asset URLs does not
 stop the HTML going stale, but it does guarantee that whatever HTML a browser
 has, it gets the CSS and JS that HTML was written against. The mismatch is what
@@ -45,7 +45,7 @@ def main():
         if s != before:
             p.write_text(s); touched += 1
 
-    print(f"stamp {stamp} — {touched} html file(s) updated")
+    print(f"stamp {stamp}: {touched} html file(s) updated")
 
 if __name__ == "__main__":
     sys.exit(main())

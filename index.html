@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>just amanda — a creative life, thoughtfully collected</title>
-<meta name="description" content="Succulents, chickens, crochet, books and tech — the things I am deep in, and the site I made to keep them in.">
+<title>just amanda · a creative life, thoughtfully collected</title>
+<meta name="description" content="Succulents, chickens, crochet, books and tech... the things I am deep in, and the site I made to keep them in.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <meta name="theme-color" content="#F7F3EB">
-<link rel="stylesheet" href="style.css?v=2026-09-11.4">
+<link rel="stylesheet" href="style.css?v=2026-09-11.5">
 </head>
 <body>
 
@@ -36,7 +36,7 @@
     <div>
       <h1>A creative life,<em>thoughtfully collected.</em></h1>
       <p>Being interested in a lot of things is the most consistent thing about me.
-         This is where I keep them &mdash; and designing the place to keep them
+         This is where I keep them... and designing the place to keep them
          turned out to be one more.</p>
       <div class="btn-row">
         <a class="btn btn-primary" href="about.html">More about me &rarr;</a>
@@ -50,11 +50,11 @@
 <section id="explore" class="band is-wash">
   <div class="wrap">
     <div class="cards explore">
-      <a class="card is-succulents" href="plants.html"><img src="images/section-plants.png" alt="A potted echeveria" width="400" height="400"><span class="card-body"><h3>Succulents</h3><p>230 of them, and every one has a name.</p><span class="go">&rarr;</span></span></a>
-      <a class="card is-chickens" href="chickens.html"><img src="images/section-chickens.png" alt="A hen" width="400" height="400"><span class="card-body"><h3>Chickens</h3><p>Six birds, and I know all their opinions.</p><span class="go">&rarr;</span></span></a>
-      <a class="card is-crochet" href="crochet.html"><img src="images/section-crochet.png" alt="Yarn and a crochet hook" width="400" height="400"><span class="card-body"><h3>Crochet</h3><p>One stitch at a time, until it clicked.</p><span class="go">&rarr;</span></span></a>
-      <a class="card is-books" href="books.html"><img src="images/section-books.png" alt="A stack of books and a mug" width="400" height="400"><span class="card-body"><h3>Books</h3><p>Lore, slow burn, and staying up too late.</p><span class="go">&rarr;</span></span></a>
-      <a class="card is-tech" href="tech.html"><img src="images/section-3dprint.png" alt="A 3D printer partway through a print" width="400" height="400"><span class="card-body"><h3>Tech</h3><p>Apps, printing, AI, and the rest of the nerd stuff.</p><span class="go">&rarr;</span></span></a>
+      <a class="card is-succulents" href="plants.html"><img src="images/section-plants.png" alt="A potted echeveria" width="400" height="400"><span class="card-body"><h3>Succulents</h3><p>all cacti are succulents, but not all succulents are cacti</p><span class="go">&rarr;</span></span></a>
+      <a class="card is-chickens" href="chickens.html"><img src="images/section-chickens.png" alt="A hen" width="400" height="400"><span class="card-body"><h3>Chickens</h3><p>chickens are better pets than most people assume</p><span class="go">&rarr;</span></span></a>
+      <a class="card is-crochet" href="crochet.html"><img src="images/section-crochet.png" alt="Yarn and a crochet hook" width="400" height="400"><span class="card-body"><h3>Crochet</h3><p>the perfect fidget spinner for long meetings and audio books</p><span class="go">&rarr;</span></span></a>
+      <a class="card is-books" href="books.html"><img src="images/section-books.png" alt="A stack of books and a mug" width="400" height="400"><span class="card-body"><h3>Books</h3><p>faeries, vampires, dragons, smut. sign. me. up.</p><span class="go">&rarr;</span></span></a>
+      <a class="card is-tech" href="tech.html"><img src="images/section-3dprint.png" alt="A 3D printer partway through a print" width="400" height="400"><span class="card-body"><h3>Tech</h3><p>no way around it, i am a nerd.</p><span class="go">&rarr;</span></span></a>
     </div>
   </div>
 </section>
@@ -99,15 +99,34 @@
         &nbsp;&middot;&nbsp; Illustrations were made with AI, from my direction.</span>
       <span class="legal-tools">
         <a href="admin.html">Admin</a>
-        <a href="styleguide.html">Style guide</a>
         <a href="https://garden.justamanda.net">Garden app</a>
       </span>
     </div>
   </div>
 </footer>
 
-<script src="site.js?v=2026-09-11.4"></script>
+<script src="site.js?v=2026-09-11.5"></script>
 <script>
+/* The five card headings and blurbs are authored in the HTML above and are the
+   real copy. This only OVERRIDES them when home_cards has a row, so the page is
+   correct with no JavaScript, no network and no database, and an admin edit is
+   a change of mind rather than the single source of truth. textContent, not
+   innerHTML: this text is editable from a form and must never become markup. */
+(async () => {
+  try {
+    for (const row of await sbGet("home_cards?select=slug,title,blurb")) {
+      const card = document.querySelector(`.cards.explore .card.is-${row.slug}`);
+      if (!card) continue;
+      const h3 = card.querySelector("h3"), p = card.querySelector("p");
+      if (h3 && row.title) h3.textContent = row.title;
+      if (p && row.blurb) p.textContent = row.blurb;
+    }
+  } catch (e) {
+    /* Authored text stands. Not worth a visible error on the front page. */
+    console.warn("home_cards override unavailable:", e.message);
+  }
+})();
+
 (async () => {
   const el = document.getElementById("home-posts");
   try {

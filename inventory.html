@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The collection — just amanda</title>
+<title>The collection · just amanda</title>
 <meta name="description" content="Every species in the collection, and how many of each. Read live from the catalogue.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <meta name="theme-color" content="#F7F3EB">
-<link rel="stylesheet" href="style.css?v=2026-09-11.4">
+<link rel="stylesheet" href="style.css?v=2026-09-11.5">
 </head>
 <body>
 
@@ -36,7 +36,7 @@
     <div>
       <h1>The collection,<em>species by species.</em></h1>
       <p>Every kind of plant I currently grow, and how many of each. Read straight from
-         the catalogue, so it is current rather than a snapshot &mdash; and still being
+         the catalogue, so it is current rather than a snapshot... and still being
          filled in, which is why some entries carry more than others.</p>
     </div>
   </div>
@@ -56,7 +56,7 @@
 
     <div class="panel sources">
       <h2>Resources</h2>
-      <p class="sources-intro">Each entry above links out to two of these &mdash;
+      <p class="sources-intro">Each entry above links out to two of these...
          <strong>Name</strong> for the botanical name, <strong>Growing</strong> for care
          notes.</p>
       <ul class="sources-list">
@@ -101,16 +101,15 @@
         &nbsp;&middot;&nbsp; Illustrations were made with AI, from my direction.</span>
       <span class="legal-tools">
         <a href="admin.html">Admin</a>
-        <a href="styleguide.html">Style guide</a>
         <a href="https://garden.justamanda.net">Garden app</a>
       </span>
     </div>
   </div>
 </footer>
 
-<script src="site.js?v=2026-09-11.4"></script>
+<script src="site.js?v=2026-09-11.5"></script>
 <script>
-/* The inventory is read live from public_plant_inventory — a view, so the page
+/* The inventory is read live from public_plant_inventory, a view, so the page
    can only ever see the columns that view exposes. Locations, health, notes and
    accession numbers are not in it and cannot be reached from here. */
 
@@ -136,7 +135,7 @@ function taxonName(t) {
   return wl ? escapeHtml(wl) : "<span class='muted'>Unidentified</span>";
 }
 
-/* Stored with the rank as written on the tag — "var. erinacea". The rank is
+/* Stored with the rank as written on the tag: "var. erinacea". The rank is
    upright and the epithet italic. A bare word with no rank reads as var.,
    which is overwhelmingly the common case. */
 function infraHtml(s) {
@@ -158,7 +157,7 @@ function filled(v) {
 }
 
 /* Only the fields this species actually carries. The records are still being
-   filled in, so a blank field is an unfinished record, not a fact — printing a
+   filled in, so a blank field is an unfinished record, not a fact. Printing a
    row of em-dashes would dress absence up as information. */
 const FIELDS = [
   ["growth_habit",     "Habit"],
@@ -198,7 +197,7 @@ function card(t) {
   </article>`;
 }
 
-/* The plain botanical name, for an outbound search — no markup, no quotes. */
+/* The plain botanical name, for an outbound search: no markup, no quotes. */
 function searchTerm(t) {
   const g = (t.genus || "").trim(), ep = (t.species_epithet || "").trim();
   if (g && ep) return `${g} ${ep}`;
@@ -232,8 +231,8 @@ function draw() {
     // Sorted here rather than in the query: the display name is composed from
     // parts, so ordering by any single column puts the list in an order the
     // reader cannot see.
-    // Unnamed taxa sort last. They are real — six specimens are genuinely not
-    // identified yet — but an empty card is a poor thing to open on, and
+    // Unnamed taxa sort last. They are real, since six specimens are genuinely not
+    // identified yet, but an empty card is a poor thing to open on, and
     // alphabetically a blank name sorts to the very front.
     ALL.sort((a, b) => {
       const an = searchTerm(a), bn = searchTerm(b);

@@ -1,4 +1,4 @@
-/* A deliberately small Markdown subset — enough for a journal and no more, so
+/* A deliberately small Markdown subset, enough for a journal and no more, so
    the site keeps its no-dependency character.
 
    This file loads in admin.html ONLY. Posts are converted once when saved and

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Journal — just amanda</title>
+<title>Journal · just amanda</title>
 <meta name="description" content="A post from the just amanda journal.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <meta name="theme-color" content="#F7F3EB">
-<link rel="stylesheet" href="style.css?v=2026-09-11.4">
+<link rel="stylesheet" href="style.css?v=2026-09-11.5">
 </head>
 <body>
 
@@ -61,14 +61,13 @@
         &nbsp;&middot;&nbsp; Illustrations were made with AI, from my direction.</span>
       <span class="legal-tools">
         <a href="admin.html">Admin</a>
-        <a href="styleguide.html">Style guide</a>
         <a href="https://garden.justamanda.net">Garden app</a>
       </span>
     </div>
   </div>
 </footer>
 
-<script src="site.js?v=2026-09-11.4"></script>
+<script src="site.js?v=2026-09-11.5"></script>
 <script>
 (async () => {
   const host = document.getElementById("post");
@@ -82,13 +81,13 @@
   };
 
   const render = (p, preview) => {
-    document.title = `${p.title} — just amanda`;
+    document.title = `${p.title} · just amanda`;
     const meta = document.querySelector('meta[name="description"]');
     if (meta && p.excerpt) meta.setAttribute("content", p.excerpt);
 
     const banner = preview
       ? `<div class="preview-banner">Preview &middot; ${p.status === "published"
-          ? "this is how the live post looks" : "not published — only you can see this"}</div>`
+          ? "this is how the live post looks" : "not published, only you can see this"}</div>`
       : "";
     const cover = p.cover_url ? `<img class="post-cover" src="${escapeHtml(p.cover_url)}" alt="">` : "";
     const tags = (p.tags || []).length
@@ -110,7 +109,7 @@
   };
 
   /* Preview mode: admin.html hands the live editor contents over in
-     sessionStorage, so this renders unsaved work through the real page —
+     sessionStorage, so this renders unsaved work through the real page:
      same stylesheet, same measure, same masthead. Nothing is fetched. */
   if (params.get("preview") === "1") {
     let p = null;

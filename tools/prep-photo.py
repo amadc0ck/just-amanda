@@ -16,16 +16,16 @@ fail SILENTLY, which is the worst way for a privacy step to fail. Measured
     (`-d IPTC` errors outright: "Cannot do --deleteProperty IPTC on file".)
   * `sips -g all f.jpg | grep -i gps` NEVER prints a GPS line, even on a file
     that definitely has one. Empty output there means nothing at all.
-  * Re-encoding through sips — `-Z`, `-s format jpeg`, `-s formatOptions` —
+  * Re-encoding through sips (`-Z`, `-s format jpeg`, `-s formatOptions`)
     does NOT strip it either. It carries the GPS IFD straight through and
     rewrites it big-endian, which also defeats any grep for the tag bytes.
 
 So sips resizes, and this strips: the APP1 (Exif, XMP) and APP13 (IPTC) segments
 are removed from the JPEG outright. APP0/JFIF and the APP2 ICC colour profile
-are kept — they carry no location. Then it parses the result back and refuses to
+are kept, since they carry no location. Then it parses the result back and refuses to
 write anything if a GPS tag is still reachable.
 
-No exiftool, ImageMagick or Pillow on this machine — stdlib and sips only.
+No exiftool, ImageMagick or Pillow on this machine: stdlib and sips only.
 """
 import pathlib, shutil, struct, subprocess, sys, tempfile
 
@@ -46,7 +46,7 @@ def exif_tags(path):
         seg = d[i + 4:i + 2 + size]
         if marker == 0xE1 and seg[:6] == b"Exif\x00\x00":
             return _ifd0(seg[6:])
-        if marker == 0xDA:            # start of scan — metadata is behind us
+        if marker == 0xDA:            # start of scan, metadata is behind us
             break
         i += 2 + size
     return None
@@ -101,7 +101,7 @@ def main():
 
     before = exif_tags(src)
     if before is not None and GPS_IFD_POINTER in before:
-        print(f"  input carries GPS   : YES — {src.name}")
+        print(f"  input carries GPS   : YES, {src.name}")
     else:
         print(f"  input carries GPS   : none found (stripping anyway)")
 
@@ -118,7 +118,7 @@ def main():
         if src_w > width:
             cmd += ["-Z", str(width)]
         else:
-            print(f"  width               : {src_w}px, already under {width} — not resized")
+            print(f"  width               : {src_w}px, already under {width}, not resized")
         cmd += ["-s", "format", "jpeg", "-s", "formatOptions", "80",
                 str(src), "--out", str(tmp)]
         subprocess.run(cmd, check=True, capture_output=True)

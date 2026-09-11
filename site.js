@@ -1,4 +1,4 @@
-/* justamanda.net — shared front-end helpers.
+/* justamanda.net shared front-end helpers.
 
    The journal lives in the same Supabase project as the garden app. The
    publishable key below is public by design; RLS is what actually keeps drafts
@@ -15,7 +15,7 @@ function escapeHtml(s) {
 
 /* published_at is a timestamptz, so Date parses it correctly and
    toLocaleDateString renders it in the reader's own zone. Do not reach for
-   toISOString here — it would drag evening Pacific posts onto the next day. */
+   toISOString here, because it would drag evening Pacific posts onto the next day. */
 function fmtDate(v) {
   if (!v) return "";
   const d = new Date(v);
@@ -26,7 +26,7 @@ async function sbGet(path, token) {
   const headers = { apikey: SB.key, Accept: "application/json" };
   if (token) headers.Authorization = `Bearer ${token}`;
   const res = await fetch(`${SB.url}/rest/v1/${path}`, { headers });
-  if (!res.ok) throw new Error(`${res.status} — ${await res.text()}`);
+  if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`);
   return res.json();
 }
 
