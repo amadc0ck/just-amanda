@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <meta name="theme-color" content="#F7F3EB">
-<link rel="stylesheet" href="style.css?v=2026-09-11.5">
+<link rel="stylesheet" href="style.css?v=2026-09-11.6">
 </head>
 <body>
 
@@ -34,8 +34,8 @@
 <div class="hero">
   <div class="wrap">
     <div>
-      <h1>The collection,<em>species by species.</em></h1>
-      <p>Every kind of plant I currently grow, and how many of each. Read straight from
+      <h1 data-edit="inventory.h1-1">The collection,<em>species by species.</em></h1>
+      <p data-edit="inventory.p-1">Every kind of plant I currently grow, and how many of each. Read straight from
          the catalogue, so it is current rather than a snapshot... and still being
          filled in, which is why some entries carry more than others.</p>
     </div>
@@ -49,27 +49,27 @@
     <div class="inv-controls">
       <input id="inv-search" class="search-input" type="search" autocomplete="off"
              placeholder="Search a name, genus or family&hellip;" aria-label="Search the collection">
-      <p id="inv-count" class="muted" aria-live="polite">Loading the catalogue&hellip;</p>
+      <p data-edit="inventory.p-2" id="inv-count" class="muted" aria-live="polite">Loading the catalogue&hellip;</p>
     </div>
 
     <div id="inv-list"></div>
 
     <div class="panel sources">
-      <h2>Resources</h2>
-      <p class="sources-intro">Each entry above links out to two of these...
+      <h2 data-edit="inventory.h2-1">Resources</h2>
+      <p data-edit="inventory.p-3" class="sources-intro">Each entry above links out to two of these...
          <strong>Name</strong> for the botanical name, <strong>Growing</strong> for care
          notes.</p>
       <ul class="sources-list">
-        <li><a href="https://powo.science.kew.org/">Plants of the World Online</a></li>
-        <li><a href="https://wfoplantlist.org/">World Flora Online</a></li>
-        <li><a href="https://www.ipni.org/">IPNI</a></li>
-        <li><a href="https://www.rhs.org.uk/plants/search-form">RHS</a></li>
-        <li><a href="https://www.smgrowers.com/">San Marcos Growers</a></li>
-        <li><a href="https://mountaincrestgardens.com/">Mountain Crest Gardens</a></li>
-        <li><a href="https://www.floragrubb.com/">Flora Grubb Gardens</a></li>
-        <li><a href="https://www.ruthbancroftgarden.org/">Ruth Bancroft Garden</a></li>
-        <li><a href="https://www.succulentsandsunshine.com/">Succulents and Sunshine</a></li>
-        <li><a href="https://plantnet.org/">Pl@ntNet</a></li>
+        <li data-edit="inventory.li-1"><a href="https://powo.science.kew.org/">Plants of the World Online</a></li>
+        <li data-edit="inventory.li-2"><a href="https://wfoplantlist.org/">World Flora Online</a></li>
+        <li data-edit="inventory.li-3"><a href="https://www.ipni.org/">IPNI</a></li>
+        <li data-edit="inventory.li-4"><a href="https://www.rhs.org.uk/plants/search-form">RHS</a></li>
+        <li data-edit="inventory.li-5"><a href="https://www.smgrowers.com/">San Marcos Growers</a></li>
+        <li data-edit="inventory.li-6"><a href="https://mountaincrestgardens.com/">Mountain Crest Gardens</a></li>
+        <li data-edit="inventory.li-7"><a href="https://www.floragrubb.com/">Flora Grubb Gardens</a></li>
+        <li data-edit="inventory.li-8"><a href="https://www.ruthbancroftgarden.org/">Ruth Bancroft Garden</a></li>
+        <li data-edit="inventory.li-9"><a href="https://www.succulentsandsunshine.com/">Succulents and Sunshine</a></li>
+        <li data-edit="inventory.li-10"><a href="https://plantnet.org/">Pl@ntNet</a></li>
       </ul>
     </div>
   </div>
@@ -107,7 +107,7 @@
   </div>
 </footer>
 
-<script src="site.js?v=2026-09-11.5"></script>
+<script src="site.js?v=2026-09-11.6"></script>
 <script>
 /* The inventory is read live from public_plant_inventory, a view, so the page
    can only ever see the columns that view exposes. Locations, health, notes and

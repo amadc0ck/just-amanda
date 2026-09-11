@@ -43,3 +43,38 @@ function postCard(p) {
       <span class="go">Read more &rarr;</span>
     </span></a>`;
 }
+
+/* ---------- page text overrides ----------
+   Every editable block on the site carries data-edit="page.tag-n" and keeps its
+   authored words in the HTML. This replaces one only when site_text holds a row
+   for it, so the page is correct with no JavaScript, no network and no database,
+   and a failed fetch leaves the real writing on screen.
+
+   innerHTML, not textContent, because 29% of the blocks carry an <em>, a link or
+   a <strong> and losing those would be worse than not editing at all. The value
+   is rendered to HTML once in admin.html when it is saved, the same way
+   posts.body_html is, so no reader ever downloads a Markdown parser and nothing
+   arbitrary is being evaluated here: writes are scoped by RLS to one address. */
+async function applyTextOverrides() {
+  const nodes = document.querySelectorAll("[data-edit]");
+  if (!nodes.length) return;
+  try {
+    const rows = await sbGet("site_text?select=key,value_html");
+    const map = new Map(rows.map((r) => [r.key, r.value_html]));
+    nodes.forEach((n) => {
+      const v = map.get(n.dataset.edit);
+      if (v) n.innerHTML = v;
+    });
+  } catch (e) {
+    /* The authored text stands. Never worth a visible error on a reader's page. */
+    console.warn("site_text overrides unavailable:", e.message);
+  }
+}
+
+/* site.js is loaded at the end of <body>, so DOMContentLoaded may already have
+   fired by the time this runs. Check rather than assume. */
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", applyTextOverrides);
+} else {
+  applyTextOverrides();
+}

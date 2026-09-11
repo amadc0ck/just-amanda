@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <meta name="theme-color" content="#F7F3EB">
-<link rel="stylesheet" href="style.css?v=2026-09-11.5">
+<link rel="stylesheet" href="style.css?v=2026-09-11.6">
 </head>
 <body>
 
@@ -34,15 +34,15 @@
 <div class="hero">
   <div class="wrap">
     <div>
-      <h1>The journal,<em>as it comes.</em></h1>
-      <p>Longer thoughts, project notes, and the things worth writing down properly.</p>
+      <h1 data-edit="journal.h1-1">The journal,<em>as it comes.</em></h1>
+      <p data-edit="journal.p-1">Longer thoughts, project notes, and the things worth writing down properly.</p>
     </div>
   </div>
 </div>
 
 <section>
   <div class="wrap">
-    <div id="posts" class="post-list"><p class="muted">Loading&hellip;</p></div>
+    <div id="posts" class="post-list"><p data-edit="journal.p-2" class="muted">Loading&hellip;</p></div>
   </div>
 </section>
 
@@ -78,7 +78,7 @@
   </div>
 </footer>
 
-<script src="site.js?v=2026-09-11.5"></script>
+<script src="site.js?v=2026-09-11.6"></script>
 <script>
 (async () => {
   const el = document.getElementById("posts");
