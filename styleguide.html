@@ -14,7 +14,7 @@
 <!-- The whole point: this page wears the real stylesheet. Every specimen below
      is the live rule, not a screenshot or a copy. Change style.css and this
      page changes with it. -->
-<link rel="stylesheet" href="style.css?v=2026-09-11.1">
+<link rel="stylesheet" href="style.css?v=2026-09-11.4">
 
 <style>
   /* Chrome for the guide itself. Prefixed .sg- and kept here rather than in
@@ -97,6 +97,7 @@
       <a href="#buttons">Buttons</a>
       <a href="#cards">Cards</a>
       <a href="#parts">Small parts</a>
+      <a href="#grounds">Grounds</a>
       <a href="#ornament">Ornament</a>
       <a href="#layout">Layout</a>
       <a href="index.html">&larr; Site</a>
@@ -154,14 +155,16 @@
         <p>Ornament, never content. Section hairlines, the dash above a journal card, the band
            under the hero headline.</p></div>
       <div class="sg-rule is-sage"><b>Soft Sage</b>
-        <p>Quiet accents and the sage tag. Present in nearly every illustration, rarely in the CSS.</p></div>
+        <p>The Succulents card, the sage tag — and, deepened to <code>--sage-deep</code>, the footer
+           ground. Note that <b>gold does not survive that move</b>: <code>#C0A15A</code> on
+           <code>#4C5B3E</code> is 2.95:1. Only cream and lavender read down there.</p></div>
       <div class="sg-rule is-gold"><b>Gold</b>
         <p>Divider artwork and the thinnest rules. A metallic, not a text colour.</p></div>
     </div>
-    <p class="sg-note" style="margin-top:20px;"><b>Why Books is amethyst on the home page.</b> It looks
-       like an exception to “terracotta for section cards” and is not — amethyst means
-       <em>something to read</em>, and the books card is exactly that. The colour keeps its meaning
-       as it moves up the page.</p>
+    <p class="sg-note" style="margin-top:20px;"><b>Amethyst starts at the journal, not before it.</b>
+       The Books card briefly carried amethyst on the “something to read” argument. In a row of five
+       headings it read as one card being broken rather than one card being special, so the explore
+       row is one colour throughout and amethyst begins where the whole band supports it.</p>
   </div>
 </section>
 
@@ -296,7 +299,7 @@
         <a class="card" href="#cards"><img src="images/section-plants.png" alt="" width="400" height="400"><span class="card-body"><h3>Succulents</h3><p>230 of them, and every one has a name.</p><span class="go">&rarr;</span></span></a>
         <a class="card" href="#cards"><img src="images/section-chickens.png" alt="" width="400" height="400"><span class="card-body"><h3>Chickens</h3><p>Six birds, and I know all their opinions.</p><span class="go">&rarr;</span></span></a>
         <a class="card" href="#cards"><img src="images/section-crochet.png" alt="" width="400" height="400"><span class="card-body"><h3>Crochet</h3><p>One stitch at a time, until it clicked.</p><span class="go">&rarr;</span></span></a>
-        <a class="card is-reading" href="#cards"><img src="images/section-books.png" alt="" width="400" height="400"><span class="card-body"><h3>Books</h3><p>Lore, slow burn, and staying up too late.</p><span class="go">&rarr;</span></span></a>
+        <a class="card" href="#cards"><img src="images/section-books.png" alt="" width="400" height="400"><span class="card-body"><h3>Books</h3><p>Lore, slow burn, and staying up too late.</p><span class="go">&rarr;</span></span></a>
         <a class="card" href="#cards"><img src="images/section-3dprint.png" alt="" width="400" height="400"><span class="card-body"><h3>Tech</h3><p>Apps, printing, AI, and the rest of the nerd stuff.</p><span class="go">&rarr;</span></span></a>
       </div>
       <p class="sg-note">Five across at full width, stepping to three, two, then one. The counts are
@@ -337,6 +340,60 @@
         <p class="prose" style="margin:0;">A panel is what holds anything that is not a card: a list
            of resources, an app screenshot, a colophon.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= COLOUR ON THE PAGE ======================== -->
+<section class="sg-sec" id="grounds">
+  <div class="wrap">
+    <h2>Colour on the page</h2>
+    <p class="sg-lede">Three components added together, after the home page read as washed out. The
+       diagnosis was not a shortage of colour: it was <b>white cards on an ivory ground</b> — two
+       shades of the same non-colour, so nothing had an edge — plus four brand colours that appeared
+       almost nowhere in the stylesheet.</p>
+
+    <div class="sg-item">
+      <div class="sg-name"><code>.band</code> <code>.is-wash</code> <code>.is-reading</code>
+        <span>a section ground, so the cards have something to sit on</span></div>
+      <div class="sg-demo is-plain" style="padding:0;overflow:hidden;">
+        <div class="band is-wash" style="padding:18px 22px;"><b style="font-size:13.5px;">.band.is-wash</b>
+          <span class="muted"> — the half-step-deeper cream. Carries the explore row.</span></div>
+        <div class="band is-reading" style="padding:18px 22px;"><b style="font-size:13.5px;">.band.is-reading</b>
+          <span class="muted"> — lavender, under the journal only.</span></div>
+      </div>
+      <p class="sg-note">The lavender band is not decoration for its own sake: the journal is the one
+         place the site already means purple, so the ground carries the reading colour underneath the
+         reading content.</p>
+    </div>
+
+    <div class="sg-item">
+      <div class="sg-name"><code>.card.is-succulents</code> <span>…is-chickens, is-crochet, is-books, is-tech</span></div>
+      <div class="band is-wash" style="padding:20px;border-radius:var(--radius);">
+        <div class="cards explore">
+          <a class="card is-succulents" href="#grounds"><img src="images/section-plants.png" alt="" width="400" height="400"><span class="card-body"><h3>Succulents</h3><p>Sage.</p><span class="go">&rarr;</span></span></a>
+          <a class="card is-chickens" href="#grounds"><img src="images/section-chickens.png" alt="" width="400" height="400"><span class="card-body"><h3>Chickens</h3><p>Terracotta.</p><span class="go">&rarr;</span></span></a>
+          <a class="card is-crochet" href="#grounds"><img src="images/section-crochet.png" alt="" width="400" height="400"><span class="card-body"><h3>Crochet</h3><p>Lavender.</p><span class="go">&rarr;</span></span></a>
+          <a class="card is-books" href="#grounds"><img src="images/section-books.png" alt="" width="400" height="400"><span class="card-body"><h3>Books</h3><p>Amethyst.</p><span class="go">&rarr;</span></span></a>
+          <a class="card is-tech" href="#grounds"><img src="images/section-3dprint.png" alt="" width="400" height="400"><span class="card-body"><h3>Tech</h3><p>Gold.</p><span class="go">&rarr;</span></span></a>
+        </div>
+      </div>
+      <p class="sg-note">One colour per obsession, fading to paper by 60% so the text still sits on
+         white. <b>Classes, not <code>:nth-child</code></b> — reordering the row would otherwise
+         silently reassign every colour. The top bar takes the card's own colour, which is the one
+         place “terracotta means a place to go” is relaxed: here the bar identifies rather than
+         invites.</p>
+    </div>
+
+    <div class="sg-item">
+      <div class="sg-name"><code>.washed</code> <code>.wash-art</code> <span>artwork as a ground, not a picture</span></div>
+      <div class="band is-reading washed" style="border-radius:var(--radius);padding:26px 0;">
+        <img class="wash-art" src="images/ornament-amethyst.png" alt="" aria-hidden="true">
+        <div class="wrap"><div class="sec-head"><h2>Latest from the journal</h2></div></div>
+      </div>
+      <p class="sg-note">The illustrations are the richest thing the brand owns and every other
+         instance of them is postage-stamp sized. Decoration only — <code>aria-hidden</code>, never
+         under body copy, and dropped below 900px where there is no margin for it to live in.</p>
     </div>
   </div>
 </section>
@@ -396,7 +453,13 @@
       </div>
       <p class="sg-note">Framed in a ring rather than set bare: at 18px an unframed mark reads as
          debris beside the text links. <code>currentColor</code> on the paths is what lets one hover
-         rule move the icon, the ring and the wash together.</p>
+         rule move the icon, the ring and the wash together. The footer keeps its own smaller, paler
+         copy of this rule — <code>footer .social a</code> — because the ground down there is dark;
+         scoping rather than folding it in is what keeps this specimen visible on cream.</p>
+      <p class="sg-note"><b><code>padding:0</code> is load-bearing.</b> This row is a
+         <code>&lt;nav&gt;</code>, so it inherited <code>nav a{padding-bottom:4px}</code> from the
+         masthead and sat every icon 2px above the centre of its own circle — 8px above, 12px below.
+         It reads as “the circles are off” long before anyone thinks to blame the main navigation.</p>
     </div>
   </div>
 </section>
@@ -472,12 +535,13 @@
 <footer>
   <div class="wrap">
     <div class="legal" style="border:none;margin:0;padding:0;">
-      This page renders <code style="font-family:ui-monospace,monospace;">style.css</code> directly —
-      it has no styles of its own beyond its own scaffolding, so it cannot fall out of date.
-    </div>
-    <div class="legal-tools">
-      <a href="index.html">Site</a>
-      <a href="admin.html">Admin</a>
+      <span>This page renders <code style="font-family:ui-monospace,monospace;">style.css</code>
+        directly — it has no styles of its own beyond its own scaffolding, so it cannot fall
+        out of date.</span>
+      <span class="legal-tools">
+        <a href="index.html">Site</a>
+        <a href="admin.html">Admin</a>
+      </span>
     </div>
   </div>
 </footer>
@@ -505,6 +569,7 @@ const DERIVED = [
   ["--ink-soft", "Ink soft", "Body copy"],
   ["--ink-faint", "Ink faint", "Captions, counts"],
   ["--terracotta-dim", "Terracotta dim", "Text on terracotta tints"],
+  ["--sage-deep", "Sage, deepened", "The footer ground"],
   ["--gold", "Gold", "Divider artwork"],
   ["--line", "Line", "Every hairline"],
 ];

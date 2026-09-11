@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <meta name="theme-color" content="#F7F3EB">
-<link rel="stylesheet" href="style.css?v=2026-09-11.1">
+<link rel="stylesheet" href="style.css?v=2026-09-11.4">
 </head>
 <body>
 
@@ -47,19 +47,22 @@
   </div>
 </div>
 
-<section id="explore">
+<section id="explore" class="band is-wash">
   <div class="wrap">
     <div class="cards explore">
-      <a class="card" href="plants.html"><img src="images/section-plants.png" alt="A potted echeveria" width="400" height="400"><span class="card-body"><h3>Succulents</h3><p>230 of them, and every one has a name.</p><span class="go">&rarr;</span></span></a>
-      <a class="card" href="chickens.html"><img src="images/section-chickens.png" alt="A hen" width="400" height="400"><span class="card-body"><h3>Chickens</h3><p>Six birds, and I know all their opinions.</p><span class="go">&rarr;</span></span></a>
-      <a class="card" href="crochet.html"><img src="images/section-crochet.png" alt="Yarn and a crochet hook" width="400" height="400"><span class="card-body"><h3>Crochet</h3><p>One stitch at a time, until it clicked.</p><span class="go">&rarr;</span></span></a>
-      <a class="card is-reading" href="books.html"><img src="images/section-books.png" alt="A stack of books and a mug" width="400" height="400"><span class="card-body"><h3>Books</h3><p>Lore, slow burn, and staying up too late.</p><span class="go">&rarr;</span></span></a>
-      <a class="card" href="tech.html"><img src="images/section-3dprint.png" alt="A 3D printer partway through a print" width="400" height="400"><span class="card-body"><h3>Tech</h3><p>Apps, printing, AI, and the rest of the nerd stuff.</p><span class="go">&rarr;</span></span></a>
+      <a class="card is-succulents" href="plants.html"><img src="images/section-plants.png" alt="A potted echeveria" width="400" height="400"><span class="card-body"><h3>Succulents</h3><p>230 of them, and every one has a name.</p><span class="go">&rarr;</span></span></a>
+      <a class="card is-chickens" href="chickens.html"><img src="images/section-chickens.png" alt="A hen" width="400" height="400"><span class="card-body"><h3>Chickens</h3><p>Six birds, and I know all their opinions.</p><span class="go">&rarr;</span></span></a>
+      <a class="card is-crochet" href="crochet.html"><img src="images/section-crochet.png" alt="Yarn and a crochet hook" width="400" height="400"><span class="card-body"><h3>Crochet</h3><p>One stitch at a time, until it clicked.</p><span class="go">&rarr;</span></span></a>
+      <a class="card is-books" href="books.html"><img src="images/section-books.png" alt="A stack of books and a mug" width="400" height="400"><span class="card-body"><h3>Books</h3><p>Lore, slow burn, and staying up too late.</p><span class="go">&rarr;</span></span></a>
+      <a class="card is-tech" href="tech.html"><img src="images/section-3dprint.png" alt="A 3D printer partway through a print" width="400" height="400"><span class="card-body"><h3>Tech</h3><p>Apps, printing, AI, and the rest of the nerd stuff.</p><span class="go">&rarr;</span></span></a>
     </div>
   </div>
 </section>
 
-<section style="padding-top:0;">
+<div class="divider-wrap"><img src="images/divider-amethyst.png" alt="" width="1200" height="400"></div>
+
+<section class="band is-reading washed">
+  <img class="wash-art" src="images/ornament-amethyst.png" alt="" aria-hidden="true">
   <div class="wrap">
     <div class="sec-head">
       <h2>Latest from the journal</h2>
@@ -72,12 +75,10 @@
   </div>
 </section>
 
-<div class="divider-wrap"><img src="images/divider-slim.png" alt="" width="1200" height="400"></div>
-
 <footer>
-  <div class="wrap">
+  <div class="wrap foot-main">
     <div class="brand-block">
-      <a class="logo" href="index.html"><img src="images/logo-badge.png" alt="just amanda" width="500" height="500"></a>
+      <a class="logo" href="index.html"><img src="images/logo-badge.png" alt="just amanda" width="46" height="46"></a>
       <div class="tagline">A creative life,<br>thoughtfully collected.</div>
     </div>
     <nav class="foot-nav">
@@ -93,19 +94,19 @@
   </div>
   <div class="wrap">
     <div class="legal">
-      &copy; 2026 just amanda.
-      &nbsp;&middot;&nbsp; Words and photographs are my own; please don&rsquo;t reuse them without asking.
-      &nbsp;&middot;&nbsp; Illustrations were made with AI, from my direction.
-    </div>
-    <div class="legal-tools">
-      <a href="admin.html">Admin</a>
-      <a href="styleguide.html">Style guide</a>
-      <a href="https://garden.justamanda.net">Garden app</a>
+      <span>&copy; 2026 just amanda.
+        &nbsp;&middot;&nbsp; Words and photographs are my own; please don&rsquo;t reuse them without asking.
+        &nbsp;&middot;&nbsp; Illustrations were made with AI, from my direction.</span>
+      <span class="legal-tools">
+        <a href="admin.html">Admin</a>
+        <a href="styleguide.html">Style guide</a>
+        <a href="https://garden.justamanda.net">Garden app</a>
+      </span>
     </div>
   </div>
 </footer>
 
-<script src="site.js?v=2026-09-11.1"></script>
+<script src="site.js?v=2026-09-11.4"></script>
 <script>
 (async () => {
   const el = document.getElementById("home-posts");
