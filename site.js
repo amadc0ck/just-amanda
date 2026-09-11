@@ -78,3 +78,24 @@ if (document.readyState === "loading") {
 } else {
   applyTextOverrides();
 }
+
+/* ---------- editing, for one person ----------
+   A reader never fetches edit.js or markdown.js. They are pulled in only when a
+   session is sitting in localStorage, which is why signing in can unlock editing
+   on the real pages without costing everyone else a download.
+
+   admin.html is excluded: it loads site.js for the helpers and has its own
+   editing already. */
+(function () {
+  if (/admin\.html$/.test(location.pathname)) return;
+  var a = null;
+  try { a = JSON.parse(localStorage.getItem("ja_auth") || "null"); } catch (e) { return; }
+  if (!a || !a.access_token) return;
+  if (!document.querySelector("[data-edit]")) return;
+  ["markdown.js?v=2026-09-12.1", "edit.js?v=2026-09-12.1"].forEach(function (src) {
+    var el = document.createElement("script");
+    el.src = src;
+    el.async = false;          /* markdown.js must be parsed before edit.js runs */
+    document.head.appendChild(el);
+  });
+})();

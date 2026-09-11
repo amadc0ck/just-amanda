@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="images/favicon.png">
-<link rel="stylesheet" href="style.css?v=2026-09-11.8">
+<link rel="stylesheet" href="style.css?v=2026-09-12.1">
 <style>
   .admin-bar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;}
   .admin-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
@@ -59,21 +59,22 @@
 
 <div class="admin-bar">
   <div class="wrap">
-    <h1>just amanda &middot; write <span id="build"></span></h1>
+    <h1><a href="index.html" style="color:inherit;">just amanda</a> &middot; write
+      <span id="build"></span></h1>
     <div class="actions" id="bar-actions"></div>
   </div>
 </div>
 
 <section><div class="wrap" id="app"><p class="muted">Loading&hellip;</p></div></section>
 
-<script src="site.js?v=2026-09-11.8"></script>
-<script src="markdown.js?v=2026-09-11.8"></script>
+<script src="site.js?v=2026-09-12.1"></script>
+<script src="markdown.js?v=2026-09-12.1"></script>
 <script>
 /* Bumped on every deploy, and shown in the admin bar. Browsers cache this page
    aggressively, and a stale tab silently running old code has already cost one
    batch of images their transparency. If the stamp on screen is not the newest,
    hard-refresh before uploading anything. */
-const BUILD = "2026-09-11.8";
+const BUILD = "2026-09-12.1";
 
 const KEY = "ja_auth";
 const app = document.getElementById("app");
@@ -289,12 +290,11 @@ async function screenList() {
   editing = null;
   barActions.innerHTML = `<button class="btn btn-primary btn-sm" id="new">New post &rarr;</button>
     <button class="btn btn-ghost btn-sm" id="cards">Home cards</button>
-    <button class="btn btn-ghost btn-sm" id="text">Page text</button>
+    <a class="btn btn-ghost btn-sm" href="index.html">View site &rarr;</a>
     <a class="btn btn-ghost btn-sm" href="styleguide.html">Style guide</a>
     <button class="btn btn-ghost btn-sm" id="out">Sign out</button>`;
   document.getElementById("new").onclick = () => screenEdit(null);
   document.getElementById("cards").onclick = () => screenCards();
-  document.getElementById("text").onclick = () => screenText();
   document.getElementById("out").onclick = () => { localStorage.removeItem(KEY); screenLogin(); };
 
   app.innerHTML = `<div id="note"></div><p class="muted">Loading posts&hellip;</p>`;
@@ -543,237 +543,11 @@ function screenEdit(p) {
 }
 
 /* ---------- page text ----------
-   Editing happens ON THE PAGE, not in a list.
-
-   The first version of this was 278 fields in a column, each labelled
-   "about.p-12" with the words underneath. Every one of them was correct and
-   none of them told you WHERE it was, so using it meant reading a key, picturing
-   the page, and scrolling to find the right box. The list was a database
-   browser wearing a form.
-
-   So: the real page loads in an iframe, same origin, and the editor is injected
-   into it. Hover a block and it lights up. Click it and a panel opens with the
-   Markdown; type and the block itself re-renders as you go, in the real
-   typeface, at the real measure, in its real place on the page. What you are
-   looking at is the thing you are changing.
-
-   The parent keeps auth and does the writing. The iframe only reports edits. */
-const TEXT_PAGES = ["index.html","about.html","plants.html","chickens.html",
-                    "crochet.html","books.html","tech.html","journal.html",
-                    "inventory.html"];
-let textPage = "about.html";
-let pending = new Map();    // key -> markdown ("" means revert to the HTML)
-let authored = new Map();   // key -> the words as written in the file
-let savedRows = new Map();  // key -> the row currently in site_text
-
-function pendingCount() { return pending.size; }
-
-function textBar() {
-  const n = pendingCount();
-  barActions.innerHTML = `<button class="btn btn-ghost btn-sm" id="back">&larr; Posts</button>
-    <select id="pagesel" class="btn btn-ghost btn-sm" style="padding:9px 12px;">
-      ${TEXT_PAGES.map((p) => `<option value="${p}"${p === textPage ? " selected" : ""}>${p}</option>`).join("")}
-    </select>
-    <button class="btn ${n ? "btn-primary" : "btn-ghost"} btn-sm" id="savetext"${n ? "" : " disabled"}>
-      ${n ? `Save ${n} change${n > 1 ? "s" : ""}` : "No changes"}</button>`;
-  document.getElementById("back").onclick = () => {
-    if (n && !confirm(`${n} unsaved change${n > 1 ? "s" : ""}. Leave anyway?`)) return;
-    pending.clear(); screenList();
-  };
-  document.getElementById("pagesel").onchange = (e) => {
-    if (pendingCount() && !confirm("Unsaved changes on this page. Switch anyway?")) {
-      e.target.value = textPage; return;
-    }
-    pending.clear(); textPage = e.target.value; screenText();
-  };
-  document.getElementById("savetext").onclick = saveText;
-}
-
-async function screenText() {
-  editing = null;
-  pending.clear(); authored.clear(); savedRows.clear();
-  textBar();
-  app.innerHTML = `<div id="note"></div><p class="muted">Opening ${escapeHtml(textPage)}&hellip;</p>`;
-
-  /* The authored words come from the RAW file, not from the iframe: the iframe
-     shows the page with overrides already applied, so it cannot tell you what
-     the HTML underneath actually says. */
-  try {
-    const html = await (await fetch(`${textPage}?cb=${Date.now()}`)).text();
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    doc.querySelectorAll("[data-edit]").forEach((el) =>
-      authored.set(el.dataset.edit, (el.textContent || "").replace(/\s+/g, " ").trim()));
-  } catch (e) {
-    app.innerHTML = `<div id="note"></div><div class="msg err">Could not read
-      ${escapeHtml(textPage)}: ${escapeHtml(e.message)}</div>`;
-    return;
-  }
-  try {
-    (await api("site_text?select=key,value_md,default_text")).forEach((r) => savedRows.set(r.key, r));
-  } catch (e) {
-    app.innerHTML = `<div id="note"></div><div class="msg err">Could not load overrides:
-      ${escapeHtml(e.message)}<br>If this says the relation does not exist, run
-      <strong>sql/003-site-text.sql</strong> in the Supabase SQL editor first.</div>`;
-    return;
-  }
-
-  app.innerHTML = `<div id="note"></div>
-    <p class="muted" style="margin:0 0 12px;">Hover any words to highlight them, click to edit.
-      ${authored.size} editable blocks on this page.
-      <span id="ovcount"></span></p>
-    <div style="border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
-                background:var(--card);box-shadow:var(--shadow);">
-      <iframe id="pv" src="${textPage}?cb=${Date.now()}" title="${escapeHtml(textPage)}"
-              style="width:100%;height:78vh;border:0;display:block;"></iframe>
-    </div>`;
-  document.getElementById("pv").onload = (e) => wireInline(e.target);
-  drawOverrideCount();
-}
-
-function drawOverrideCount() {
-  const mine = [...savedRows.keys()].filter((k) => authored.has(k));
-  const el = document.getElementById("ovcount");
-  if (el) el.innerHTML = mine.length
-    ? `<strong>${mine.length}</strong> currently overridden.` : "None overridden yet.";
-}
-
-/* Everything below runs against the iframe's document. Same origin, so this is
-   ordinary DOM work, not postMessage. */
-function wireInline(frame) {
-  const d = frame.contentDocument;
-  if (!d || d.__wired) return;
-  d.__wired = true;
-
-  const css = d.createElement("style");
-  css.textContent = `
-    [data-edit]{outline:1.5px dashed transparent;outline-offset:3px;
-      transition:outline-color .12s,background-color .12s;cursor:text;border-radius:3px;}
-    [data-edit]:hover{outline-color:#C8644A;background:rgba(200,100,74,.06);}
-    [data-edit].ja-on{outline:2px solid #C8644A;outline-offset:3px;background:rgba(200,100,74,.10);}
-    [data-edit].ja-over{outline-color:rgba(141,121,166,.55);}
-    .ja-panel{position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#fff;
-      border-top:2px solid #C8644A;box-shadow:0 -10px 30px -18px rgba(46,61,47,.5);
-      padding:14px 18px;font:14px/1.5 Inter,system-ui,sans-serif;}
-    .ja-panel b{display:block;font-size:11px;letter-spacing:.7px;text-transform:uppercase;
-      color:#8B9382;margin-bottom:6px;}
-    .ja-panel .ja-warn{background:rgba(200,100,74,.12);color:#B0543C;border-radius:7px;
-      padding:8px 11px;margin-bottom:9px;font-size:12.5px;}
-    [data-edit].ja-drift{outline-color:#C0A15A;background:rgba(192,161,90,.12);}
-    .ja-panel textarea{width:100%;min-height:74px;padding:10px 12px;border:1px solid rgba(46,61,47,.18);
-      border-radius:8px;font:inherit;resize:vertical;}
-    .ja-row{display:flex;gap:9px;align-items:center;margin-top:9px;flex-wrap:wrap;}
-    .ja-row button{font:inherit;font-size:12px;font-weight:600;letter-spacing:.8px;
-      text-transform:uppercase;padding:8px 15px;border-radius:8px;border:1.5px solid #C8644A;
-      background:#fff;color:#C8644A;cursor:pointer;}
-    .ja-row button.pri{background:#2E3D2F;border-color:#2E3D2F;color:#fff;}
-    .ja-row .ja-hint{font-size:12px;color:#8B9382;margin-left:auto;}`;
-  d.head.appendChild(css);
-
-  /* Links would navigate the frame away mid-edit. */
-  d.addEventListener("click", (ev) => {
-    const a = ev.target.closest("a");
-    if (a) { ev.preventDefault(); ev.stopPropagation(); }
-  }, true);
-
-  d.querySelectorAll("[data-edit]").forEach((el) => {
-    el.dataset.orig = el.innerHTML;
-    const r = savedRows.get(el.dataset.edit);
-    if (r) el.classList.add("ja-over");
-    if (r && r.default_text && r.default_text !== authored.get(el.dataset.edit)) {
-      el.classList.add("ja-drift");
-    }
-    el.addEventListener("click", (ev) => { ev.preventDefault(); openPanel(d, el); });
-  });
-}
-
-function openPanel(d, el) {
-  const key = el.dataset.edit;
-  d.querySelectorAll(".ja-on").forEach((n) => n.classList.remove("ja-on"));
-  el.classList.add("ja-on");
-  d.querySelector(".ja-panel")?.remove();
-
-  const row = savedRows.get(key);
-  const start = pending.has(key) ? pending.get(key) : (row ? row.value_md : "");
-  const auth = authored.get(key) || "";
-
-  const drift = row && row.default_text && row.default_text !== auth;
-  const p = d.createElement("div");
-  p.className = "ja-panel";
-  p.innerHTML = `<b>${key}</b>
-    ${drift ? `<div class="ja-warn"><strong>The HTML changed after this override was saved.</strong>
-      It now reads: &ldquo;${escapeHtml(auth).slice(0, 240)}&rdquo;, so this override may be
-      hiding something new. Use the original to drop it.</div>` : ""}
-    <textarea placeholder="${escapeHtml(auth).slice(0, 220)}"></textarea>
-    <div class="ja-row">
-      <button class="pri" data-a="done">Done</button>
-      <button data-a="revert">Use the original</button>
-      <button data-a="close">Cancel</button>
-      <span class="ja-hint">**bold** &nbsp; *italic* &nbsp; [text](url) &nbsp; empty = original</span>
-    </div>`;
-  d.body.appendChild(p);
-
-  const ta = p.querySelector("textarea");
-  ta.value = start;
-  ta.focus();
-
-  /* Live: the block itself re-renders as she types, in place, in the real type. */
-  const paint = () => {
-    const v = ta.value.trim();
-    el.innerHTML = v ? inlineMd(v) : el.dataset.orig;
-  };
-  ta.addEventListener("input", paint);
-  paint();
-
-  p.querySelectorAll("button").forEach((b) => {
-    b.onclick = () => {
-      const act = b.dataset.a;
-      if (act === "close") {
-        el.innerHTML = pending.has(key)
-          ? (pending.get(key) ? inlineMd(pending.get(key)) : el.dataset.orig)
-          : (row ? inlineMd(row.value_md) : el.dataset.orig);
-      } else if (act === "revert") {
-        /* "" queues a DELETE, which is only meaningful if a row actually
-           exists. Reverting an edit that was never saved just drops it. */
-        if (row) pending.set(key, ""); else pending.delete(key);
-        el.innerHTML = el.dataset.orig;
-        el.classList.remove("ja-over");
-      } else {
-        const v = ta.value.trim();
-        const current = row ? row.value_md : "";
-        if (v === current) pending.delete(key); else pending.set(key, v);
-        el.classList.toggle("ja-over", !!v);
-      }
-      el.classList.remove("ja-on");
-      p.remove();
-      textBar();
-    };
-  });
-}
-
-async function saveText() {
-  if (!pendingCount()) return;
-  const items = [...pending.entries()];
-  try {
-    for (const [key, md] of items) {
-      if (!md) {
-        await api(`site_text?key=eq.${encodeURIComponent(key)}`, { method: "DELETE" });
-        continue;
-      }
-      await api("site_text", {
-        method: "POST",
-        headers: { Prefer: "resolution=merge-duplicates,return=representation" },
-        body: JSON.stringify({
-          key, page: textPage, value_md: md, value_html: inlineMd(md),
-          default_text: authored.get(key) || "",
-          updated_at: new Date().toISOString(),
-        }),
-      });
-    }
-    pending.clear();
-    await screenText();
-    note(`Saved ${items.length} change${items.length > 1 ? "s" : ""}. The live site is updated.`);
-  } catch (e) { note(e.message, true); }
-}
+   There is no page-text screen here any more. It was an iframe of the real site
+   inside the admin, which is a strange thing to build once you notice that the
+   real site is right there. Editing now happens ON the pages, unlocked by the
+   same session this screen uses, and edit.js owns it. Keeping a second copy
+   here would have been two editors to fix every time one of them was wrong. */
 
 /* ---------- home cards ----------
    The five cards on the front page. Their text lives in index.html as authored
