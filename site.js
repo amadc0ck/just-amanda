@@ -44,6 +44,58 @@ function postCard(p) {
     </span></a>`;
 }
 
+/* ---------- pages not open yet ----------
+   Pages still being written. For the public, every link to one is greyed out
+   and marked "soon", and the page itself shows only its coming-soon panel
+   (the CSS hides the rest while <html> carries class="is-soon").
+
+   A signed-in session sees everything as normal, because the words on those
+   pages are edited in place and that needs the real page. A banner says the
+   page is hidden, so it is never mistaken for live.
+
+   This is a curtain, not a lock: the words are in the HTML for anyone who
+   views source. Open a page by removing it here and following the note in
+   its own <head>. */
+const COMING_SOON = ["chickens.html", "crochet.html", "books.html", "tech.html"];
+
+function hasSession() {
+  try { const a = JSON.parse(localStorage.getItem("ja_auth") || "null"); return !!(a && a.access_token); }
+  catch (e) { return false; }
+}
+
+const isSoonLink = (a) => COMING_SOON.includes((a.getAttribute("href") || "").split(/[?#]/)[0]);
+
+/* Run again after the text overrides land, since those can bring links in. */
+function markSoonLinks() {
+  if (hasSession()) return;
+  document.querySelectorAll("a[href]").forEach((a) => {
+    if (!isSoonLink(a) || a.classList.contains("is-soon")) return;
+    a.classList.add("is-soon");
+    a.setAttribute("aria-disabled", "true");
+    a.title = "Coming soon";
+  });
+}
+
+(function () {
+  const root = document.documentElement;
+  if (hasSession()) {
+    if (root.classList.contains("is-soon")) {
+      root.classList.remove("is-soon");
+      const head = document.querySelector(".masthead");
+      if (head) head.insertAdjacentHTML("afterend",
+        `<div class="preview-banner">Coming soon &middot; hidden from the public, only you can see this page</div>`);
+    }
+    return;
+  }
+  markSoonLinks();
+  // Catches links injected after marking, too. A greyed link that still
+  // navigated would be worse than no marking at all.
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest && e.target.closest("a[href]");
+    if (a && isSoonLink(a)) e.preventDefault();
+  });
+})();
+
 /* ---------- page text overrides ----------
    Every editable block on the site carries data-edit="page.tag-n" and keeps its
    authored words in the HTML. This replaces one only when site_text holds a row
@@ -65,6 +117,7 @@ async function applyTextOverrides() {
       const v = map.get(n.dataset.edit);
       if (v) n.innerHTML = v;
     });
+    markSoonLinks();
   } catch (e) {
     /* The authored text stands. Never worth a visible error on a reader's page. */
     console.warn("site_text overrides unavailable:", e.message);

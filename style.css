@@ -497,6 +497,36 @@ footer .social svg{width:15px;height:15px;}
   .post-card .cover{height:180px;}
 }
 
+/* ---------- coming soon ----------
+   A page still being written shows only its panel to the public. site.js
+   removes .is-soon from <html> for a signed-in session. Everything between
+   the masthead and the footer is hidden, rather than each section by name,
+   so a section added later cannot leak out. */
+html.is-soon body > :not(.masthead):not(footer):not(.soon-panel):not(script){display:none !important;}
+.soon-panel{display:none;}
+html.is-soon .soon-panel{display:block;text-align:center;padding:70px 0 80px;
+  background:linear-gradient(180deg,var(--bg-wash),var(--bg));}
+.soon-panel img{width:150px;height:auto;margin:0 auto 18px;}
+.soon-panel h1{font-family:'Playfair Display',Georgia,serif;font-size:44px;font-weight:500;
+  margin:8px 0 12px;letter-spacing:-.4px;}
+.soon-panel p{font-size:17px;color:var(--ink-soft);max-width:30em;margin:0 auto 26px;}
+.soon-panel .btn-row{justify-content:center;}
+
+/* Links to those pages, for the public: present, so the site's shape reads,
+   but plainly not a door yet. */
+a.is-soon{cursor:default;}
+nav a.is-soon,nav a.is-soon:hover{color:var(--ink-faint);}
+nav a.is-soon::after{content:"soon";margin-left:5px;font-size:9.5px;font-weight:600;
+  letter-spacing:.6px;text-transform:uppercase;vertical-align:2px;color:var(--amethyst);}
+.foot-nav a.is-soon,.foot-nav a.is-soon:hover{color:rgba(247,243,235,.45);}
+.foot-nav a.is-soon::after{color:rgba(247,243,235,.55);}
+.card.is-soon:hover{border-color:var(--line);}
+.card.is-soon img{opacity:.6;filter:grayscale(.35);}
+.card.is-soon h3{color:var(--ink-faint);}
+.card.is-soon .go{font-size:0;}
+.card.is-soon .go::after{content:"Coming soon";font-size:11px;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--amethyst);}
+
 /* Preview mode on post.html: a clear, unmissable band so a draft can never be
    mistaken for the live page. */
 .preview-banner{background:var(--amethyst);color:#fff;text-align:center;
