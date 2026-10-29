@@ -30,7 +30,13 @@ async function sbGet(path, token) {
   return res.json();
 }
 
-function postHref(slug) { return `post.html?slug=${encodeURIComponent(slug)}`; }
+/* Posts live at /journal/<slug>/. tools/build-journal.mjs writes a static page
+   there for each published post (run by a scheduled GitHub Action), so shared
+   links carry a real title, description and image for Facebook, iMessage and
+   search. Until the Action has run for a brand-new post, GitHub Pages serves
+   404.html at that address, which renders the post in the browser instead, so
+   the link works from the moment it is published. */
+function postHref(slug) { return `/journal/${encodeURIComponent(slug)}/`; }
 
 function postCard(p) {
   const cover = p.cover_url
@@ -153,7 +159,7 @@ if (document.readyState === "loading") {
   try { a = JSON.parse(localStorage.getItem("ja_auth") || "null"); } catch (e) { return; }
   if (!a || !a.access_token) return;
   if (!document.querySelector("[data-edit]")) return;
-  ["markdown.js?v=2026-09-12.2", "edit.js?v=2026-09-12.2"].forEach(function (src) {
+  ["markdown.js?v=2026-10-29.9", "edit.js?v=2026-10-29.9"].forEach(function (src) {
     var el = document.createElement("script");
     el.src = src;
     el.async = false;          /* markdown.js must be parsed before edit.js runs */

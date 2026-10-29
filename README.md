@@ -54,6 +54,24 @@ nav item, replace the `<main>` content. The nav is duplicated in the header and
 footer of each page. With eight pages that is worth a second look, but at this
 size hand-editing beats introducing a build step.
 
+## Journal pages, generated
+
+Posts are written in admin and live in Supabase. `tools/build-journal.mjs`
+turns each published one into a static page at `journal/<slug>/`, so shared
+links get a real title, image and description, and writes `404.html` and
+`sitemap.xml`. A GitHub Action (`.github/workflows/journal.yml`) runs it every
+30 minutes and commits the result.
+
+**That Action commits to `main`, so `git pull` before pushing local work.**
+
+A post newer than the last run still works at its address: GitHub Pages
+serves `404.html` there, which renders it in the browser. Never edit files in
+`journal/` by hand; the next run overwrites them.
+
+The RSS feed is the `rss` Edge Function in the `adcock-plant-inventory` repo.
+Short bio links `/ig`, `/fb` and `/threads` forward to `/links` with a `?ref=`
+for GoatCounter, because Instagram cannot mask a bio link's address.
+
 ## Deploying
 
 GitHub Pages from the default branch, custom domain `justamanda.net`.

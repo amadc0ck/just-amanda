@@ -20,7 +20,11 @@ discipline in the garden app.
 """
 import datetime, glob, pathlib, re, sys
 
-ASSETS = ("style.css", "site.js", "markdown.js")
+ASSETS = ("style.css", "site.js", "markdown.js", "edit.js")
+# site.js is stamped as well as the HTML: its editing loader names markdown.js
+# and edit.js with a ?v=, and before this those were never bumped, so a signed-
+# in browser could keep running a stale editor indefinitely.
+STAMPED = sorted(glob.glob("*.html")) + ["site.js"]
 ADMIN = pathlib.Path("admin.html")
 
 def current():
@@ -36,7 +40,7 @@ def main():
     ADMIN.write_text(re.sub(r'const BUILD = "[^"]+";', f'const BUILD = "{stamp}";', admin, count=1))
 
     touched = 0
-    for f in sorted(glob.glob("*.html")):
+    for f in STAMPED:
         p = pathlib.Path(f)
         s = before = p.read_text()
         for a in ASSETS:
@@ -45,7 +49,7 @@ def main():
         if s != before:
             p.write_text(s); touched += 1
 
-    print(f"stamp {stamp}: {touched} html file(s) updated")
+    print(f"stamp {stamp}: {touched} file(s) updated")
 
 if __name__ == "__main__":
     sys.exit(main())

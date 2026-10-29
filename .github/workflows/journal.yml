@@ -1,0 +1,50 @@
+# Regenerates the static journal pages (journal/<slug>/), 404.html and
+# sitemap.xml from the posts published in Supabase. See tools/build-journal.mjs.
+#
+# Every 30 minutes, so a post published in admin gets its real page (and its
+# proper Facebook / iMessage preview) within half an hour. Until then its
+# address still works: 404.html renders it in the browser.
+#
+# This commits to main. Pull before pushing local work, or the push is refused.
+name: Journal pages
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [post.html, site.js, tools/build-journal.mjs]
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: journal-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node tools/build-journal.mjs
+      - name: Commit and publish if anything changed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git add -A journal 404.html sitemap.xml
+          if git diff --cached --quiet; then echo "No changes."; exit 0; fi
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "Journal pages: regenerate from published posts"
+          git push
+          # A push made with GITHUB_TOKEN may not start a Pages build on its
+          # own, so ask for one. Harmless if Pages already started.
+          curl -sS -X POST -H "Authorization: Bearer $GH_TOKEN" \
+               -H "Accept: application/vnd.github+json" \
+               "https://api.github.com/repos/${{ github.repository }}/pages/builds" || true

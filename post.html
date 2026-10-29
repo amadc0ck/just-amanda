@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <meta name="theme-color" content="#F7F3EB">
-<link rel="stylesheet" href="style.css?v=2026-10-29.8">
+<link rel="stylesheet" href="style.css?v=2026-10-29.9">
 <link rel="alternate" type="application/rss+xml" title="just amanda · journal" href="https://fsckwgicmvviefuivgza.supabase.co/functions/v1/rss">
 <!-- GoatCounter: page views and referrers. No cookies, no personal data, so
      no consent banner. site.js sets GoatCounter's skipgc flag for a signed-in
@@ -74,7 +74,7 @@
   </div>
 </footer>
 
-<script src="site.js?v=2026-10-29.8"></script>
+<script src="site.js?v=2026-10-29.9"></script>
 <script>
 (async () => {
   const host = document.getElementById("post");
@@ -127,8 +127,15 @@
     return;
   }
 
-  const slug = params.get("slug");
-  if (!slug) { notFound("No post specified"); return; }
+  /* Three ways in: post.html?slug=x (older links), /journal/x/ before its
+     static page exists, and any other missing address, because this file is
+     also published as 404.html. */
+  const fromPath = (location.pathname.match(/^\/journal\/([^/]+)\/?$/) || [])[1];
+  const slug = params.get("slug") || (fromPath && decodeURIComponent(fromPath));
+  if (!slug) {
+    notFound(/post\.html$/.test(location.pathname) ? "No post specified" : "Page not found");
+    return;
+  }
 
   try {
     const rows = await sbGet(
@@ -136,6 +143,11 @@
       `&slug=eq.${encodeURIComponent(slug)}&status=eq.published&limit=1`);
     if (!rows.length) { notFound("Post not found"); return; }
     render(rows[0], false);
+    // One address for search engines, whichever way the reader arrived.
+    const canon = document.createElement("link");
+    canon.rel = "canonical";
+    canon.href = `https://justamanda.net/journal/${encodeURIComponent(slug)}/`;
+    document.head.appendChild(canon);
   } catch (e) {
     notFound("This post could not load");
     console.error(e);
