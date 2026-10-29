@@ -497,6 +497,76 @@ footer .social svg{width:15px;height:15px;}
   .post-card .cover{height:180px;}
 }
 
+/* ---------- links page (links.html) ----------
+   Linktree's shape in this site's clothes: one centred column, a round
+   avatar, then stacked full-width buttons that lift on hover. Sized for a
+   phone first, since it is reached from an Instagram bio. */
+.lt-page{background:linear-gradient(180deg,var(--lavender) 0%,var(--ivory) 38%,var(--bg-wash) 100%);
+  min-height:100vh;}
+.lt{max-width:560px;margin:0 auto;padding:56px 16px 40px;text-align:center;}
+/* The portrait is a whole seated figure, so a plain circle makes the face a
+   speck. The image is drawn 1.5x and shifted so the circle frames the face. */
+.lt-avatar{display:block;width:112px;height:112px;border-radius:50%;overflow:hidden;margin:0 auto 14px;
+  background:var(--card);border:3px solid var(--card);box-shadow:var(--shadow);}
+.lt-avatar img{width:150%;max-width:none;margin:-30% 0 0 -25%;}
+/* The site's section spacing is for full-width bands; here it opened gaps. */
+.lt section{padding:0;}
+.lt-name{font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:500;margin:0;}
+.lt-bio{font-size:15px;color:var(--ink-soft);margin:6px 0 18px;}
+.lt .social{margin-bottom:30px;}
+.lt-group{margin-bottom:26px;}
+.lt-label{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;font-weight:600;
+  color:var(--amethyst);margin:0 0 12px;}
+.lt-links{display:grid;gap:14px;}
+.lt-link{position:relative;display:flex;align-items:center;justify-content:center;min-height:58px;
+  padding:14px 64px;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);color:var(--ink);font-size:15.5px;font-weight:600;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;}
+.lt-link:hover{text-decoration:none;transform:translateY(-2px);border-color:var(--amethyst);
+  box-shadow:0 1px 2px rgba(46,61,47,.04),0 16px 30px -16px rgba(46,61,47,.38);}
+.lt-link:focus-visible{outline:2px solid var(--amethyst);outline-offset:3px;}
+.lt-thumb{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:50px;height:50px;
+  border-radius:11px;object-fit:cover;}
+.lt-text{display:flex;flex-direction:column;gap:3px;}
+.lt-title{font-family:'Playfair Display',Georgia,serif;font-size:17px;font-weight:500;line-height:1.25;}
+.lt-date{font-size:12px;font-weight:500;color:var(--ink-faint);}
+.lt-foot{margin:34px 0 0;}
+.lt-foot img{width:34px;height:34px;margin:0 auto;opacity:.85;}
+.lt{position:relative;}
+.lt-share{position:absolute;top:18px;right:16px;width:40px;height:40px;border-radius:50%;
+  display:grid;place-items:center;padding:0;border:1px solid var(--line);background:var(--card);
+  color:var(--ink-soft);cursor:pointer;box-shadow:var(--shadow);}
+.lt-share svg{width:17px;height:17px;fill:currentColor;}
+.lt-share:hover{color:var(--amethyst);border-color:var(--amethyst);}
+.lt-share.is-copied{color:var(--card);background:var(--amethyst);border-color:var(--amethyst);}
+.lt-share.is-copied::after{content:"Copied";position:absolute;top:46px;right:0;font-size:11px;
+  font-weight:600;color:var(--amethyst);white-space:nowrap;}
+
+/* The newest post, as a proper card rather than one more button. */
+.lt-feature{display:block;text-align:left;background:var(--card);border:1px solid var(--line);
+  border-radius:18px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;}
+.lt-feature:hover{text-decoration:none;transform:translateY(-2px);border-color:var(--amethyst);}
+.lt-feature img{width:100%;height:200px;object-fit:cover;}
+.lt-feature-body{display:flex;flex-direction:column;gap:6px;padding:16px 20px 18px;}
+.lt-feature .lt-title{font-size:22px;color:var(--ink);}
+.lt-excerpt{font-size:14.5px;line-height:1.55;color:var(--ink-soft);}
+.lt-feature .go{color:var(--amethyst);margin-top:2px;}
+
+/* Section tiles, the site's own illustrations. */
+.lt-tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.lt-tile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px 10px;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;color:var(--ink);
+  font-size:12.5px;font-weight:600;transition:transform .15s ease,border-color .15s ease;}
+.lt-tile:hover{text-decoration:none;transform:translateY(-2px);border-color:var(--amethyst);}
+.lt-tile img{width:52px;height:52px;object-fit:contain;}
+.lt-tile.is-soon,.lt-tile.is-soon:hover{transform:none;border-color:var(--line);color:var(--ink-faint);}
+.lt-tile.is-soon img{opacity:.5;filter:grayscale(.4);}
+.lt-tile.is-soon::after{content:"soon";font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--amethyst);margin-top:-3px;}
+@media (max-width:400px){ .lt-link{padding:14px 58px;} }
+@media (max-width:440px){ .lt-tiles{grid-template-columns:repeat(3,1fr);} }
+
 /* ---------- coming soon ----------
    A page still being written shows only its panel to the public. site.js
    removes .is-soon from <html> for a signed-in session. Everything between
