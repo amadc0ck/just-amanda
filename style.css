@@ -427,6 +427,23 @@ footer .social svg{width:15px;height:15px;}
   margin:6px 0 8px;color:var(--amethyst);line-height:1.25;}
 .post-card p{margin:0;font-size:15px;color:var(--ink-soft);}
 .post-card .go{display:inline-block;margin-top:13px;color:var(--amethyst);}
+/* A row of post cards that scrolls sideways. Native scrolling with snap
+   points, so touch, trackpad and keyboard all work with no script; the
+   arrows are only a convenience for a mouse. */
+.carousel-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:4px 2px 14px;scrollbar-width:thin;}
+.carousel-track .post-card{flex:0 0 min(320px,82%);scroll-snap-align:start;}
+.carousel-track .post-card .cover{height:190px;}
+.carousel-track .post-card h3{font-size:21px;}
+.carousel-nav{display:flex;justify-content:flex-end;gap:10px;margin-top:8px;}
+.carousel-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
+  background:var(--card);color:var(--amethyst);font-size:17px;cursor:pointer;
+  transition:border-color .15s ease,background-color .15s ease;}
+.carousel-btn:hover:not(:disabled){border-color:var(--amethyst);background:rgba(141,121,166,.09);}
+.carousel-btn:focus-visible{outline:2px solid var(--amethyst);outline-offset:2px;}
+.carousel-btn:disabled{opacity:.35;cursor:default;}
+.carousel-nav[hidden]{display:none;}
+
 .eyebrow{display:block;font-size:11.5px;letter-spacing:1px;text-transform:uppercase;
   font-weight:600;color:var(--amethyst);}
 
