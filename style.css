@@ -436,6 +436,7 @@ footer .social svg{width:15px;height:15px;}
 .post-head .back:hover{color:var(--terracotta);}
 .post-head h1{font-family:'Playfair Display',Georgia,serif;font-size:44px;line-height:1.12;
   font-weight:500;margin:10px 0 0;letter-spacing:-.4px;}
+.post-head .dek{font-size:19px;line-height:1.55;color:var(--ink-soft);margin:14px 0 0;}
 .post-cover{width:100%;max-width:980px;margin:0 auto 40px;border-radius:var(--radius);
   max-height:460px;object-fit:cover;}
 
@@ -456,6 +457,22 @@ footer .social svg{width:15px;height:15px;}
   padding:16px 18px;overflow-x:auto;margin:0 0 21px;}
 .post-body code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;}
 .post-body hr{border:0;border-top:1px solid var(--line);margin:36px 0;}
+
+/* Figures are written as raw HTML in the Markdown, since the parser has no
+   caption syntax. Portrait photos are held narrower so one picture never
+   takes more than a screen of scrolling. */
+.post-body figure{margin:30px 0;}
+.post-body figure img{margin:0;width:100%;height:auto;}
+.post-body figure.is-tall img{max-width:440px;margin:0 auto;}
+.post-body figcaption{font-size:13.5px;color:var(--ink-faint);text-align:center;margin-top:10px;}
+
+/* An end-of-post card for a parts list, a source list, and the like. */
+.post-body .materials{background:var(--bg-wash);border:1px solid var(--line);
+  border-radius:var(--radius);padding:24px 28px 8px;margin:40px 0 20px;}
+.post-body .materials h3{margin-top:0;}
+.post-body .materials ul{font-size:15.5px;}
+.post-body .materials ul ul{margin:8px 0 0;}
+.post-body .materials .note{font-size:13.5px;color:var(--ink-faint);}
 
 @media (max-width:900px){
   .post-head{padding:34px 0 20px;}

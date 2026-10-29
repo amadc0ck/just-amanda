@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <meta name="theme-color" content="#F7F3EB">
-<link rel="stylesheet" href="style.css?v=2026-09-12.2">
+<link rel="stylesheet" href="style.css?v=2026-10-29.1">
 </head>
 <body>
 
@@ -67,7 +67,7 @@
   </div>
 </footer>
 
-<script src="site.js?v=2026-09-12.2"></script>
+<script src="site.js?v=2026-10-29.1"></script>
 <script>
 (async () => {
   const host = document.getElementById("post");
@@ -89,7 +89,7 @@
       ? `<div class="preview-banner">Preview &middot; ${p.status === "published"
           ? "this is how the live post looks" : "not published, only you can see this"}</div>`
       : "";
-    const cover = p.cover_url ? `<img class="post-cover" src="${escapeHtml(p.cover_url)}" alt="">` : "";
+    const cover = p.cover_url ? `<img class="post-cover" src="${escapeHtml(p.cover_url)}" alt="${escapeHtml(p.cover_alt || "")}">` : "";
     const tags = (p.tags || []).length
       ? `<div class="tags">${p.tags.map((t) => `<span class="tag is-amethyst">${escapeHtml(t)}</span>`).join("")}</div>`
       : "";
@@ -102,6 +102,7 @@
         <a class="back" href="journal.html">&larr; Journal</a>
         <span class="eyebrow">${escapeHtml(when)}</span>
         <h1>${escapeHtml(p.title)}</h1>
+        ${p.excerpt ? `<p class="dek">${escapeHtml(p.excerpt)}</p>` : ""}
       </div>
       ${cover}
       <div class="post-body">${p.body_html || ""}${tags}</div>
@@ -124,7 +125,7 @@
 
   try {
     const rows = await sbGet(
-      `posts?select=title,excerpt,body_html,cover_url,tags,published_at,status` +
+      `posts?select=title,excerpt,body_html,cover_url,cover_alt,tags,published_at,status` +
       `&slug=eq.${encodeURIComponent(slug)}&status=eq.published&limit=1`);
     if (!rows.length) { notFound("Post not found"); return; }
     render(rows[0], false);

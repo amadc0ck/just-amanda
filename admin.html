@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="images/favicon.png">
-<link rel="stylesheet" href="style.css?v=2026-09-12.2">
+<link rel="stylesheet" href="style.css?v=2026-10-29.1">
 <style>
   .admin-bar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;}
   .admin-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
@@ -67,14 +67,14 @@
 
 <section><div class="wrap" id="app"><p class="muted">Loading&hellip;</p></div></section>
 
-<script src="site.js?v=2026-09-12.2"></script>
-<script src="markdown.js?v=2026-09-12.2"></script>
+<script src="site.js?v=2026-10-29.1"></script>
+<script src="markdown.js?v=2026-10-29.1"></script>
 <script>
 /* Bumped on every deploy, and shown in the admin bar. Browsers cache this page
    aggressively, and a stale tab silently running old code has already cost one
    batch of images their transparency. If the stamp on screen is not the newest,
    hard-refresh before uploading anything. */
-const BUILD = "2026-09-12.2";
+const BUILD = "2026-10-29.1";
 
 const KEY = "ja_auth";
 const app = document.getElementById("app");
@@ -401,6 +401,8 @@ function screenEdit(p) {
         <div class="hint">Comma separated.</div></div>
       <div class="field"><label for="f-cover">Cover image</label>
         <input id="f-cover" type="file" accept="image/*">
+        <input id="f-cover-alt" value="${escapeHtml(editing.cover_alt || "")}"
+          placeholder="Describe the cover for screen readers" style="margin-top:8px;font-size:13px;">
         <div id="cover-wrap"></div></div>
     </div>
     <div class="editor-cols">
@@ -485,6 +487,7 @@ function screenEdit(p) {
       excerpt: $("f-excerpt").value.trim() || null,
       tags: $("f-tags").value.split(",").map((t) => t.trim()).filter(Boolean),
       cover_url: editing.cover_url || null,
+      cover_alt: $("f-cover-alt").value.trim() || null,
       body_md,
       body_html: mdToHtml(body_md),
     };
@@ -525,7 +528,7 @@ function screenEdit(p) {
     const p = collect();
     sessionStorage.setItem("ja_preview", JSON.stringify({
       title: p.title || "(untitled)", excerpt: p.excerpt, body_html: p.body_html,
-      cover_url: p.cover_url, tags: p.tags,
+      cover_url: p.cover_url, cover_alt: p.cover_alt, tags: p.tags,
       published_at: editing.published_at || new Date().toISOString(),
       status: editing.status || "draft",
     }));
