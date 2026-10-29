@@ -65,6 +65,14 @@ function hasSession() {
 
 const isSoonLink = (a) => COMING_SOON.includes((a.getAttribute("href") || "").split(/[?#]/)[0]);
 
+/* GoatCounter's own opt-out: count.js skips any browser carrying skipgc=t.
+   Set whenever a signed-in session is seen, so my visits stay out of the
+   numbers. It persists after signing out, which is the point: this is my
+   browser, not a reader's. */
+if (hasSession()) {
+  try { localStorage.setItem("skipgc", "t"); } catch (e) { /* storage blocked: counted, harmless */ }
+}
+
 /* Run again after the text overrides land, since those can bring links in. */
 function markSoonLinks() {
   if (hasSession()) return;
