@@ -304,7 +304,7 @@ footer .tagline{font-size:13px;color:rgba(247,243,235,.64);margin:0;line-height:
 .foot-nav a{color:rgba(247,243,235,.86);}
 .foot-nav a:hover{color:#FFFFFF;}
 
-/* Three brand marks. Framed in a ring rather than set bare: at this size an
+/* Five brand marks. Framed in a ring rather than set bare: at this size an
    unframed glyph reads as debris beside the text links, and the circle gives
    the row the same optical weight the nav beside it has. currentColor on the
    paths is what lets one hover rule move icon, ring and wash together. */
