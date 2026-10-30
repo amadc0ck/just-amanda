@@ -17,6 +17,16 @@
      no consent banner. site.js sets GoatCounter's skipgc flag for a signed-in
      session, so my own visits are not counted. -->
 <script data-goatcounter="https://justamanda.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<!-- Google tag (gtag.js). Signed-in visits are skipped, same skipgc flag as GoatCounter (site.js). -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-00ZH9LDQ5B"></script>
+<script>
+  try { if (localStorage.getItem("skipgc")) window["ga-disable-G-00ZH9LDQ5B"] = true; } catch (e) {}
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00ZH9LDQ5B');
+</script>
 </head>
 <body>
 

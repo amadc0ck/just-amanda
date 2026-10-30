@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ABG palette preview · just amanda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="stylesheet" href="style.css?v=2026-09-12.2">
+
+<style>
+/* ===================================================================
+   THE ENTIRE THEME SWAP. Everything below <html class="abg"> is what
+   adopting the Adcock Botanical Garden palette would actually cost in
+   CSS, the token block, plus the fifteen rules that hardcode a brand
+   colour as rgba() and so do not follow a token change.
+   =================================================================== */
+.abg{
+  /* --- the six ABG board colours, in the six existing roles --- */
+  --forest:#243E36;        /* Deep Garden Green, was #2E3D2F */
+  --terracotta:#D15757;    /* Terra Cotta, was #C8644A */
+  --ivory:#F5EFE3;         /* Warm Cream, was #F7F3EB */
+  --sage:#70866B;          /* Aloe Green, was #A7B897 */
+  --amethyst:#5B8781;      /* Agave Blue, was #8D79A6 */
+  --lavender:#D1E0DE;      /* Agave Blue tint, was #D8CFE5 */
+
+  /* --- derived --- */
+  --bg:var(--ivory);
+  --bg-wash:#EFE5D2;
+  --card:#FFFFFF;
+  --ink:var(--forest);
+  --ink-soft:#4A635C;
+  --ink-faint:#73968B;
+  --terracotta-dim:#C83737;
+  --gold:#F2A65A;          /* Aloe Bloom Orange takes the metallic slot */
+  --line:rgba(36,62,54,0.10);
+  --shadow:0 1px 2px rgba(36,62,54,.04), 0 12px 28px -18px rgba(36,62,54,.30);
+
+  /* Cactus Flower Pink has no existing role. Parked here as the one
+     genuinely new colour the board offers. */
+  --pink:#D67A9A;
+}
+
+/* The fifteen rules that bake a brand colour into an rgba() literal.
+   A token swap alone leaves every one of these the OLD colour, this
+   block is the real cost of the migration, and the reason the answer
+   to "can we just change the palette" is "almost". */
+.abg .hero h1 em{background-image:linear-gradient(to top,rgba(124,167,161,.55) 0 .34em,transparent .34em);}
+.abg .sec-head{border-bottom-color:rgba(124,167,161,.55);}
+.abg .btn-primary:hover{background:#1A2F28;}
+.abg .btn-ghost:hover{background:rgba(209,87,87,.07);}
+.abg .card:hover{border-color:rgba(209,87,87,.35);}
+.abg .cards:not(.stacked) .card{box-shadow:var(--shadow), inset 0 2.5px 0 rgba(209,87,87,.55);}
+.abg .cards:not(.stacked) .card:hover{box-shadow:var(--shadow), inset 0 2.5px 0 var(--terracotta);}
+.abg .cards.stacked .card:hover,
+.abg .cards.explore .card.is-reading:hover,
+.abg .post-card:hover{border-color:rgba(91,135,129,.45);}
+.abg .tag.is-sage{background:rgba(112,134,107,.20);color:#46543F;border-color:rgba(112,134,107,.50);}
+.abg .tag.is-terra{background:rgba(209,87,87,.12);color:var(--terracotta-dim);border-color:rgba(209,87,87,.30);}
+.abg .tag.is-amethyst{background:rgba(91,135,129,.16);color:#3C5C57;border-color:rgba(91,135,129,.35);}
+.abg .social a:hover{color:var(--terracotta);border-color:rgba(209,87,87,.35);background:rgba(209,87,87,.08);}
+
+.abg{background:var(--bg);}
+
+
+/* ===================================================================
+   ABG AS IT ACTUALLY IS, dark ground, cream panels.
+   The app's own semantic tokens, lifted verbatim from its :root:
+     --ground #243E36 · --ground-raised #2C4A40 · --on-ground #F5EFE3
+     --panel  #F5EFE3 · --on-panel #252925 · --hairline rgba(245,239,227,.14)
+   This is NOT a token swap. justamanda.net has ONE --ink because it has
+   ONE ground. The app has --on-ground AND --on-panel because it has two.
+   Everything under the second heading below is that structural gap, paid
+   off by hand, and it is the honest measure of what adopting ABG costs.
+   =================================================================== */
+.abg-dark{
+  --forest:#243E36; --terracotta:#D97474; --ivory:#243E36;
+  --sage:#70866B;   --amethyst:#7CA7A1;   --lavender:#7CA7A1;
+  --bg:#243E36;     --bg-wash:#2C4A40;    --card:#F5EFE3;
+  --ink:#F5EFE3;    --ink-soft:#B2BAA7;   --ink-faint:#93A08F;
+  --terracotta-dim:#D97474; --gold:#F2A65A; --pink:#D67A9A;
+  --line:rgba(245,239,227,0.14);
+  --shadow:0 1px 2px rgba(0,0,0,.20), 0 14px 30px -18px rgba(0,0,0,.60);
+  background:var(--bg);
+}
+
+/* --- 1. the ground flipped, so anything sitting ON the ground flips with it --- */
+/* Chrome stays CREAM, content field goes dark. The wordmark and the badge are
+   Deep Garden Green artwork, on a Deep Garden Green ground they vanish, and
+   recutting both in cream is real illustration work. Keeping the masthead and
+   footer on the panel colour solves it without touching the art, and gives the
+   page a legible structure of its own: light chrome, dark field, light chrome. */
+.abg-dark .masthead{background:#F5EFE3;border-bottom-color:rgba(37,41,37,.12);}
+.abg-dark .masthead nav a{color:#5A6B5D;}
+.abg-dark .masthead nav a:hover{color:#252925;}
+.abg-dark .masthead nav a[aria-current="page"]{color:#B14A4A;border-bottom-color:#B14A4A;}
+.abg-dark footer{background:#F5EFE3;border-top-color:rgba(37,41,37,.12);}
+.abg-dark footer .tagline{color:#6E7F70;}
+.abg-dark .legal{color:#6E7F70;border-top-color:rgba(37,41,37,.12);}
+.abg-dark .btn-primary{background:#F5EFE3;color:#243E36;}
+.abg-dark .btn-primary:hover{background:#FFFFFF;}
+/* ...but a button inside a cream panel is then cream on cream. Two grounds
+   means two button variants, exactly as it means two inks. */
+.abg-dark .panel .btn-primary,
+.abg-dark .card .btn-primary{background:#243E36;color:#F5EFE3;}
+.abg-dark .panel .btn-primary:hover,
+.abg-dark .card .btn-primary:hover{background:#1A2F28;}
+.abg-dark .panel .btn-ghost,
+.abg-dark .card .btn-ghost{color:#B14A4A;border-color:#B14A4A;}
+.abg-dark .hero h1 em{background-image:linear-gradient(to top,rgba(124,167,161,.62) 0 .34em,transparent .34em);}
+.abg-dark .sec-head{border-bottom-color:rgba(124,167,161,.40);}
+.abg-dark .hero-art{background:#2C4A40;}
+
+/* --- 2. anything sitting on a cream PANEL needs the other ink entirely.
+       This is the block that does not exist in a token swap. --- */
+.abg-dark .card h3,
+.abg-dark .steps h3,
+.abg-dark .stat b,
+.abg-dark .panel{color:#252925;}
+.abg-dark .card p,
+.abg-dark .steps p,
+.abg-dark .panel .prose p{color:#5A6B5D;}
+.abg-dark .stat span,
+.abg-dark .card .tagline{color:#6E7F70;}
+.abg-dark .steps li{border-left-color:rgba(37,41,37,.14);}
+.abg-dark .cards.stacked .card h3{color:#41615C;}   /* agave, darkened for cream */
+.abg-dark .cards.stacked .card .go{color:#41615C;}
+.abg-dark .cards.stacked .card .tagline{color:#5F7B76;}
+.abg-dark .cards.explore .card.is-reading h3,
+.abg-dark .cards.explore .card.is-reading .go{color:#41615C;}
+.abg-dark .card .go,
+.abg-dark .card p a{color:#B14A4A;}                 /* terracotta, darkened for cream */
+.abg-dark .tag{background:#E8E0D0;color:#3C4A3E;border-color:rgba(37,41,37,.16);}
+.abg-dark .tag.is-sage{background:rgba(112,134,107,.22);color:#3F4D39;border-color:rgba(112,134,107,.45);}
+.abg-dark .tag.is-terra{background:rgba(217,116,116,.16);color:#9E3E3E;border-color:rgba(217,116,116,.38);}
+.abg-dark .tag.is-amethyst{background:rgba(124,167,161,.20);color:#33534E;border-color:rgba(124,167,161,.45);}
+.abg-dark .cards:not(.stacked) .card{box-shadow:var(--shadow), inset 0 2.5px 0 #D97474;}
+.abg-dark .card:hover{border-color:rgba(217,116,116,.55);}
+.abg-dark .cards.stacked .card::before{background:#7CA7A1;}
+.abg-dark .social a{background:#FFFFFF;color:#5A6B5D;border-color:rgba(37,41,37,.14);}
+.abg-dark .social a:hover{color:#B14A4A;border-color:rgba(177,74,74,.45);background:rgba(177,74,74,.09);}
+.abg-dark .legal a,.abg-dark .foot-nav a{color:#5A6B5D;}
+
+/* ---- preview chrome, not part of either theme ---- */
+.pv-pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.pv-half{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);}
+.pv-half > .pv-cap{font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:600;
+  padding:9px 16px;border-bottom:1px solid var(--line);}
+.pv-body{padding:20px 18px 22px;}
+.pv-body h3.demo{font-family:'Playfair Display',Georgia,serif;font-size:31px;font-weight:500;
+  margin:0 0 4px;line-height:1.05;letter-spacing:-.4px;color:var(--ink);}
+.pv-body h3.demo em{font-style:italic;color:var(--terracotta);display:inline;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;}
+.pv-body .lede{font-size:14px;color:var(--ink-soft);margin:10px 0 16px;}
+.pv-strip{display:flex;gap:7px;margin:0 0 16px;}
+.pv-strip i{flex:1;height:34px;border-radius:6px;display:block;}
+@media (max-width:780px){ .pv-pair{grid-template-columns:1fr;} }
+.pv-bar{position:sticky;top:0;z-index:60;background:var(--card);border-bottom:1px solid var(--line);}
+.pv-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  flex-wrap:wrap;padding-top:11px;padding-bottom:11px;}
+.pv-bar h1{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:500;margin:0;}
+.pv-toggle{display:flex;gap:0;border:1.5px solid var(--terracotta);border-radius:9px;overflow:hidden;}
+.pv-toggle button{font:inherit;font-size:12px;font-weight:600;letter-spacing:1.1px;
+  text-transform:uppercase;padding:9px 17px;border:0;cursor:pointer;
+  background:transparent;color:var(--terracotta);}
+.pv-toggle button[aria-pressed="true"]{background:var(--terracotta);color:#fff;}
+.pv-sec{padding:34px 0 6px;}
+.pv-sec > h2{font-family:'Playfair Display',Georgia,serif;font-size:25px;font-weight:500;
+  margin:0 0 18px;border-bottom:1.5px solid var(--line);padding-bottom:8px;}
+.pv-frame{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);background:var(--bg);}
+.pv-label{font-size:11.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--ink-faint);
+  font-weight:600;margin:0 0 9px;}
+.pv-map{width:100%;border-collapse:collapse;font-size:13.5px;}
+.pv-map th,.pv-map td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:middle;}
+.pv-map th{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--ink-faint);font-weight:600;}
+.pv-map code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;}
+.pv-dot{display:inline-block;width:15px;height:15px;border-radius:50%;
+  border:1px solid rgba(0,0,0,.14);vertical-align:-3px;margin-right:7px;}
+.pv-find{border-left:3px solid var(--terracotta);padding:3px 0 3px 16px;margin:0 0 20px;}
+.pv-find b{display:block;font-size:15px;margin-bottom:4px;}
+.pv-find p{margin:0;font-size:14px;color:var(--ink-soft);line-height:1.6;max-width:52em;}
+.pv-scroll{overflow-x:auto;}
+.pv-swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:13px;}
+.pv-sw{font-size:11px;color:var(--ink-faint);}
+.pv-sw div{height:58px;border-radius:9px;border:1px solid rgba(0,0,0,.10);margin-bottom:6px;}
+.pv-sw b{display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--ink);}
+.pv-sw code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;}
+</style>
+</head>
+<body>
+
+<div class="pv-bar">
+  <div class="wrap">
+    <h1>justamanda.net &middot; in the ABG palette</h1>
+    <div class="pv-toggle" role="group" aria-label="Palette">
+      <button type="button" id="b-now" aria-pressed="true">Today</button>
+      <button type="button" id="b-abg" aria-pressed="false">ABG light</button>
+      <button type="button" id="b-dark" aria-pressed="false">ABG dark</button>
+    </div>
+  </div>
+</div>
+
+<section class="pv-sec">
+  <div class="wrap">
+    <p class="pv-label">Flip the switch above, everything below re-colours live</p>
+    <h2 style="border:none;padding:0;font-size:30px;margin-bottom:10px;">The same site, both ways.</h2>
+    <p style="font-size:15px;color:var(--ink-soft);max-width:46em;margin:0 0 4px;">
+      This is the real stylesheet with the six ABG board colours dropped into the six roles the
+      design system already defines. Nothing is redrawn; only the tokens change.</p>
+  </div>
+</section>
+
+<section class="pv-sec">
+  <div class="wrap">
+    <h2>Side by side</h2>
+    <p style="font-size:15px;color:var(--ink-soft);max-width:48em;margin:0 0 18px;">
+      Both palettes at once, so the difference does not depend on memory. The swatch strip at the
+      top of each runs forest, action, quiet, reading, ornament, metallic, the six roles in
+      the same order.</p>
+    <div class="pv-pair">
+      <div class="pv-half" style="background:var(--bg);">
+        <div class="pv-cap" style="background:var(--card);color:var(--ink-faint);">Today</div>
+        <div class="pv-body">
+          <div class="pv-strip">
+            <i style="background:var(--forest)"></i><i style="background:var(--terracotta)"></i>
+            <i style="background:var(--sage)"></i><i style="background:var(--amethyst)"></i>
+            <i style="background:var(--lavender)"></i><i style="background:var(--gold)"></i>
+          </div>
+          <h3 class="demo">A creative life,<br><em>thoughtfully collected.</em></h3>
+          <p class="lede">Body copy, and <a href="#">an ordinary link</a> inside it.</p>
+          <div class="btn-row" style="margin-bottom:16px;">
+            <a class="btn btn-primary" href="#">Primary &rarr;</a>
+            <a class="btn btn-ghost" href="#">Ghost &rarr;</a>
+          </div>
+          <div class="cards stacked" style="grid-template-columns:1fr;margin-bottom:14px;">
+            <a class="card" href="#"><span class="tagline">September 1, 2026</span>
+              <h3>I Miss the Old Internet</h3><span class="go">Read more &rarr;</span></a>
+          </div>
+          <div class="tags" style="margin:0;">
+            <span class="tag">Neutral</span><span class="tag is-sage">Sage</span>
+            <span class="tag is-terra">Action</span><span class="tag is-amethyst">Reading</span>
+          </div>
+        </div>
+      </div>
+      <div class="pv-half abg" style="background:var(--bg);">
+        <div class="pv-cap" style="background:var(--card);color:var(--ink-faint);">ABG palette</div>
+        <div class="pv-body">
+          <div class="pv-strip">
+            <i style="background:var(--forest)"></i><i style="background:var(--terracotta)"></i>
+            <i style="background:var(--sage)"></i><i style="background:var(--amethyst)"></i>
+            <i style="background:var(--lavender)"></i><i style="background:var(--gold)"></i>
+          </div>
+          <h3 class="demo">A creative life,<br><em>thoughtfully collected.</em></h3>
+          <p class="lede">Body copy, and <a href="#">an ordinary link</a> inside it.</p>
+          <div class="btn-row" style="margin-bottom:16px;">
+            <a class="btn btn-primary" href="#">Primary &rarr;</a>
+            <a class="btn btn-ghost" href="#">Ghost &rarr;</a>
+          </div>
+          <div class="cards stacked" style="grid-template-columns:1fr;margin-bottom:14px;">
+            <a class="card" href="#"><span class="tagline">September 1, 2026</span>
+              <h3>I Miss the Old Internet</h3><span class="go">Read more &rarr;</span></a>
+          </div>
+          <div class="tags" style="margin:0;">
+            <span class="tag">Neutral</span><span class="tag is-sage">Sage</span>
+            <span class="tag is-terra">Action</span><span class="tag is-amethyst">Reading</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:14px;color:var(--ink-soft);max-width:48em;margin:16px 0 0;">
+      The bones are the same: both are a deep green and a warm cream, which is why the two full
+      pages below look more alike than you might expect. Everything that actually changes is an
+      accent, the journal turning from <b>purple to teal</b> is the largest single shift on
+      the site.</p>
+  </div>
+</section>
+
+<!-- ================= the home page, re-coloured ================= -->
+<section class="pv-sec">
+  <div class="wrap">
+    <h2>The home page</h2>
+    <div class="pv-frame">
+      <header class="masthead" style="position:static;">
+        <div class="wrap">
+          <a class="logo" href="#"><img src="images/logo.png" alt="just amanda" width="700" height="233"></a>
+          <nav>
+            <a href="#" aria-current="page">Home</a><a href="#">About</a><a href="#">Succulents</a>
+            <a href="#">Chickens</a><a href="#">Books</a><a href="#">Tech</a>
+          </nav>
+        </div>
+      </header>
+      <div class="hero">
+        <div class="wrap" style="padding-top:34px;padding-bottom:30px;">
+          <div>
+            <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:47px;line-height:1.05;
+                       font-weight:500;margin:0 0 16px;letter-spacing:-.5px;">A creative life,<em>thoughtfully collected.</em></h1>
+            <p style="font-size:16px;">Being interested in a lot of things is the most consistent
+               thing about me. This is where I keep them.</p>
+            <div class="btn-row">
+              <a class="btn btn-primary" href="#">More about me &rarr;</a>
+              <a class="btn btn-ghost is-read" href="#">Read the journal &rarr;</a>
+            </div>
+          </div>
+          <div class="hero-art"><img src="images/hero.png" alt="" width="1120" height="840"></div>
+        </div>
+      </div>
+      <section style="padding:26px 0;">
+        <div class="wrap">
+          <div class="cards explore">
+            <a class="card" href="#"><img src="images/section-plants.png" alt="" width="400" height="400"><span class="card-body"><h3>Succulents</h3><p>230 of them, and every one has a name.</p><span class="go">&rarr;</span></span></a>
+            <a class="card" href="#"><img src="images/section-chickens.png" alt="" width="400" height="400"><span class="card-body"><h3>Chickens</h3><p>Six birds, and I know all their opinions.</p><span class="go">&rarr;</span></span></a>
+            <a class="card" href="#"><img src="images/section-crochet.png" alt="" width="400" height="400"><span class="card-body"><h3>Crochet</h3><p>One stitch at a time, until it clicked.</p><span class="go">&rarr;</span></span></a>
+            <a class="card is-reading" href="#"><img src="images/section-books.png" alt="" width="400" height="400"><span class="card-body"><h3>Books</h3><p>Lore, slow burn, and staying up too late.</p><span class="go">&rarr;</span></span></a>
+            <a class="card" href="#"><img src="images/section-3dprint.png" alt="" width="400" height="400"><span class="card-body"><h3>Tech</h3><p>Apps, printing, AI, and the nerd stuff.</p><span class="go">&rarr;</span></span></a>
+          </div>
+        </div>
+      </section>
+      <section style="padding:6px 0 30px;">
+        <div class="wrap">
+          <div class="sec-head"><h2>Latest from the journal</h2>
+            <img class="sprig" src="images/accent-lavender.png" alt="" width="300" height="300"></div>
+          <div class="cards stacked" style="grid-template-columns:repeat(3,1fr);">
+            <a class="card" href="#"><span class="tagline">September 1, 2026</span><h3>I Miss the Old Internet</h3><p>I used to have my own little corner of the internet.</p><span class="go">Read more &rarr;</span></a>
+            <a class="card" href="#"><span class="tagline">August 12, 2026</span><h3>Naming Two Hundred Plants</h3><p>Names led to taxonomy, and taxonomy led to a database.</p><span class="go">Read more &rarr;</span></a>
+            <a class="card" href="#"><span class="tagline">July 30, 2026</span><h3>Chicken Math Is Real</h3><p>Nobody ordered a rooster, and yet.</p><span class="go">Read more &rarr;</span></a>
+          </div>
+        </div>
+      </section>
+      <div class="divider-wrap"><img src="images/divider-slim.png" alt="" width="1200" height="400"></div>
+      <footer style="margin-top:14px;">
+        <div class="wrap">
+          <div class="brand-block">
+            <a class="logo" href="#"><img src="images/logo-badge.png" alt="just amanda" width="46" height="46"></a>
+            <div class="tagline">A creative life,<br>thoughtfully collected.</div>
+          </div>
+          <nav class="foot-nav"><a href="#">Home</a><a href="#">About</a><a href="#">Succulents</a><a href="#">Books</a><a href="#">Tech</a></nav>
+        </div>
+      </footer>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== component close-ups ===================== -->
+<section class="pv-sec">
+  <div class="wrap">
+    <h2>Close up</h2>
+    <div class="two-col" style="gap:26px;">
+      <div>
+        <p class="pv-label">Buttons, links, tags</p>
+        <div class="panel">
+          <div class="btn-row" style="margin-bottom:16px;">
+            <a class="btn btn-primary" href="#">Primary &rarr;</a>
+            <a class="btn btn-ghost" href="#">Ghost &rarr;</a>
+          </div>
+          <p style="margin:0 0 10px;font-size:15px;">Body copy with <a href="#">an ordinary link</a>
+             in it, then <a class="go" href="#">an arrow link &rarr;</a></p>
+          <div class="tags" style="margin:0;">
+            <span class="tag">Neutral</span><span class="tag is-sage">Sage</span>
+            <span class="tag is-terra">Action</span><span class="tag is-amethyst">Reading</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="pv-label">Numbered steps &amp; stats</p>
+        <div class="panel">
+          <div class="stat-row"><div class="stat"><b>230</b><span>Specimens</span></div>
+            <div class="stat"><b>6</b><span>Chickens</span></div></div>
+          <ol class="steps">
+            <li><span class="step-n">01</span><h3>It started with one hen</h3><p>Lola, early 2020.</p></li>
+            <li><span class="step-n">02</span><h3>Chicken math</h3><p>The number keeps climbing.</p></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= the mapping ========================= -->
+<section class="pv-sec">
+  <div class="wrap">
+    <h2>What moved where</h2>
+    <p style="font-size:14.5px;color:var(--ink-soft);max-width:50em;margin:0 0 16px;">
+      This table describes <b>ABG light</b>: the palette adopted onto the cream ground the site
+      already has, which is where the darkened values come from. In <b>ABG dark</b> the board
+      colours are used at their stated values, because the dark ground is what they were drawn
+      for.</p>
+    <div class="pv-scroll"><table class="pv-map">
+      <tr><th>Role in the system</th><th>Today</th><th>ABG</th><th>Note</th></tr>
+      <tr><td>Text, primary button</td>
+        <td><span class="pv-dot" style="background:#2E3D2F"></span><code>#2E3D2F</code></td>
+        <td><span class="pv-dot" style="background:#243E36"></span><code>#243E36</code> Deep Garden Green</td>
+        <td>Near-identical. Straight swap.</td></tr>
+      <tr><td><b>A place to go</b>: links, arrows, buttons</td>
+        <td><span class="pv-dot" style="background:#C8644A"></span><code>#C8644A</code></td>
+        <td><span class="pv-dot" style="background:#D15757"></span><code>#D15757</code> Terra Cotta</td>
+        <td>Board value <code>#D97474</code> darkened to hold the site's existing contrast.</td></tr>
+      <tr><td><b>Something to read</b>: the journal</td>
+        <td><span class="pv-dot" style="background:#8D79A6"></span><code>#8D79A6</code></td>
+        <td><span class="pv-dot" style="background:#5B8781"></span><code>#5B8781</code> Agave Blue</td>
+        <td>Board value <code>#7CA7A1</code> darkened. Blue, not pink, see below.</td></tr>
+      <tr><td>Ornament: hairlines, dashes, hero band</td>
+        <td><span class="pv-dot" style="background:#D8CFE5"></span><code>#D8CFE5</code></td>
+        <td><span class="pv-dot" style="background:#D1E0DE"></span><code>#D1E0DE</code> Agave tint</td>
+        <td>A tint of the reading colour, as lavender is today.</td></tr>
+      <tr><td>Page ground</td>
+        <td><span class="pv-dot" style="background:#F7F3EB"></span><code>#F7F3EB</code></td>
+        <td><span class="pv-dot" style="background:#F5EFE3"></span><code>#F5EFE3</code> Warm Cream</td>
+        <td>A half-step warmer. Barely perceptible.</td></tr>
+      <tr><td>Quiet accent</td>
+        <td><span class="pv-dot" style="background:#A7B897"></span><code>#A7B897</code></td>
+        <td><span class="pv-dot" style="background:#70866B"></span><code>#70866B</code> Aloe Green</td>
+        <td>Considerably darker, usable as text, which sage never was.</td></tr>
+      <tr><td>Metallic, divider artwork</td>
+        <td><span class="pv-dot" style="background:#C0A15A"></span><code>#C0A15A</code></td>
+        <td><span class="pv-dot" style="background:#F2A65A"></span><code>#F2A65A</code> Aloe Bloom Orange</td>
+        <td>Brighter and more orange than the gold it replaces.</td></tr>
+      <tr><td>no existing role</td><td>n/a</td>
+        <td><span class="pv-dot" style="background:#D67A9A"></span><code>#D67A9A</code> Cactus Flower Pink</td>
+        <td>The one genuinely new colour. Nothing in the system needs it yet.</td></tr>
+      <tr><td>no existing role</td><td>n/a</td>
+        <td><span class="pv-dot" style="background:#252925"></span><code>#252925</code> Charcoal</td>
+        <td>A true neutral the current palette lacks.</td></tr>
+    </table></div>
+  </div>
+</section>
+
+<!-- ========================== findings =========================== -->
+<section class="pv-sec">
+  <div class="wrap">
+    <h2>What I found doing it</h2>
+
+    <div class="pv-find">
+      <b>The illustrations are the real obstacle, not the CSS.</b>
+      <p>Every piece of artwork on the site, the hero, the five section cards, the sprigs, the
+         dividers, is painted in sage, lavender and the old terracotta. Toggle back and forth and
+         watch the art: the interface changes and the pictures do not. ABG's agave blue and cactus
+         pink appear nowhere in them. A palette swap is a day; repainting sixty-odd illustrations
+         to match is the actual project.</p>
+    </div>
+
+    <div class="pv-find">
+      <b>There is no purple in ABG, and purple is carrying meaning.</b>
+      <p>Amethyst means “something to read” across the whole site, the journal strip, post cards,
+         the Books card, even a button variant. ABG offers two candidates. I used <b>Agave Blue</b>
+         rather than Cactus Flower Pink, because pink sits beside Terra Cotta on the wheel and the
+         reading/action distinction would go muddy exactly where it matters most. Blue against
+         terracotta stays unmistakable. It does make the site cooler and less romantic.</p>
+    </div>
+
+    <div class="pv-find">
+      <b>The accents are not weak, they were built for the dark ground.</b>
+      <p>On Warm Cream, Terra Cotta manages 2.74:1, Agave Blue 2.32:1 and Aloe Bloom Orange
+         1.77:1, all failing, all worse than the site has now. On ABG's own
+         <code>#243E36</code> ground the same three read 3.69, 4.35 and 5.71. Nothing was wrong
+         with the palette; the light preview was simply testing it against a background it was
+         never drawn for. Only Aloe Green inverts, fine on cream at 3.45, failing on the dark
+         at 2.92.</p>
+    </div>
+
+    <div class="pv-find">
+      <b>One ink is not enough, and that is the real cost.</b>
+      <p>justamanda.net has a single <code>--ink</code> because it has a single ground. The app
+         has <code>--on-ground</code> <i>and</i> <code>--on-panel</code> because it has two: cream
+         type on the green field, charcoal type on the cream panels. Adopting the dark scheme is
+         therefore not a token swap at all, it means splitting the ink token in two and auditing
+         every place the stylesheet says <code>var(--ink)</code>. The same split hits the primary
+         button, which inverts to cream on the dark field and must invert back inside a panel.</p>
+    </div>
+
+    <div class="pv-find">
+      <b>The illustrations survive the dark ground, the logo does not.</b>
+      <p>Every image on the site carries real transparency (a <code>tRNS</code> chunk, checked,
+         all of them), so the watercolours sit on the green field without a white box around them,
+         and they look better there than on cream. But the wordmark and the round badge are
+         <i>Deep Garden Green artwork</i>: on a Deep Garden Green ground they vanish. Rather than
+         recut both in cream, the masthead and footer here stay on the panel colour, which
+         costs nothing, keeps the art as drawn, and gives the page a structure of its own:
+         light chrome, dark field, light chrome.</p>
+    </div>
+
+    <div class="pv-find">
+      <b>The swap is about 80% token, 20% hand work.</b>
+      <p>Most of the stylesheet reads <code>var(--terracotta)</code> and follows a token change for
+         free. But <b>31 places across 25 distinct literals</b> hardcode a brand colour as an
+         <code>rgba()</code>, every hover tint, the card top bar, the tags, the hero band, the
+         section hairline. A token swap alone leaves all of them the old colour. The override block
+         at the top of this file is that work, done; it is the honest price of the migration.</p>
+    </div>
+
+    <div class="pv-find">
+      <b>Worth saying out loud: they are two brands.</b>
+      <p>The stylesheet's own opening comment says the garden app's palette is “deliberately NOT”
+         this one, a dark tool for working in versus a light space for reading. ABG is the
+         collection's identity; justamanda.net is yours, and books, chickens and crochet live here
+         too. Adopting it makes the whole site read as an annex of the garden.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pv-sec">
+  <div class="wrap">
+    <h2>The board, as tokens</h2>
+    <div class="pv-swatches" id="pv-sw"></div>
+  </div>
+</section>
+
+<div class="divider-wrap" style="margin:26px 0 34px;"><img src="images/divider-slim.png" alt="" width="1200" height="400"></div>
+
+<script>
+const root = document.documentElement;
+const MODES = ["now","abg","dark"];
+const btn = {now:document.getElementById("b-now"), abg:document.getElementById("b-abg"),
+             dark:document.getElementById("b-dark")};
+let mode = "now";
+function set(m){
+  mode = m;
+  root.classList.toggle("abg", m === "abg");
+  root.classList.toggle("abg-dark", m === "dark");
+  for (const k of MODES) btn[k].setAttribute("aria-pressed", String(k === m));
+}
+for (const k of MODES) btn[k].onclick = () => set(k);
+/* Space and the arrows cycle, so you can sit on one spot and blink between them. */
+addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT") return;
+  const i = MODES.indexOf(mode);
+  if (e.key === "ArrowLeft")  { e.preventDefault(); set(MODES[(i + 2) % 3]); }
+  if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); set(MODES[(i + 1) % 3]); }
+});
+
+const BOARD = [["Deep Garden Green","#243E36"],["Aloe Green","#70866B"],["Terra Cotta","#D97474"],
+  ["Aloe Bloom Orange","#F2A65A"],["Cactus Flower Pink","#D67A9A"],["Agave Blue","#7CA7A1"],
+  ["Warm Cream","#F5EFE3"],["Charcoal","#252925"]];
+document.getElementById("pv-sw").innerHTML = BOARD.map(([n,h]) =>
+  `<div class="pv-sw"><div style="background:${h}"></div><b>${n}</b><code>${h}</code></div>`).join("");
+</script>
+
+</body>
+</html>
