@@ -1,0 +1,471 @@
+{
+ "$schema": "https://schemas.wp.org/trunk/theme.json",
+ "version": 3,
+ "customTemplates": [
+  {
+   "name": "coming-soon",
+   "title": "Coming soon",
+   "postTypes": [
+    "page"
+   ]
+  },
+  {
+   "name": "page-links",
+   "title": "Links (no header or footer)",
+   "postTypes": [
+    "page"
+   ]
+  }
+ ],
+ "templateParts": [
+  {
+   "name": "header",
+   "title": "Header",
+   "area": "header"
+  },
+  {
+   "name": "footer",
+   "title": "Footer",
+   "area": "footer"
+  }
+ ],
+ "settings": {
+  "appearanceTools": true,
+  "useRootPaddingAwareAlignments": false,
+  "layout": {
+   "contentSize": "1132px",
+   "wideSize": "1180px"
+  },
+  "spacing": {
+   "blockGap": null,
+   "units": [
+    "px",
+    "em",
+    "rem",
+    "%",
+    "vw"
+   ],
+   "spacingSizes": [
+    {
+     "name": "Gutter",
+     "slug": "gutter",
+     "size": "24px"
+    },
+    {
+     "name": "Card gap",
+     "slug": "card-gap",
+     "size": "20px"
+    },
+    {
+     "name": "Section",
+     "slug": "section",
+     "size": "34px"
+    },
+    {
+     "name": "Section, small screens",
+     "slug": "section-sm",
+     "size": "44px"
+    },
+    {
+     "name": "Hero top",
+     "slug": "hero-top",
+     "size": "48px"
+    },
+    {
+     "name": "Hero bottom",
+     "slug": "hero-bottom",
+     "size": "40px"
+    }
+   ]
+  },
+  "color": {
+   "defaultPalette": false,
+   "defaultGradients": false,
+   "defaultDuotone": false,
+   "palette": [
+    {
+     "name": "Deep Forest",
+     "slug": "forest",
+     "color": "#2E3D2F"
+    },
+    {
+     "name": "Warm Terracotta",
+     "slug": "terracotta",
+     "color": "#C8644A"
+    },
+    {
+     "name": "Ivory",
+     "slug": "ivory",
+     "color": "#F7F3EB"
+    },
+    {
+     "name": "Soft Sage",
+     "slug": "sage",
+     "color": "#A7B897"
+    },
+    {
+     "name": "Muted Amethyst",
+     "slug": "amethyst",
+     "color": "#8D79A6"
+    },
+    {
+     "name": "Soft Lavender",
+     "slug": "lavender",
+     "color": "#D8CFE5"
+    },
+    {
+     "name": "Wash",
+     "slug": "bg-wash",
+     "color": "#F1EADE"
+    },
+    {
+     "name": "Card",
+     "slug": "card",
+     "color": "#FFFFFF"
+    },
+    {
+     "name": "Ink, soft",
+     "slug": "ink-soft",
+     "color": "#5E6857"
+    },
+    {
+     "name": "Ink, faint",
+     "slug": "ink-faint",
+     "color": "#8B9382"
+    },
+    {
+     "name": "Terracotta, dim",
+     "slug": "terracotta-dim",
+     "color": "#B0543C"
+    },
+    {
+     "name": "Sage, deep",
+     "slug": "sage-deep",
+     "color": "#4C5B3E"
+    },
+    {
+     "name": "Gold",
+     "slug": "gold",
+     "color": "#C0A15A"
+    }
+   ]
+  },
+  "shadow": {
+   "defaultPresets": false,
+   "presets": [
+    {
+     "name": "Card",
+     "slug": "card",
+     "shadow": "0 1px 2px rgba(46,61,47,.04), 0 12px 28px -18px rgba(46,61,47,.30)"
+    }
+   ]
+  },
+  "typography": {
+   "fluid": false,
+   "defaultFontSizes": false,
+   "dropCap": false,
+   "fontFamilies": [
+    {
+     "name": "Playfair Display",
+     "slug": "playfair",
+     "fontFamily": "\"Playfair Display\", Georgia, serif",
+     "fontFace": [
+      {
+       "fontFamily": "\"Playfair Display\"",
+       "fontStyle": "italic",
+       "fontWeight": "500",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/playfair-display-500-italic-latin-ext.woff2"
+       ],
+       "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF"
+      },
+      {
+       "fontFamily": "\"Playfair Display\"",
+       "fontStyle": "italic",
+       "fontWeight": "500",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/playfair-display-500-italic-latin.woff2"
+       ],
+       "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+      },
+      {
+       "fontFamily": "\"Playfair Display\"",
+       "fontStyle": "normal",
+       "fontWeight": "500",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/playfair-display-500-latin-ext.woff2"
+       ],
+       "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF"
+      },
+      {
+       "fontFamily": "\"Playfair Display\"",
+       "fontStyle": "normal",
+       "fontWeight": "500",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/playfair-display-500-latin.woff2"
+       ],
+       "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+      },
+      {
+       "fontFamily": "\"Playfair Display\"",
+       "fontStyle": "normal",
+       "fontWeight": "600",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/playfair-display-600-latin-ext.woff2"
+       ],
+       "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF"
+      },
+      {
+       "fontFamily": "\"Playfair Display\"",
+       "fontStyle": "normal",
+       "fontWeight": "600",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/playfair-display-600-latin.woff2"
+       ],
+       "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+      }
+     ]
+    },
+    {
+     "name": "Inter",
+     "slug": "inter",
+     "fontFamily": "Inter, system-ui, sans-serif",
+     "fontFace": [
+      {
+       "fontFamily": "Inter",
+       "fontStyle": "normal",
+       "fontWeight": "400",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/inter-400-latin-ext.woff2"
+       ],
+       "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF"
+      },
+      {
+       "fontFamily": "Inter",
+       "fontStyle": "normal",
+       "fontWeight": "400",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/inter-400-latin.woff2"
+       ],
+       "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+      },
+      {
+       "fontFamily": "Inter",
+       "fontStyle": "normal",
+       "fontWeight": "500",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/inter-500-latin-ext.woff2"
+       ],
+       "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF"
+      },
+      {
+       "fontFamily": "Inter",
+       "fontStyle": "normal",
+       "fontWeight": "500",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/inter-500-latin.woff2"
+       ],
+       "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+      },
+      {
+       "fontFamily": "Inter",
+       "fontStyle": "normal",
+       "fontWeight": "600",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/inter-600-latin-ext.woff2"
+       ],
+       "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF"
+      },
+      {
+       "fontFamily": "Inter",
+       "fontStyle": "normal",
+       "fontWeight": "600",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/inter-600-latin.woff2"
+       ],
+       "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+      }
+     ]
+    },
+    {
+     "name": "Caveat",
+     "slug": "caveat",
+     "fontFamily": "Caveat, cursive",
+     "fontFace": [
+      {
+       "fontFamily": "Caveat",
+       "fontStyle": "normal",
+       "fontWeight": "500",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/caveat-500-latin-ext.woff2"
+       ],
+       "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF"
+      },
+      {
+       "fontFamily": "Caveat",
+       "fontStyle": "normal",
+       "fontWeight": "500",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/caveat-500-latin.woff2"
+       ],
+       "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+      },
+      {
+       "fontFamily": "Caveat",
+       "fontStyle": "normal",
+       "fontWeight": "600",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/caveat-600-latin-ext.woff2"
+       ],
+       "unicodeRange": "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF"
+      },
+      {
+       "fontFamily": "Caveat",
+       "fontStyle": "normal",
+       "fontWeight": "600",
+       "fontDisplay": "swap",
+       "src": [
+        "file:./assets/fonts/caveat-600-latin.woff2"
+       ],
+       "unicodeRange": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+      }
+     ]
+    },
+    {
+     "name": "Mono",
+     "slug": "mono",
+     "fontFamily": "ui-monospace, SFMono-Regular, Menlo, monospace"
+    }
+   ],
+   "fontSizes": [
+    {
+     "name": "Label",
+     "slug": "label",
+     "size": "11.5px"
+    },
+    {
+     "name": "Small",
+     "slug": "small",
+     "size": "13.5px"
+    },
+    {
+     "name": "Card",
+     "slug": "card",
+     "size": "14px"
+    },
+    {
+     "name": "Prose",
+     "slug": "prose",
+     "size": "17px"
+    },
+    {
+     "name": "Post body",
+     "slug": "post",
+     "size": "17.5px"
+    },
+    {
+     "name": "Hero text",
+     "slug": "hero-text",
+     "size": "18.5px"
+    },
+    {
+     "name": "Aside",
+     "slug": "aside",
+     "size": "22px"
+    },
+    {
+     "name": "Beat",
+     "slug": "beat",
+     "size": "27px"
+    },
+    {
+     "name": "Section heading",
+     "slug": "section",
+     "size": "31px"
+    },
+    {
+     "name": "Post heading",
+     "slug": "post-heading",
+     "size": "44px"
+    },
+    {
+     "name": "Hero heading",
+     "slug": "hero",
+     "size": "60px"
+    }
+   ]
+  },
+  "custom": {
+   "radius": {
+    "card": "14px",
+    "photo": "10px",
+    "button": "9px",
+    "feature": "18px",
+    "pill": "999px",
+    "book": "6px",
+    "note": "4px"
+   },
+   "line": "rgba(46,61,47,0.10)",
+   "tone": {
+    "primary-hover": "#26321F",
+    "tag-sage": "#4F5D42",
+    "tag-amethyst": "#5F5178",
+    "crochet-bar": "#BCA9D4",
+    "book-spine": "#4A5D45"
+   },
+   "wrap": {
+    "max": "1180px",
+    "gutter": "24px"
+   }
+  }
+ },
+ "styles": {
+  "color": {
+   "background": "var(--wp--preset--color--ivory)",
+   "text": "var(--wp--preset--color--forest)"
+  },
+  "typography": {
+   "fontFamily": "var(--wp--preset--font-family--inter)",
+   "lineHeight": "1.65"
+  },
+  "elements": {
+   "link": {
+    "color": {
+     "text": "var(--wp--preset--color--terracotta)"
+    },
+    "typography": {
+     "textDecoration": "none"
+    },
+    ":hover": {
+     "typography": {
+      "textDecoration": "underline"
+     }
+    }
+   },
+   "button": {
+    "color": {
+     "background": "var(--wp--preset--color--forest)",
+     "text": "var(--wp--preset--color--ivory)"
+    },
+    "border": {
+     "radius": "var(--wp--custom--radius--button)"
+    }
+   }
+  }
+ }
+}

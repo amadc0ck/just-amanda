@@ -26,6 +26,15 @@ the site-specific part. The README explains the design; this is how to work.
   curl the live URL after the push (Pages takes about a minute).
 - Report a ship in 2 or 3 sentences. Commit subject plus at most 5 lines.
 
+## Decisions and clarifications: always Q&A (mandatory)
+
+Set by Amanda 2026-11-03. Whenever a decision or clarification is needed from
+her, present it with the AskUserQuestion tool (multiple-choice Q&A), never only
+as prose questions at the end of a message. One question per decision, the
+recommended option first and marked "(Recommended)", with each option's
+tradeoff in its description. Each question must stand on its own, because the
+dialog may hide the surrounding text.
+
 ## Every public page carries
 
 GoatCounter, then the Google tag (`G-00ZH9LDQ5B`, with the `skipgc` line so

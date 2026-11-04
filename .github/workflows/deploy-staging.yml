@@ -1,0 +1,45 @@
+# Deploys the WordPress theme, and only the theme, to the STAGING site.
+#
+# Built from GoDaddy's provisioned godaddy-workflow.yml, which syncs the whole
+# repo to the WordPress root when its deployment_dest input is left blank. That
+# input is gone: source and destination are fixed here and nothing a person types
+# can change them. GoDaddy's action is kept rather than plain rsync because it
+# handles a subfolder (source_path / deployment_dest), deletes files removed from
+# the source, and runs a WordPress health check with rollback after deploying.
+#
+# The destination folder must already exist on the server; the action refuses to
+# create it. It was created once over SFTP before the first run.
+#
+# Pinned to @v1, not a commit SHA, on purpose: the action checks out its helper
+# repo (godaddy-wordpress/git-deploy-poc) at a ref named after its own tag, so a
+# SHA pin makes that checkout fail. v1 = v0.0.4 = 201e88c as of 2026-11-03.
+name: Deploy theme to staging
+
+on:
+  push:
+    branches: [main]
+    paths: ["wordpress/justamanda/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Deploy wordpress/justamanda to wp-content/themes/justamanda
+        uses: godaddy-wordpress/gd-wordpress-deployer@v1
+        with:
+          remote_host: "1311999.us21.myftpupload.com"
+          ssh_user: "git_deployer_e0299d279c_1311999"
+          ssh_private_key: ${{ secrets.PRIVATE_KEY }}
+          source_path: "wordpress/justamanda"
+          deployment_dest: "wp-content/themes/justamanda"
+          cleanup_deleted_files: "yes"

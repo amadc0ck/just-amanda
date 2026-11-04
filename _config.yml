@@ -1,0 +1,6 @@
+# GitHub Pages publishes this repo's root. The WordPress migration's working
+# files are not pages, so they are not served. Only folders added for the
+# migration are listed: anything the site served before keeps being served.
+exclude:
+  - docs
+  - wordpress

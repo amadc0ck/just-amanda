@@ -1,0 +1,1336 @@
+/* justamanda.net design system, ported from the static site's style.css.
+   Values live in theme.json. These names are aliases so the rules below read
+   exactly as they did, and a token changed in theme.json reaches all of them. */
+:root{
+  --forest:var(--wp--preset--color--forest);
+  --terracotta:var(--wp--preset--color--terracotta);
+  --ivory:var(--wp--preset--color--ivory);
+  --sage:var(--wp--preset--color--sage);
+  --amethyst:var(--wp--preset--color--amethyst);
+  --lavender:var(--wp--preset--color--lavender);
+  --bg:var(--wp--preset--color--ivory);
+  --bg-wash:var(--wp--preset--color--bg-wash);
+  --card:var(--wp--preset--color--card);
+  --ink:var(--wp--preset--color--forest);
+  --ink-soft:var(--wp--preset--color--ink-soft);
+  --ink-faint:var(--wp--preset--color--ink-faint);
+  --terracotta-dim:var(--wp--preset--color--terracotta-dim);
+  --sage-deep:var(--wp--preset--color--sage-deep);
+  --gold:var(--wp--preset--color--gold);
+  --line:var(--wp--custom--line);
+  --shadow:var(--wp--preset--shadow--card);
+  --radius:var(--wp--custom--radius--card);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased;}
+.wp-site-blocks img{max-width:100%;display:block;}
+a{color:var(--terracotta);text-decoration:none;}
+a:hover{text-decoration:underline;text-underline-offset:3px;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+/* ---------- masthead ---------- */
+.masthead{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;}
+.masthead .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:14px;padding-bottom:14px;}
+/* The logotype is artwork, not text. Height-constrained so the masthead sets
+   the scale and the 3:1 image follows; the footer reuses it smaller. */
+.logo{display:inline-block;line-height:0;flex-shrink:0;}
+/* flex-shrink:0 is load-bearing. As a flex item beside a seven-item nav the
+   anchor was being narrowed, and the global img{max-width:100%} then squashed
+   the logotype's width while its fixed height held, distorted on phones. */
+.logo:hover{text-decoration:none;opacity:.82;}
+.logo img{height:66px;width:auto;}
+/* The footer takes the circular badge rather than the wide logotype, on a cream
+   disc, because it is Deep Forest artwork and would sink into the sage ground.
+
+   The disc is padding, not a fixed size, so it follows the badge instead of
+   leaving a bare ring if the logo is ever rescaled. And the badge is nudged
+   down 1.6%: its ink is NOT centred in its own PNG. The dark ring runs
+   y 13..470 on a 500px square, so it sits 8px above the file's centre, and
+   centring the box leaves the ring visibly high inside a circle. */
+footer .logo{background:var(--ivory);border-radius:50%;display:grid;place-items:center;padding:8px;}
+footer .logo img{height:46px;width:46px;transform:translateY(1.6%);}
+/* The artwork occupies roughly a quarter of the logotype's width, so the
+   wordmark reads smaller than its height suggests, so it needs more than a
+   text logo would. */
+@media (max-width:900px){ .logo img{height:52px;} }
+.wp-block-navigation__container{display:flex;gap:26px;flex-wrap:wrap;}
+.wp-block-navigation a{color:var(--ink-soft);font-size:15px;padding-bottom:4px;border-bottom:2px solid transparent;}
+.wp-block-navigation a:hover{color:var(--ink);text-decoration:none;}
+.wp-block-navigation a[aria-current="page"]{color:var(--terracotta);border-bottom-color:var(--terracotta);}
+
+/* ---------- hero ---------- */
+.hero{background:linear-gradient(180deg,var(--bg-wash),var(--bg));border-bottom:1px solid var(--line);}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;
+  padding-top:48px;padding-bottom:40px;}
+.hero h1{font-family:'Playfair Display',Georgia,serif;font-size:60px;line-height:1.05;
+  font-weight:500;margin:0 0 20px;letter-spacing:-.5px;}
+/* The only lavender above the fold, and it is load-bearing. Without it the page
+   ran terracotta and forest all the way down to the journal strip and then went
+   lavender at once, which read as two designs stacked rather than one.
+   A background-image band rather than a positioned pseudo-element: .hero paints
+   a background but opens no stacking context, so a z-index:-1 layer would sit
+   behind the section itself and never be seen. width:fit-content keeps the band
+   on the words instead of running the full column. */
+.hero h1 em{font-style:italic;color:var(--terracotta);display:inline;
+  background-image:linear-gradient(to top,rgba(216,207,229,.9) 0 .34em,transparent .34em);
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;}
+/* The em has to stay INLINE for the band to work, because only an inline box
+   fragments per line, and box-decoration-break:clone is what redraws the
+   background on each fragment so it hugs the words. As a block it drew one band
+   the width of the longest line, which under a two-line headline (the Tech page)
+   left a lavender bar running off into empty space. The forced newline here is
+   what keeps the italic line on its own row now that display:block is gone. */
+.hero h1 em::before{content:"\A";white-space:pre;}
+.hero p{font-size:18.5px;color:var(--ink-soft);max-width:34em;margin:0 0 30px;}
+.hero-art{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--shadow);color:var(--ink-faint);font-size:14px;text-align:center;padding:24px;}
+
+/* Per the brand board: solid Deep Forest, or an outlined Terracotta. Both
+   uppercase and tracked out, with a trailing arrow. */
+.btn{display:inline-flex;align-items:center;gap:12px;padding:15px 28px;border-radius:9px;
+  font-size:13px;font-weight:600;letter-spacing:1.3px;text-transform:uppercase;
+  border:1.5px solid transparent;}
+.btn-primary{background:var(--forest);color:var(--ivory);}
+.btn-primary:hover{background:var(--wp--custom--tone--primary-hover);text-decoration:none;}
+.btn-ghost{background:transparent;color:var(--terracotta);border-color:var(--terracotta);}
+.btn-ghost:hover{background:rgba(200,100,74,.07);text-decoration:none;}
+.btn-row{display:flex;gap:14px;flex-wrap:wrap;}
+
+/* ---------- sections ---------- */
+section{padding:34px 0;}
+/* flex-end, not center: several headings wrap to two lines, and a centred sprig
+   then floats in the gap between them instead of sitting with the words. */
+.sec-head{display:flex;align-items:flex-end;gap:10px;margin:0 0 22px;}
+.sec-head h2{font-family:'Playfair Display',Georgia,serif;font-size:31px;font-weight:500;margin:0;}
+.sec-head::after{content:"";width:26px;height:26px;background:url(../images/accent-lavender.png) center/contain no-repeat;flex-shrink:0;}
+
+/* Ornamental rule. The artwork carries a lot of transparent margin, so it is
+   held to a modest width and centred rather than stretched across the page. */
+.divider-wrap{display:flex;justify-content:center;padding:0 24px;}
+.divider-wrap img{width:100%;max-width:330px;height:auto;opacity:.9;}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:20px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px;box-shadow:var(--shadow);display:flex;gap:16px;align-items:flex-start;}
+.card:hover{border-color:rgba(180,85,63,.35);}
+/* Illustration beside the text, as in the mockups. Fixed box so a set of cards
+   keeps one baseline even though the artwork is loosely cropped. */
+.card img{width:78px;height:78px;object-fit:contain;flex-shrink:0;}
+.card-body{display:flex;flex-direction:column;gap:6px;min-width:0;}
+/* Section-card headings sit in Deep Forest, not terracotta. Four large serif
+   headings in a row, under a hero that already carries a terracotta line, put
+   far too much of one warm colour on the page and left lavender and amethyst
+   looking like a different design. Terracotta now means action: the arrows,
+   the buttons, the links. Colour on a HEADING means "something to read",
+   which is amethyst and the journal alone. */
+.card h3{font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:500;margin:0;color:var(--ink);line-height:1.2;}
+.card p{margin:0;font-size:14px;color:var(--ink-soft);}
+.go,.card .go{font-size:13.5px;color:var(--terracotta);font-weight:600;}
+/* The journal strip stacks instead, because those cards carry no artwork.
+   auto-FILL, not auto-fit: with a single published post, auto-fit collapses the
+   empty tracks and stretches that one card the full width of the page. The
+   300px floor gives three columns at desktop width. */
+.cards.stacked{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}
+.cards.stacked .card{flex-direction:column;gap:8px;}
+
+/* AMETHYST AND LAVENDER, given a job rather than sprinkled.
+   Terracotta means "a place to go" (the section cards, the primary actions).
+   Amethyst means "something to read": the journal, and nothing else. Keeping
+   the two apart is what stops a six-colour palette turning into confetti. */
+.cards.stacked .card h3{color:var(--amethyst);}
+.cards.stacked .card .go{color:var(--amethyst);}
+.cards.stacked .card .tagline{color:var(--amethyst);opacity:.85;
+  font-size:11.5px;letter-spacing:1px;text-transform:uppercase;font-weight:600;}
+.cards.stacked .card:hover{border-color:rgba(141,121,166,.45);}
+.cards.stacked .card::before{content:"";display:block;width:34px;height:2px;
+  background:var(--lavender);border-radius:2px;margin-bottom:2px;}
+
+/* ---------- the explore row: five doors, not four ----------
+   The horizontal card could not hold its shape at a fifth of 1132px: 78px of
+   illustration plus 40px of padding left under 80px for words. So this row
+   stacks its artwork above the text instead of setting it beside. The narrower
+   column is the point rather than a cost: these are doors, not summaries, and
+   the copy is one line each.
+
+   Explicit column counts rather than auto-fit. auto-fit lands on four at tablet
+   width and leaves a single orphan card on its own row; stepping 5 -> 3 -> 2
+   keeps the last row at worst half full. */
+.cards.explore{grid-template-columns:repeat(5,1fr);gap:18px;}
+.cards.explore .card{flex-direction:column;align-items:center;text-align:center;
+  gap:10px;padding:22px 16px;}
+.cards.explore .card img{width:84px;height:84px;}
+.cards.explore .card-body{align-items:center;gap:6px;}
+.cards.explore .card p{font-size:13.5px;}
+@media (max-width:1080px){ .cards.explore{grid-template-columns:repeat(3,1fr);} }
+@media (max-width:640px){  .cards.explore{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:400px){  .cards.explore{grid-template-columns:1fr;} }
+
+/* The explore row's headings are all one colour, deliberately. Books briefly
+   wore amethyst here on the "something to read" argument; in a row of five it
+   read as one card being broken rather than one card being special. Amethyst
+   now starts at the journal strip, where the whole band supports it. */
+
+/* Section headings get a lavender hairline, which ties the ornament to the rule. */
+.sec-head{border-bottom:1.5px solid rgba(216,207,229,.95);padding-bottom:10px;}
+/* The second voice a section can have, under the rule rather than beside the
+   heading. The books page had this and nothing else did. Handwriting, so it
+   reads as an aside rather than a subheading. */
+.sec-sub{font-family:'Caveat',cursive;font-weight:500;font-size:22px;
+  color:var(--terracotta);margin:-16px 0 22px;}
+
+/* Hero art is the real illustration now, not a placeholder box. */
+.hero-art{background:none;border:none;box-shadow:none;aspect-ratio:auto;padding:0;display:block;}
+.hero-art img{width:100%;height:auto;}
+
+.two-col{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:start;}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:30px 32px;box-shadow:var(--shadow);}
+/* The collection as it actually is, full width. The Fred Ives above is the
+   beginning and this is the same story's other end, so it gets the whole
+   measure rather than a column. */
+.wall-photo{margin:0;}
+.attempt-photo{margin:18px 0 20px;}
+.wall-photo img,.attempt-photo img{width:100%;height:auto;border-radius:var(--radius);
+  border:1px solid var(--line);box-shadow:var(--shadow);}
+.wall-photo figcaption,.attempt-photo figcaption{font-size:13px;color:var(--ink-faint);
+  margin-top:10px;line-height:1.5;}
+.attempt-photo figcaption{font-size:12.5px;}
+
+/* The plant the page opens on. It sits under the collection numbers rather than
+   in the story panel, because the right column runs out of content long before
+   the story on the left does, and this puts the photograph level with the
+   paragraph that describes it. */
+.origin-photo{margin:18px 0 0;}
+.origin-photo img{width:100%;height:auto;border-radius:var(--radius);
+  border:1px solid var(--line);box-shadow:var(--shadow);}
+.origin-photo figcaption{font-size:12.5px;color:var(--ink-faint);
+  line-height:1.5;margin-top:9px;}
+
+/* Collection numbers on the Plants page. */
+.stat-row{display:flex;gap:28px;margin:0 0 16px;flex-wrap:wrap;}
+.stat b{font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:600;
+  display:block;line-height:1;color:var(--terracotta);}
+.stat span{font-size:12.5px;color:var(--ink-faint);letter-spacing:.4px;text-transform:uppercase;}
+
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.tag{font-size:13px;padding:6px 14px;border-radius:20px;background:var(--bg-wash);
+  color:var(--ink-soft);border:1px solid var(--line);}
+.tag.is-sage{background:rgba(167,184,151,.24);color:var(--wp--custom--tone--tag-sage);border-color:rgba(167,184,151,.55);}
+.tag.is-terra{background:rgba(200,100,74,.12);color:var(--terracotta-dim);border-color:rgba(200,100,74,.30);}
+.tag.is-amethyst{background:rgba(141,121,166,.16);color:var(--wp--custom--tone--tag-amethyst);border-color:rgba(141,121,166,.35);}
+
+/* ---------- section grounds ----------
+   The reason the page read washed out was never a shortage of colour: it was
+   white cards on an ivory ground, two shades of the same non-colour, so nothing
+   had an edge. Giving alternating sections a ground of their own is what gives
+   the cards something to sit ON, and it is the cheapest change here by far. */
+.band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.band.is-wash{background:var(--bg-wash);}
+/* Lavender under the journal specifically. That is the one place the site
+   already means purple, so the ground carries the reading colour beneath the
+   reading content rather than decorating an unrelated band. */
+.band.is-reading{background:linear-gradient(180deg,rgba(216,207,229,.55),rgba(216,207,229,.22));}
+
+/* ---------- one colour per obsession ----------
+   A wash falling from the top of each explore card, fading out by 60% so the
+   text still sits on plain paper. Sage, lavender, amethyst and gold barely
+   appeared anywhere in this stylesheet before this; now each has a card.
+
+   Classes rather than :nth-child, because reordering the row would otherwise silently
+   reassign every colour, and the order of Amanda's obsessions is not something
+   the stylesheet should have an opinion about.
+
+   The top bar takes the card's own colour instead of terracotta for all five,
+   which is the only place the "terracotta means a place to go" rule is relaxed:
+   here the bar is identification, not an invitation. */
+.cards.explore .card.is-succulents{background-image:linear-gradient(180deg,rgba(167,184,151,.42),rgba(255,255,255,0) 60%);
+  box-shadow:var(--shadow), inset 0 2.5px 0 var(--sage);}
+.cards.explore .card.is-chickens{background-image:linear-gradient(180deg,rgba(200,100,74,.30),rgba(255,255,255,0) 60%);
+  box-shadow:var(--shadow), inset 0 2.5px 0 var(--terracotta);}
+.cards.explore .card.is-crochet{background-image:linear-gradient(180deg,rgba(216,207,229,.70),rgba(255,255,255,0) 60%);
+  box-shadow:var(--shadow), inset 0 2.5px 0 var(--wp--custom--tone--crochet-bar);}
+.cards.explore .card.is-books{background-image:linear-gradient(180deg,rgba(141,121,166,.30),rgba(255,255,255,0) 60%);
+  box-shadow:var(--shadow), inset 0 2.5px 0 var(--amethyst);}
+.cards.explore .card.is-tech{background-image:linear-gradient(180deg,rgba(192,161,90,.34),rgba(255,255,255,0) 60%);
+  box-shadow:var(--shadow), inset 0 2.5px 0 var(--gold);}
+.cards.explore .card[class*="is-"]{background-repeat:no-repeat;background-color:var(--card);}
+
+/* ---------- a wash of artwork ----------
+   The illustrations are the richest thing the brand owns and every instance of
+   them on the site is postage-stamp sized. This runs one large and faint behind
+   a section, as a ground rather than a picture.
+
+   Decoration only: aria-hidden in the markup, positioned so it never sits under
+   body copy, and dropped entirely on a phone where there is no margin for it to
+   live in. .washed > .wrap needs the stacking context or the art covers it. */
+.washed{position:relative;overflow:hidden;}
+.washed > .wrap{position:relative;}
+.washed::before{content:"";aspect-ratio:1;background:url(../images/ornament-amethyst.png) center/contain no-repeat;position:absolute;right:-60px;top:50%;transform:translateY(-50%);
+  width:430px;opacity:.22;pointer-events:none;}
+@media (max-width:900px){ .washed::before{display:none;} }
+
+/* ---------- footer ----------
+   Horizontal, and on deepened sage.
+
+   It used to be five centred rows (badge, tagline, nav, icons, legal) and ran
+   411px tall to carry what is, in content terms, one line of links and three
+   icons. Every element is still here; it simply stops giving each one a row of
+   its own. 137px.
+
+   Everything that has to read on --sage-deep is cream or lavender. Gold and
+   terracotta both fail against it (2.95:1 and 1.87:1), which is why no accent
+   colour appears down here at all. */
+footer{background:var(--sage-deep);border-top:none;padding:18px 0 14px;margin-top:0;}
+footer .wrap{display:block;text-align:left;}
+/* Scoped to `footer` on purpose. A bare `.foot-main` is specificity 0,0,1,0 and
+   loses to `footer .wrap{display:block}` above it at 0,0,1,1. The row stayed
+   stacked and looked like the flexbox simply had not been written. */
+footer .foot-main{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+footer .brand-block{display:flex;flex-direction:row;align-items:center;gap:11px;}
+/* Scoped to the footer, since .tagline is also the journal cards' eyebrow label. */
+footer .tagline{font-size:13px;color:rgba(247,243,235,.64);margin:0;line-height:1.45;}
+/* margin-left:auto is what pushes the links away from the brand and holds the
+   icons at the far right without a spacer element. */
+.foot-nav{display:flex;gap:6px 15px;flex-wrap:wrap;font-size:13.5px;margin:0 0 0 auto;}
+footer .foot-nav a{color:rgba(247,243,235,.86);}
+footer .foot-nav a:hover{color:#FFFFFF;}
+
+/* Five brand marks. Framed in a ring rather than set bare: at this size an
+   unframed glyph reads as debris beside the text links, and the circle gives
+   the row the same optical weight the nav beside it has. currentColor on the
+   paths is what lets one hover rule move icon, ring and wash together. */
+.social{display:flex;justify-content:center;gap:14px;}
+/* padding:0 is load-bearing. This row is a <nav>, so it inherits
+   `nav a{padding-bottom:4px}` from the masthead rule, which pushed every icon
+   2px above the centre of its own circle. Horizontal was fine, vertical was
+   8px above and 12px below, which reads as "the circles are off" long before
+   anyone thinks to blame the main navigation. */
+.social a{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
+  padding:0;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
+  transition:color .15s ease,border-color .15s ease,background-color .15s ease;}
+.social a:hover{color:var(--terracotta);border-color:rgba(200,100,74,.35);
+  background:rgba(200,100,74,.08);}
+.social a:focus-visible{outline:2px solid var(--terracotta);outline-offset:2px;}
+.social svg{width:18px;height:18px;fill:currentColor;display:block;}
+/* The footer's own copy of the row, on the dark ground. Scoped rather than
+   folded into .social above, because the style guide shows the same component
+   on cream and would otherwise render it invisible. */
+footer .social{gap:9px;margin:0;}
+footer .social a{width:32px;height:32px;background:rgba(247,243,235,.07);
+  border-color:rgba(247,243,235,.22);color:rgba(247,243,235,.80);}
+footer .social a:hover{background:rgba(247,243,235,.16);color:#FFFFFF;
+  border-color:rgba(247,243,235,.45);}
+footer .social svg{width:15px;height:15px;}
+
+/* The legal line and the tool links share one row rather than stacking. */
+.legal{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  border-top:1px solid rgba(247,243,235,.16);margin-top:12px;padding-top:11px;
+  text-align:left;font-size:11.5px;color:rgba(247,243,235,.56);}
+.legal a{color:rgba(247,243,235,.74);}
+.legal a:hover{color:#FFFFFF;}
+
+@media (max-width:820px){
+  footer .foot-main{justify-content:center;text-align:center;}
+  footer .brand-block{justify-content:center;}
+  .foot-nav{margin-left:0;justify-content:center;}
+  .legal{justify-content:center;text-align:center;}
+}
+
+@media (max-width:900px){
+  .hero .wrap,.two-col{grid-template-columns:1fr;gap:32px;}
+  .hero h1{font-size:44px;}
+  .wp-block-navigation__container{gap:16px;}
+  .wp-block-navigation a{font-size:14px;}
+  section{padding:44px 0;}
+}
+
+/* ---------- about page: alternating story rows ----------
+   Each section is one row: her words on one side, the illustration on the
+   other, sides alternating down the page. Source order is always text-then-art
+   so a screen reader and a phone both get the words first; .is-flipped only
+   moves the art visually. */
+.story{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center;}
+.story + .story{margin-top:58px;}
+.story-art img{width:100%;height:auto;}
+.story.is-flipped .story-art{order:-1;}
+
+.prose p{font-size:17px;color:var(--ink-soft);margin:0 0 16px;max-width:36em;}
+/* Lists share the paragraphs' measure. The app panel runs prose, bullets and
+   screenshots down one column, and a full-width list beside a 36em paragraph
+   reads as a mistake. */
+.prose ul{font-size:17px;color:var(--ink-soft);margin:0 0 16px;max-width:36em;
+  padding-left:22px;}
+.prose li{margin-bottom:8px;}
+.prose p:last-child{margin-bottom:0;}
+.prose strong{color:var(--ink);font-weight:600;}
+
+/* A one-line paragraph used as a beat: "That escalated." Set in the display
+   face so it lands as a pause rather than as another sentence. Four on the
+   page, deliberately; a fifth would stop reading as emphasis at all. */
+.beat,.prose p.beat{font-family:'Caveat',cursive;font-weight:600;font-style:normal;
+  font-size:27px;line-height:1.35;color:var(--terracotta);
+  margin:20px 0 !important;max-width:none;}
+
+/* The closing turns and the sign-off, centred under the last card row. */
+.closing{max-width:34em;margin:0 auto;text-align:center;}
+.closing p{max-width:none;margin:0 0 10px;}
+.closing .beat{margin:18px 0 22px !important;}
+.signature{font-family:'Playfair Display',Georgia,serif;font-size:27px;
+  color:var(--ink);margin:0;}
+
+/* Six cards read better 3-and-3 than 4-and-2, so this row sets a wider floor. */
+.cards.trio{grid-template-columns:repeat(auto-fit,minmax(316px,1fr));}
+
+@media (max-width:900px){
+  .story{grid-template-columns:1fr;gap:26px;}
+  .story + .story{margin-top:42px;}
+  .story.is-flipped .story-art{order:0;}
+  .beat{font-size:19px;}
+}
+
+/* ---------- phone masthead ----------
+   Below 700px the logotype and a seven-item nav cannot share a row without one
+   of them losing. The logo takes its own line and gets bigger for it; the nav
+   centres underneath. Un-sticking it keeps a two-row header from occupying a
+   third of a phone screen. */
+@media (max-width:700px){
+  .masthead{position:static;}
+  .masthead .wrap{flex-direction:column;align-items:center;gap:12px;}
+  .masthead .logo img{height:58px;}
+  .wp-block-navigation__container{justify-content:center;gap:12px 18px;}
+  footer .logo img{height:72px;width:72px;}
+}
+
+
+/* ---------- journal ----------
+   Amethyst, per the palette rule set out above: terracotta means "a place to
+   go", amethyst means "something to read". The journal is the only place
+   amethyst leads. */
+.muted{color:var(--ink-faint);font-size:15px;}
+
+.post-list{display:grid;gap:20px;}
+.post-card{display:block;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+.post-card:hover{border-color:rgba(141,121,166,.45);text-decoration:none;}
+.post-card .cover{width:100%;height:230px;object-fit:cover;}
+.post-card .pc-body{display:block;padding:22px 26px;}
+.post-card h3{font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:500;
+  margin:6px 0 8px;color:var(--amethyst);line-height:1.25;}
+.post-card p{margin:0;font-size:15px;color:var(--ink-soft);}
+.post-card .go{display:inline-block;margin-top:13px;color:var(--amethyst);}
+/* A row of post cards that scrolls sideways. Native scrolling with snap
+   points, so touch, trackpad and keyboard all work with no script; the
+   arrows are only a convenience for a mouse. */
+.carousel-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:4px 2px 14px;scrollbar-width:thin;}
+.carousel-track .post-card{flex:0 0 min(320px,82%);scroll-snap-align:start;}
+.carousel-track .post-card .cover{height:190px;}
+.carousel-track .post-card h3{font-size:21px;}
+.carousel-nav{display:flex;justify-content:flex-end;gap:10px;margin-top:8px;}
+.carousel-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);
+  background:var(--card);color:var(--amethyst);font-size:17px;cursor:pointer;
+  transition:border-color .15s ease,background-color .15s ease;}
+.carousel-btn:hover:not(:disabled){border-color:var(--amethyst);background:rgba(141,121,166,.09);}
+.carousel-btn:focus-visible{outline:2px solid var(--amethyst);outline-offset:2px;}
+.carousel-btn:disabled{opacity:.35;cursor:default;}
+.carousel-nav[hidden]{display:none;}
+
+.eyebrow{display:block;font-size:11.5px;letter-spacing:1px;text-transform:uppercase;
+  font-weight:600;color:var(--amethyst);}
+
+/* ---------- a single post ---------- */
+.post-head{max-width:38em;margin:0 auto;padding:54px 0 26px;}
+.post-head .back{font-size:13.5px;color:var(--ink-faint);display:inline-block;margin-bottom:22px;}
+.post-head .back:hover{color:var(--terracotta);}
+.post-head h1{font-family:'Playfair Display',Georgia,serif;font-size:44px;line-height:1.12;
+  font-weight:500;margin:10px 0 0;letter-spacing:-.4px;}
+.post-head .dek{font-size:19px;line-height:1.55;color:var(--ink-soft);margin:14px 0 0;}
+.post-cover{width:100%;max-width:980px;margin:0 auto 40px;border-radius:var(--radius);
+  max-height:460px;object-fit:cover;}
+
+/* Reading measure, set once. Everything inside inherits it. */
+.post-body{max-width:38em;margin:0 auto;padding-bottom:20px;}
+.post-body p{font-size:17.5px;line-height:1.75;color:var(--ink-soft);margin:0 0 21px;}
+.post-body h2{font-family:'Playfair Display',Georgia,serif;font-size:29px;font-weight:500;margin:40px 0 12px;}
+.post-body h3{font-family:'Playfair Display',Georgia,serif;font-size:22px;font-weight:500;margin:32px 0 10px;}
+.post-body ul,.post-body ol{font-size:17.5px;line-height:1.7;color:var(--ink-soft);
+  padding-left:22px;margin:0 0 21px;}
+.post-body li{margin-bottom:8px;}
+.post-body img{border-radius:var(--radius);margin:28px 0;}
+.post-body a{text-decoration:underline;text-underline-offset:3px;}
+.post-body blockquote{margin:28px 0;padding:2px 0 2px 22px;border-left:3px solid var(--lavender);}
+.post-body blockquote p{font-family:'Playfair Display',Georgia,serif;font-style:italic;
+  font-size:20px;color:var(--ink);}
+.post-body pre{background:var(--bg-wash);border:1px solid var(--line);border-radius:10px;
+  padding:16px 18px;overflow-x:auto;margin:0 0 21px;}
+.post-body code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;}
+.post-body hr{border:0;border-top:1px solid var(--line);margin:36px 0;}
+
+/* Figures are written as raw HTML in the Markdown, since the parser has no
+   caption syntax. Portrait photos are held narrower so one picture never
+   takes more than a screen of scrolling. */
+.post-body figure{margin:30px 0;}
+.post-body figure img{margin:0;width:100%;height:auto;}
+.post-body figure.is-tall img{max-width:440px;margin:0 auto;}
+.post-body figcaption{font-size:13.5px;color:var(--ink-faint);text-align:center;margin-top:10px;}
+
+/* An end-of-post card for a parts list, a source list, and the like. */
+.post-body .materials{background:var(--bg-wash);border:1px solid var(--line);
+  border-radius:var(--radius);padding:24px 28px 8px;margin:40px 0 20px;}
+.post-body .materials h3{margin-top:0;}
+.post-body .materials ul{font-size:15.5px;}
+.post-body .materials ul ul{margin:8px 0 0;}
+.post-body .materials .note{font-size:13.5px;color:var(--ink-faint);}
+
+@media (max-width:900px){
+  .post-head{padding:34px 0 20px;}
+  .post-head h1{font-size:33px;}
+  .post-card .cover{height:180px;}
+}
+
+/* ---------- links page (links.html) ----------
+   Colours follow the Linktree she started: amethyst name, terracotta bio and
+   labels, sage pill buttons. The sage carries Deep Forest text, not white,
+   because white on Soft Sage is about 2:1 and fails for text this size.
+
+   Linktree's shape in this site's clothes: one centred column, a round
+   avatar, then stacked full-width buttons that lift on hover. Sized for a
+   phone first, since it is reached from an Instagram bio. */
+.lt-page{background:linear-gradient(180deg,var(--ivory) 0%,var(--bg-wash) 100%);
+  min-height:100vh;}
+.lt{max-width:560px;margin:0 auto;padding:56px 16px 40px;text-align:center;}
+/* images/avatar.png is a square head-and-shoulders crop of about-portrait.png,
+   cut as its own file. Cropping the full-figure portrait in CSS instead left
+   the face off-centre and the hair sliced. Transparent, so it sits on a
+   lavender disc. */
+.lt-avatar{display:block;width:124px;height:124px;border-radius:50%;overflow:hidden;margin:0 auto 14px;
+  background:var(--lavender);border:3px solid var(--card);box-shadow:var(--shadow);}
+.lt-avatar img{width:100%;height:100%;object-fit:cover;}
+/* The site's section spacing is for full-width bands; here it opened gaps. */
+.lt section{padding:0;}
+.lt-name{font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:500;margin:0;color:var(--amethyst);}
+/* The site's tagline in Caveat, the hand the site already uses for its
+   asides, then the topics in small caps beneath it. */
+.lt-bio{font-family:'Caveat',cursive;font-size:25px;font-weight:600;line-height:1.2;
+  color:var(--terracotta-dim);margin:4px auto 6px;}
+.lt-topics{font-size:11.5px;letter-spacing:1.2px;text-transform:uppercase;font-weight:600;
+  color:var(--ink-faint);margin:0 0 20px;}
+.lt .social{margin-bottom:30px;}
+.lt-group{margin-bottom:26px;}
+.lt-label{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;font-weight:600;
+  color:var(--terracotta-dim);margin:0 0 12px;}
+/* Her Linktree's icons were terracotta and unframed-looking; keep the ring
+   (the site's component) but take the colour. */
+.lt .social a{color:var(--terracotta-dim);}
+.lt-links{display:grid;gap:14px;}
+.lt-link{position:relative;display:flex;align-items:center;justify-content:center;min-height:58px;
+  padding:14px 64px;background:var(--sage);border:1px solid transparent;border-radius:999px;
+  box-shadow:var(--shadow);color:var(--ink);font-size:15.5px;font-weight:600;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;}
+.lt-link:hover{text-decoration:none;transform:translateY(-2px);border-color:var(--sage-deep);
+  box-shadow:0 1px 2px rgba(46,61,47,.04),0 16px 30px -16px rgba(46,61,47,.38);}
+.lt-link:focus-visible{outline:2px solid var(--amethyst);outline-offset:3px;}
+.lt-thumb{position:absolute;left:7px;top:50%;transform:translateY(-50%);width:46px;height:46px;
+  border-radius:50%;object-fit:cover;}
+.lt-text{display:flex;flex-direction:column;gap:3px;}
+.lt-title{font-family:'Playfair Display',Georgia,serif;font-size:17px;font-weight:500;line-height:1.25;}
+.lt-date{font-size:12px;font-weight:500;color:var(--sage-deep);}
+.lt-foot{margin:34px 0 0;}
+.lt-foot img{width:34px;height:34px;margin:0 auto;opacity:.85;}
+.lt{position:relative;}
+.lt-share{position:absolute;top:18px;right:16px;width:40px;height:40px;border-radius:50%;
+  display:grid;place-items:center;padding:0;border:1px solid var(--line);background:var(--card);
+  color:var(--ink-soft);cursor:pointer;box-shadow:var(--shadow);}
+.lt-share svg{width:17px;height:17px;fill:currentColor;}
+.lt-share:hover{color:var(--amethyst);border-color:var(--amethyst);}
+.lt-share.is-copied{color:var(--card);background:var(--amethyst);border-color:var(--amethyst);}
+.lt-share.is-copied::after{content:"Copied";position:absolute;top:46px;right:0;font-size:11px;
+  font-weight:600;color:var(--amethyst);white-space:nowrap;}
+
+/* The newest post, as a proper card rather than one more button. */
+.lt-feature{display:block;text-align:left;background:var(--card);border:1px solid var(--line);
+  border-radius:18px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:14px;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;}
+.lt-feature:hover{text-decoration:none;transform:translateY(-2px);border-color:var(--amethyst);}
+.lt-feature img{width:100%;height:200px;object-fit:cover;}
+.lt-feature-body{display:flex;flex-direction:column;gap:6px;padding:16px 20px 18px;}
+.lt-feature .lt-title{font-size:22px;color:var(--ink);}
+.lt-excerpt{font-size:14.5px;line-height:1.55;color:var(--ink-soft);}
+.lt-feature .go{color:var(--amethyst);margin-top:2px;}
+
+/* Section tiles, the site's own illustrations. */
+.lt-tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.lt-tile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px 10px;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;color:var(--ink);
+  font-size:12.5px;font-weight:600;transition:transform .15s ease,border-color .15s ease;}
+.lt-tile:hover{text-decoration:none;transform:translateY(-2px);border-color:var(--amethyst);}
+.lt-tile img{width:52px;height:52px;object-fit:contain;}
+.lt-tile.is-soon,.lt-tile.is-soon:hover{transform:none;border-color:var(--line);color:var(--ink-faint);}
+.lt-tile.is-soon img{opacity:.5;filter:grayscale(.4);}
+.lt-tile.is-soon::after{content:"soon";font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--amethyst);margin-top:-3px;}
+@media (max-width:400px){ .lt-link{padding:14px 58px;} }
+@media (max-width:440px){ .lt-tiles{grid-template-columns:repeat(3,1fr);} }
+
+/* ---------- coming soon ----------
+   A page still being written shows only its panel to the public. site.js
+   removes .is-soon from <html> for a signed-in session. Everything between
+   the masthead and the footer is hidden, rather than each section by name,
+   so a section added later cannot leak out. */
+.soon-panel{display:block;text-align:center;padding:70px 0 80px;
+  background:linear-gradient(180deg,var(--bg-wash),var(--bg));}
+.soon-panel img{width:150px;height:auto;margin:0 auto 18px;}
+.soon-panel h1{font-family:'Playfair Display',Georgia,serif;font-size:44px;font-weight:500;
+  margin:8px 0 12px;letter-spacing:-.4px;}
+.soon-panel p{font-size:17px;color:var(--ink-soft);max-width:30em;margin:0 auto 26px;}
+.soon-panel .btn-row{justify-content:center;}
+
+/* Links to those pages, for the public: present, so the site's shape reads,
+   but plainly not a door yet. */
+a.is-soon{cursor:default;}
+.wp-block-navigation a.is-soon,.wp-block-navigation a.is-soon:hover{color:var(--ink-faint);}
+.wp-block-navigation a.is-soon::after{content:"soon";margin-left:5px;font-size:9.5px;font-weight:600;
+  letter-spacing:.6px;text-transform:uppercase;vertical-align:2px;color:var(--amethyst);}
+.foot-nav a.is-soon,.foot-nav a.is-soon:hover{color:rgba(247,243,235,.45);}
+footer .foot-nav a.is-soon::after{color:rgba(247,243,235,.55);}
+.card.is-soon:hover{border-color:var(--line);}
+.card.is-soon img{opacity:.6;filter:grayscale(.35);}
+.card.is-soon h3{color:var(--ink-faint);}
+.card.is-soon .go{font-size:0;}
+.card.is-soon .go::after{content:"Coming soon";font-size:11px;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--amethyst);}
+
+/* Preview mode on post.html: a clear, unmissable band so a draft can never be
+   mistaken for the live page. */
+.preview-banner{background:var(--amethyst);color:#fff;text-align:center;
+  padding:9px 16px;font-size:12.5px;letter-spacing:.7px;text-transform:uppercase;font-weight:600;}
+
+/* ---------- distributing the two accents ----------
+   Reducing the amount of terracotta was not the fix. The page was ZONED: every
+   warm note above the fold, every cool note below it, so the halves read as two
+   different designs. Each accent now recurs down the whole page.
+
+   1. The hero's second button leads to the journal, so it takes the journal's
+      colour. That is the palette rule applied, not decoration, and it is what
+      puts a cool note at the top of the page. */
+.btn-ghost.is-read{color:var(--amethyst);border-color:var(--amethyst);}
+.btn-ghost.is-read:hover{background:rgba(141,121,166,.09);}
+
+/* 2. The hero closes on the same lavender hairline that sits under every
+      section heading, instead of the generic grey line. */
+.hero{border-bottom:1.5px solid rgba(216,207,229,.95);}
+
+/* 3. The section cards carry a terracotta top edge, which pulls warm colour
+      down into the middle band and rhymes with the lavender bar on the journal
+      cards. An inset shadow rather than a border, so the 1px outline and the
+      corner radius are left alone. */
+.cards:not(.stacked) .card{box-shadow:var(--shadow), inset 0 2.5px 0 rgba(200,100,74,.55);}
+.cards:not(.stacked) .card:hover{box-shadow:var(--shadow), inset 0 2.5px 0 var(--terracotta);}
+
+/* The About hero carries a portrait-orientation illustration rather than the
+   4:3 scenes used elsewhere. Capped so it sits beside the headline instead of
+   towering over it, and pushed right so it hugs the page edge. */
+.hero-art.is-portrait img{max-width:400px;margin-left:auto;}
+@media (max-width:900px){ .hero-art.is-portrait img{max-width:300px;margin:0 auto;} }
+
+/* ---------- plants page: favourite cards carry photographs ----------
+   The section marks are 78px objects beside the text, which is right for an
+   icon and wrong for a plant. These cards put the picture on top at 4:3 and
+   run the story underneath, so the photograph is the point of the card. */
+.cards.photos{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));}
+.cards.photos .card{flex-direction:column;gap:14px;padding:14px 14px 20px;
+  align-items:stretch;}
+/* align-items:stretch is load-bearing. .card sets flex-start for the icon-beside-
+   text layout; left alone in a column card it shrinks the photo and the story to
+   their content width instead of filling the card. */
+/* Square, not 4:3. Every photograph of the collection is a portrait phone
+   shot, and a landscape crop takes a band out of the middle: the top of the
+   plant goes first, which is the part worth seeing. */
+.cards.photos .card img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;
+  border-radius:10px;}
+.cards.photos .card-body{padding:0 6px;}
+
+/* The story name, under the botanical one. Only the coffee cactus carries one,
+   the other two favourites are known by their species and nothing else. */
+.cards.photos .nickname{font-size:12.5px;color:var(--ink-faint);letter-spacing:.2px;}
+
+/* An empty picture frame, for a card whose photograph has not been chosen yet.
+   Naming the picture it wants makes an unfinished card read as deliberate
+   rather than broken, and it is the swap list. Replace the div with an
+   <img> and nothing else on the page has to change. */
+.photo-slot{background:var(--bg-wash);border:1px dashed rgba(46,61,47,.20);
+  border-radius:10px;aspect-ratio:1;display:flex;align-items:center;
+  justify-content:center;text-align:center;padding:18px;
+  font-size:12.5px;line-height:1.6;color:var(--ink-faint);}
+
+/* App screenshots sit in phone-shaped frames. Capped so three of them read as
+   a row of phones rather than three columns of the panel. */
+.shot-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:18px;max-width:36em;margin:26px 0;}
+.photo-slot.is-phone{aspect-ratio:9/19;border-radius:20px;padding:22px 14px;}
+/* The real screenshots, once they land. Same frame as the placeholder. */
+.shot-row img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);
+  box-shadow:0 6px 18px -10px rgba(46,61,47,.5);}
+
+/* Five titles read as five lines, not as a sentence with four commas. Set as a
+   list inside the card rather than more prose, so the eye can find one.
+   Deliberately unlinked: five retailer links would turn a shelf into a
+   storefront, and the two links already in the paragraph above are the ones
+   worth following. */
+.booklist{list-style:none;margin:12px 0 0;padding:0;}
+.booklist li{padding:6px 0;border-top:1px solid var(--line);
+  font-size:13px;line-height:1.4;color:var(--ink-soft);}
+.booklist li:first-child{border-top:none;padding-top:0;}
+.booklist .who{display:block;font-size:11.5px;color:var(--ink-faint);margin-top:1px;}
+
+/* Links inside a card's running prose: the resource notes. Colour alone is
+   not enough to mark a link mid-sentence, and these are the only cards where
+   the text itself is clickable rather than the whole card. */
+.card p a{text-decoration:underline;text-underline-offset:2px;}
+
+/* Cards that are NOT links. The favourites and the resource notes hold their
+   own text and go nowhere, so they must not offer a hover affordance. Both
+   the border and the terracotta top edge stay put. */
+article.card:hover{border-color:var(--line);}
+.cards:not(.stacked) article.card:hover{
+  box-shadow:var(--shadow), inset 0 2.5px 0 rgba(200,100,74,.55);}
+
+@media (max-width:900px){
+  .shot-row{max-width:none;}
+}
+
+/* The app panel runs two columns on desktop: what the app does on the left at a
+   reading measure, the phone screenshots on the right. A single 36em column of
+   prose in an 1180px panel left the whole right half of the card empty. */
+/* Narrow text column, wider figure beneath: the ordinary article shape. The
+   screenshots were in a side column at ~130px wide, which is not a screenshot,
+   it is texture: you could see there was an app and read nothing on it. Full
+   width makes them legible; centring the prose stops the freed space reading as
+   a hole beside the text. */
+.app-panel{display:block;}
+.app-panel .prose{max-width:36em;margin:0 auto;}
+.app-panel .shot-row{grid-template-columns:repeat(3,1fr);max-width:880px;
+  margin:32px auto 0;gap:24px;}
+.app-panel .colophon{max-width:880px;margin:26px auto 0;}
+/* The colophon is about the build, not the feature list, so it sits apart and
+   quieter, on the figure's measure rather than the text's. */
+.app-panel .colophon{font-size:15px;line-height:1.7;color:var(--ink-faint);}
+
+@media (max-width:900px){
+  .app-panel .shot-row{max-width:420px;gap:12px;}
+}
+
+/* ---------- the collection inventory ----------
+   Read live from public_plant_inventory. The records are still being filled in,
+   so the card renders only the fields a species actually carries: a blank field
+   is an unfinished record, not a fact, and a row of em-dashes would dress
+   absence up as information. */
+.back-to{display:inline-block;font-size:13.5px;color:var(--ink-faint);margin-bottom:20px;}
+.back-to:hover{color:var(--terracotta);}
+
+.inv-controls{margin-bottom:22px;}
+.search-input{width:100%;max-width:520px;font:inherit;font-size:15px;
+  padding:12px 15px;border:1px solid var(--line);border-radius:10px;
+  background:var(--card);color:var(--ink);}
+.search-input:focus{outline:2px solid rgba(200,100,74,.35);outline-offset:1px;
+  border-color:var(--terracotta);}
+.inv-controls .muted{margin:10px 0 0;font-size:14px;}
+.inv-controls .muted strong{color:var(--ink);font-weight:600;}
+
+/* auto-fill, not auto-fit: a single search result should stay a card, not
+   stretch to the full width of the page. */
+/* align-items:start, not the default stretch. These entries range from a full
+   description with eight fields to a bare name, and equalising the row height
+   leaves a short card as a tall white hole. */
+#inv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+  gap:18px;align-items:start;}
+.inv-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px 22px;box-shadow:var(--shadow);
+  box-shadow:var(--shadow), inset 0 2.5px 0 rgba(167,184,151,.6);}
+.inv-card h2{font-family:'Playfair Display',Georgia,serif;font-size:20px;font-weight:500;
+  margin:0;line-height:1.25;color:var(--ink);}
+.inv-card h2 em{font-style:italic;}
+.inv-common{margin:3px 0 0;font-size:14px;color:var(--ink-soft);}
+.inv-meta{margin:6px 0 0;font-size:11.5px;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--ink-faint);}
+.inv-tender{color:var(--terracotta-dim);}
+.inv-desc{margin:14px 0 0;font-size:14px;line-height:1.6;color:var(--ink-soft);}
+
+.inv-fields{margin:14px 0 0;padding:0;}
+.inv-row{display:flex;gap:12px;padding:6px 0;border-top:1px solid var(--line);}
+.inv-row:first-child{border-top:none;}
+.inv-row dt{flex:0 0 84px;margin:0;font-size:11.5px;letter-spacing:.4px;
+  text-transform:uppercase;color:var(--ink-faint);padding-top:2px;}
+.inv-row dd{margin:0;font-size:13.5px;line-height:1.45;color:var(--ink-soft);min-width:0;}
+
+.inv-verify{margin:14px 0 0;font-size:12.5px;}
+.inv-verify a{color:var(--sage);}
+.inv-verify a:hover{color:var(--terracotta);}
+
+@media (max-width:700px){
+  #inv-list{grid-template-columns:1fr;}
+  .inv-row{flex-direction:column;gap:2px;}
+  .inv-row dt{flex:none;}
+}
+
+/* The resources block under the inventory. A plain list: the sites are listed,
+   not ranked or annotated. */
+.sources{margin-top:34px;}
+.sources h2{font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:500;
+  margin:0 0 8px;}
+.sources-intro{margin:0 0 16px;font-size:15px;color:var(--ink-soft);max-width:46em;}
+.sources-list{list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px 20px;}
+.sources-list li{padding:7px 0;border-top:1px solid var(--line);font-size:14px;}
+
+/* Two links now, so they need separating. */
+.inv-verify{display:flex;gap:16px;}
+
+/* ---------- books page ----------
+   Caveat carries the handwritten asides from the mockup. Third face on the
+   site, and it earns its place: the annotations are the voice of the page, and
+   setting them in Inter italic would read as a caption rather than a margin
+   note. */
+.script{font-family:'Caveat',cursive;font-weight:500;}
+.aside{font-family:'Caveat',cursive;font-size:1.15em;color:var(--ink-faint);}
+
+.bk-hero .hero-art img{max-width:560px;margin-left:auto;}
+@media (max-width:900px){ .bk-hero .hero-art img{max-width:420px;margin:0 auto;} }
+
+/* .bk-head retired. The books page uses the shared .sec-head + .sec-sub now. */
+
+/* A book without its cover. The spine bar carries the colour so a row of these
+   still reads as a shelf; swapping in real cover art later means replacing the
+   span with an <img> and nothing else moves. */
+/* Two variants, one shape. A card either carries its cover as a small portrait
+   thumbnail or it does not, and the row reads the same either way. The colour
+   bar stands in for the spine when there is no art. That matters because only
+   17 of the 24 books have a cover worth using: Open Library's coverage of
+   recent romantasy is thin, and a layout where a missing cover left a hole
+   would have looked broken rather than unfinished. */
+/* The cover leads. These were 34x51 thumbnails beside a title, which made the
+   card mostly text and chrome; a page about books should show the books. The
+   card is a shelf slot now: full-bleed cover at 2:3, title and author on the
+   board beneath it, colour kept as a thin spine down the left edge. */
+.bookcard{display:block;border-radius:6px;overflow:hidden;
+  background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
+  font-size:12.5px;font-weight:600;line-height:1.25;color:var(--ink);
+  border-left:4px solid var(--sage);}
+/* height:auto is load-bearing. The markup carries width/height attributes so the
+   browser can reserve space before the image lands, and a presentational height
+   beats aspect-ratio. Without this the covers render 500px tall and object-fit
+   crops them to a vertical strip. */
+.bookcard img{display:block;width:100%;height:auto;aspect-ratio:2/3;object-fit:cover;}
+.bc-txt{display:block;padding:8px 10px 10px;}
+/* Six titles have no cover art worth using, mostly indie romance that neither
+   Open Library nor Google Books indexes. A tinted board with the title set in
+   the display face reads as a cloth binding rather than a missing image, and
+   the row still scans as a shelf. */
+.bc-plate{display:flex;aspect-ratio:2/3;align-items:center;justify-content:center;
+  padding:14px 12px;text-align:center;background:var(--bg-wash);
+  border-bottom:1px solid var(--line);}
+.bc-plate span{font-family:'Playfair Display',Georgia,serif;font-weight:500;
+  font-size:15px;line-height:1.25;color:var(--ink-soft);}
+.no-cover .bc-txt{padding-top:7px;}
+.bookcard b{display:block;font-weight:400;font-size:11px;color:var(--ink-faint);
+  margin-top:3px;}
+.bookcard.is-1{border-left-color:var(--wp--custom--tone--book-spine);}
+.bookcard.is-2{border-left-color:var(--terracotta);}
+.bookcard.is-3{border-left-color:var(--amethyst);}
+.bookcard.is-4{border-left-color:var(--gold);}
+.bookrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));
+  gap:12px 10px;margin:10px 0 0;}
+
+/* The reading timeline. Four eras holding 3, 7, 1 and 1 books cannot be four
+   equal columns: the grid forced a quarter-width column to stack seven cards
+   while the one beside it held a single book, and nothing on screen said
+   "chronology" except the order you happened to read in. One era per row on a
+   rule instead, with the label and her commentary in a rail and the shelf
+   beside it. Uneven eras stop mattering: seven books is a wider shelf and
+   nothing else on the page moves. */
+.era-line{list-style:none;margin:0;padding:0;}
+.era{display:grid;grid-template-columns:200px 1fr;gap:0 26px;padding-bottom:30px;}
+.era:last-child{padding-bottom:0;}
+/* The rail carries the era name and nothing else. Her commentary sits in the
+   body under the shelf: right-aligned prose is fine for a two-word date but the
+   ACOTAR note runs six lines, and six lines of ragged-left handwriting reads as
+   a poem rather than an aside. */
+.era-rail{text-align:right;padding-top:2px;}
+/* The spine. The marker is punched out of the page ground with a thick border
+   so the rule reads as passing behind it. */
+.era-body{border-left:1.5px solid var(--line);padding:0 0 6px 30px;position:relative;}
+.era-body::before{content:"";position:absolute;left:-6.5px;top:5px;
+  width:11px;height:11px;border-radius:50%;
+  background:var(--terracotta);border:2.5px solid var(--bg);}
+/* Capped tracks: a three-book era should read as three books on a shelf, not
+   three cards inflated to fill the row. */
+.era-body .bookrow{margin:0;grid-template-columns:repeat(auto-fill,minmax(124px,150px));}
+/* Held to a readable measure. The body runs past 1000px on a wide screen and
+   the notes are one or two sentences. */
+.era-body .tl-note{max-width:36em;}
+.era-body .tl-aside{max-width:32em;}
+@media (max-width:760px){
+  .era{grid-template-columns:1fr;gap:10px;padding-bottom:26px;}
+  .era-rail{text-align:left;}
+  .era-body{border-left:none;padding:0;}
+  .era-body::before{display:none;}
+}
+
+.tl-label{font-family:'Caveat',cursive;font-size:23px;color:var(--ink-soft);margin:0;
+  line-height:1.15;}
+.tl-note{margin:12px 0 0;font-size:13px;font-style:italic;color:var(--ink-soft);line-height:1.5;}
+.tl-aside{margin:8px 0 0;font-size:18px;color:var(--terracotta);}
+
+/* Current obsessions. This was two columns running two different filing systems
+   side by side (by author on the left, by book on the right) and three of the
+   six right-hand books were already on screen in the author cards beside them:
+   the same cover twice, a few hundred pixels apart. One system now, author →
+   series → book, stacked in two tiers. */
+.author-tier{display:grid;gap:16px;align-items:start;margin-bottom:26px;}
+.author-tier.is-pair{grid-template-columns:repeat(2,1fr);}
+.author-tier.is-trio{grid-template-columns:repeat(3,1fr);}
+.author-tier .author-card{margin-bottom:0;}
+@media (max-width:1000px){ .author-tier.is-trio{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:760px){
+  .author-tier.is-pair,.author-tier.is-trio{grid-template-columns:1fr;}
+}
+
+.sec-label{font-size:12px;letter-spacing:1px;text-transform:uppercase;font-weight:600;
+  color:var(--ink-soft);margin:0 0 12px;}
+.author-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 20px 20px;box-shadow:var(--shadow);margin-bottom:16px;}
+.author-card h3{font-family:'Playfair Display',Georgia,serif;font-size:21px;font-weight:500;
+  margin:0;letter-spacing:.6px;text-transform:uppercase;}
+.author-card p{margin:6px 0 0;font-size:13.5px;color:var(--ink-soft);}
+/* Wider tracks than the default shelf. At 118px "To Flame a Wild Flower" broke
+   over four lines and the card was mostly leading. */
+.author-card .bookrow{grid-template-columns:repeat(auto-fill,minmax(112px,132px));}
+/* Capped. At full column width this ran to 500px and left the right-hand
+   column ending a third of the way up the section, with a dead zone beside it.
+   It is a grace note under the author cards, not a second hero. */
+.obsess-art{width:100%;max-width:300px;height:auto;margin:14px auto 0;display:block;}
+
+/* A book she wrote a line about. It spans the whole shelf row and carries her
+   words in the handwriting face, so the size of the card is the tell: a big
+   card means she had feelings about it. This is where "brain rot" went: those
+   captions were a second copy of books already filed under their author, so
+   they moved onto the books themselves. Noted cards come first in a row: a
+   full-width item placed mid-row would leave holes in the auto-fill grid. */
+.bookcard.is-noted{grid-column:1/-1;display:flex;align-items:stretch;}
+.bookcard.is-noted img{width:78px;height:auto;aspect-ratio:2/3;flex-shrink:0;}
+.bookcard.is-noted .bc-plate{width:78px;flex-shrink:0;border-bottom:none;
+  border-right:1px solid var(--line);}
+.bookcard.is-noted .bc-txt{display:flex;flex-direction:column;justify-content:center;
+  padding:10px 14px;min-width:0;}
+.bc-note{display:block;font-size:17px;line-height:1.3;color:var(--ink-soft);
+  margin-top:5px;font-weight:500;}
+
+.dna{display:grid;grid-template-columns:repeat(7,1fr);gap:14px;}
+.dna-item{text-align:center;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius);padding:14px 10px 16px;box-shadow:var(--shadow);}
+.dna-item img{width:66px;height:66px;object-fit:contain;margin:0 auto 8px;}
+.dna-item h3{font-size:11.5px;letter-spacing:.6px;text-transform:uppercase;font-weight:600;
+  margin:0 0 4px;color:var(--ink);line-height:1.3;}
+.dna-item p{margin:0;font-size:12px;color:var(--ink-soft);line-height:1.4;}
+
+.notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;}
+.note-card{display:block;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+.note-card:hover{border-color:rgba(141,121,166,.45);text-decoration:none;}
+.note-card .cover{width:100%;height:120px;object-fit:cover;}
+.note-card .nc-body{display:block;padding:14px 16px 16px;}
+.note-card h3{font-family:'Playfair Display',Georgia,serif;font-size:16px;font-weight:500;
+  margin:5px 0 6px;color:var(--amethyst);line-height:1.3;}
+.note-card .nc-date{font-size:11.5px;color:var(--ink-faint);}
+.note-card.is-soon{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:22px 18px;background:var(--bg-wash);}
+.note-card.is-soon p{margin:0;font-size:14px;color:var(--ink-soft);}
+.note-card.is-soon .script{font-size:19px;color:var(--ink-faint);margin-top:4px;}
+.note-card.is-soon img{width:54px;height:54px;object-fit:contain;margin-top:10px;}
+
+@media (max-width:1100px){ .dna{grid-template-columns:repeat(4,1fr);} }
+@media (max-width:700px){ .dna{grid-template-columns:repeat(2,1fr);} }
+/* Nothing tagged "books" yet: the coming-soon card centres instead of clinging
+   to the left of a five-column grid. */
+.notes-grid.is-empty{grid-template-columns:minmax(240px,330px);justify-content:center;}
+/* Series grouping on the author cards, and the series line on a book card.
+   Both come from content/books-series-reference.md: "One Dark Window" and
+   "The Knight and the Moth" are different Gillig series, and the page said
+   nothing about that before. */
+.series-name{margin:14px 0 0;font-size:11px;letter-spacing:.9px;text-transform:uppercase;
+  font-weight:600;color:var(--ink-faint);}
+.series-name:first-of-type{margin-top:10px;}
+.bookcard i{display:block;font-style:normal;font-size:10px;letter-spacing:.5px;
+  text-transform:uppercase;color:var(--sage);margin-top:3px;}
+
+/* Her two working links. Deliberately quiet and below the legal line, since they are
+   tools, not navigation. Both destinations authenticate: admin.html is gated by
+   Supabase auth scoped to one address and enforced by RLS, and the garden app
+   requires a login too. Hiding the link would be obscurity, not security. */
+.legal-tools{margin:0;font-size:11.5px;white-space:nowrap;}
+.legal-tools a{margin-left:14px;}
+
+/* ---------- books page ----------
+   The rhythm these rules used to set is now the site default; what is left is
+   only what this page genuinely needs differently. */
+.books-page section.tight{padding-top:14px;}
+/* The page used to end in three thin bands (an empty notes grid, a links line
+   and a sign-off) each paying a full section of padding and a divider for very
+   little. One closing block now, hairline-separated from the notes above it. */
+.sign-off{text-align:center;margin-top:40px;padding-top:26px;
+  border-top:1px solid var(--line);}
+.sign-off-line{font-size:26px;color:var(--ink-soft);margin:0;}
+.books-page .timeline{gap:18px;}
+.books-page .obsess{gap:28px;}
+.books-page .obsess-art{max-width:330px;margin-top:22px;}
+/* Chickens and crochet: the small meta line on a profile or project card. */
+.bird-breed,.made-meta{font-size:11.5px;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--ink-faint);margin:0;}
+.eyebrow-script{font-family:'Caveat',cursive;font-size:23px;color:var(--ink-soft);
+  margin:0 0 2px;}
+.pin-row{display:flex;justify-content:flex-end;margin-top:22px;}
+/* A section card with nowhere to go yet. Says so, instead of offering an arrow
+   that leads back to the same page. */
+.go.is-soon{color:var(--ink-faint);font-size:11.5px;letter-spacing:.8px;text-transform:uppercase;}
+
+/* ---------- numbered steps ----------
+   "The story so far" on chickens and "So you want to learn to crochet" are the
+   same component: an ordered sequence where the number is the ornament. Shared
+   because they are the same idea, and because a third page will want it. */
+.steps{list-style:none;display:grid;gap:0;margin:0;padding:0;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));}
+.steps li{padding:16px 20px;border-left:1px solid var(--line);}
+.steps li:first-child{border-left:none;padding-left:0;}
+.step-n{display:block;font-family:'Playfair Display',Georgia,serif;font-size:15px;
+  color:var(--terracotta);letter-spacing:1px;margin-bottom:6px;}
+.steps h3{font-size:12.5px;letter-spacing:.7px;text-transform:uppercase;font-weight:600;
+  margin:0 0 6px;line-height:1.35;color:var(--ink);}
+.steps p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-soft);}
+@media (max-width:900px){
+  .steps{grid-template-columns:repeat(2,1fr);}
+  .steps li{border-left:none;border-top:1px solid var(--line);padding:14px 0;}
+  .steps li:first-child{border-top:none;}
+}
+@media (max-width:560px){ .steps{grid-template-columns:1fr;} }
+
+/* ---------- what is on the hook right now ----------
+   A short record of a thing in progress. The labels are set like a form and the
+   values in the handwriting face, because it is a note to herself more than a
+   specification. */
+.status-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px 24px 24px;box-shadow:var(--shadow);
+  box-shadow:var(--shadow), inset 0 2.5px 0 rgba(141,121,166,.5);}
+.sc-label{font-size:11px;letter-spacing:1.1px;text-transform:uppercase;font-weight:600;
+  color:var(--amethyst);margin-bottom:14px;}
+.status-card dl{margin:0;}
+.status-card dl > div{display:flex;gap:14px;align-items:baseline;padding:7px 0;
+  border-bottom:1px solid var(--line);}
+.status-card dl > div:last-child{border-bottom:none;}
+.status-card dt{flex:0 0 74px;margin:0;font-size:10.5px;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--ink-faint);}
+.status-card dd{margin:0;font-family:'Caveat',cursive;font-size:20px;line-height:1.25;
+  color:var(--ink);min-width:0;}
+.bar{display:inline-block;width:150px;height:9px;border-radius:5px;
+  background:var(--bg-wash);border:1px solid var(--line);vertical-align:middle;
+  overflow:hidden;margin-right:9px;}
+.bar i{display:block;height:100%;background:var(--terracotta);}
+
+/* A pinned note. One per page at most, or it stops being a note otherwise. */
+.pinned{background:rgba(200,100,74,.10);border:1px solid rgba(200,100,74,.25);
+  border-radius:4px;padding:16px 20px;max-width:250px;transform:rotate(-1.4deg);
+  font-family:'Caveat',cursive;font-size:20px;line-height:1.35;color:var(--terracotta-dim);}
+
+/* A plain numbered list of things, for the tool kit. */
+.kit{list-style:none;margin:0;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px 18px;}
+.kit li{font-size:13.5px;color:var(--ink-soft);padding:5px 0;
+  border-bottom:1px solid var(--line);}
+.kit li b{color:var(--terracotta);font-weight:500;margin-right:7px;
+  font-family:'Playfair Display',Georgia,serif;}
+
+/* ---------- where else to find me ----------
+   A profile line that sits above a closing band's sign-off. Small on purpose:
+   these are places to go and read more, not a call to action, and they should
+   not compete with the line they sit under. Crochet will want this for Ravelry. */
+.find-me{font-size:15px;color:var(--ink-soft);margin:0 0 16px;}
+.find-me a{color:var(--terracotta);font-weight:500;}
+
+/* ==========================================================================
+   WordPress adapter
+   Everything above is the static site's stylesheet. Everything below exists
+   because core blocks wrap things the hand-written HTML did not: an image is a
+   <figure>, a card cannot be an <a>, a button is two elements.
+   ========================================================================== */
+.wp-site-blocks{min-height:100vh;}
+.wp-block-image{margin:0;}
+.wp-block-image img{box-sizing:border-box;}
+.wp-block-group{box-sizing:border-box;}
+.wp-block-post-content > :first-child{margin-top:0;}
+/* The admin bar is fixed, and a sticky masthead must sit below it, not under it. */
+.masthead{top:var(--wp-admin--admin-bar--height,0);}
+.masthead .wp-block-navigation{flex-wrap:wrap;}
+.wp-block-navigation .wp-block-navigation-item{font-size:inherit;}
+.wp-block-navigation a.wp-block-navigation-item__content{display:inline-block;}
+.wp-block-navigation .wp-block-navigation-item__label{word-break:normal;}
+.wp-block-site-logo,.logo{line-height:0;}
+
+/* Spacing that was an inline style on the static pages. */
+section.pt-0{padding-top:0;}
+section.pb-0{padding-bottom:0;}
+.mt-18{margin-top:18px;}
+
+/* Dividers are a Separator block style, so an editor picks one from the panel
+   and pages carry no theme URLs. Same box the divider image had: 330 x 110. */
+/* Core's separator styles set width:100px through :not(.is-style-wide):not(.is-style-dots),
+   which outranks a plain class, so this matches that weight and adds one. */
+hr.wp-block-separator[class*="is-style-divider"]:not(.is-style-wide):not(.is-style-dots){display:block;width:calc(100% - 48px);max-width:330px;aspect-ratio:3/1;
+  margin:0 auto;padding:0;border:0;background-color:transparent;background-position:center;
+  background-size:contain;background-repeat:no-repeat;opacity:.9;height:auto;}
+hr.is-style-divider-default{background-image:url(../images/divider.png);}
+hr.is-style-divider-amethyst{background-image:url(../images/divider-amethyst.png);}
+hr.is-style-divider-book{background-image:url(../images/divider-book.png);}
+hr.is-style-divider-slim{background-image:url(../images/divider-slim.png);}
+hr.is-style-divider-succulent{background-image:url(../images/divider-succulent.png);}
+
+/* Buttons. Block styles on core/button: primary, ghost, read. */
+.wp-block-buttons.btn-row{gap:14px;}
+.wp-block-buttons.is-solo{margin:0 0 30px;}
+.wp-block-buttons.is-centered{justify-content:center;margin:26px 0 0;}
+.wp-block-button .wp-block-button__link{display:inline-flex;align-items:center;gap:12px;padding:15px 28px;
+  border-radius:9px;font-size:13px;font-weight:600;letter-spacing:1.3px;line-height:1.65;text-transform:uppercase;
+  border:1.5px solid transparent;}
+.wp-block-button .wp-block-button__link:hover{text-decoration:none;}
+.wp-block-button.is-style-primary .wp-block-button__link{background:var(--forest);color:var(--ivory);}
+.wp-block-button.is-style-primary .wp-block-button__link:hover{background:var(--wp--custom--tone--primary-hover);}
+.wp-block-button.is-style-ghost .wp-block-button__link{background:transparent;color:var(--terracotta);border-color:var(--terracotta);}
+.wp-block-button.is-style-ghost .wp-block-button__link:hover{background:rgba(200,100,74,.07);}
+.wp-block-button.is-style-read .wp-block-button__link{background:transparent;color:var(--amethyst);border-color:var(--amethyst);}
+.wp-block-button.is-style-read .wp-block-button__link:hover{background:rgba(141,121,166,.09);}
+.soon-panel .wp-block-image img{margin:0 auto 18px;}
+.soon-panel .eyebrow{margin:0;}
+
+/* A whole-card link. core/group cannot be an <a>, so the heading's link is
+   stretched over the card. The text stays selectable and the link stays one
+   tab stop, which the old block-level anchor also was. */
+.card,.post-card,.note-card,.lt-tile,.lt-feature{position:relative;}
+.card h3 a,.post-card h3 a,.note-card h3 a,.lt-tile a,.lt-feature .lt-title a{color:inherit;}
+.card h3 a:hover,.post-card h3 a:hover,.note-card h3 a:hover,.lt-tile a:hover,.lt-feature .lt-title a:hover{text-decoration:none;}
+.card h3 a::after,.post-card h3 a::after,.note-card h3 a::after,.lt-tile a::after,.lt-feature .lt-title a::after{content:"";position:absolute;inset:0;}
+.card > figure{flex-shrink:0;}
+.card .go,.post-card .go,.lt-feature .go{margin:0;}
+.card .tagline,.post-card .eyebrow,.note-card .eyebrow,.lt-feature .eyebrow{margin:0;}
+.cards.explore .card > figure{line-height:0;}
+.cards.photos .card > figure{width:100%;}
+/* Grid children of a Query Loop are <li>; the card inside has to fill the row. */
+.wp-block-post-template.cards,.wp-block-post-template.post-list{list-style:none;margin:0;padding:0;}
+.wp-block-post-template.cards > li,.wp-block-post-template.post-list > li{margin:0;}
+.wp-block-post-template.cards > li > .card{height:100%;}
+.cards.stacked .card .wp-block-post-date{color:var(--amethyst);opacity:.85;font-size:11.5px;letter-spacing:1px;text-transform:uppercase;font-weight:600;}
+.cards.stacked .wp-block-post-excerpt__excerpt,.post-card .wp-block-post-excerpt__excerpt{margin:0;}
+.cards.stacked .card p{margin:0;}
+.wp-block-read-more.go{display:inline-block;width:auto;}
+.cards.stacked .wp-block-read-more.go{color:var(--amethyst);font-size:13.5px;font-weight:600;}
+.home-more{margin-top:18px;}
+.home-more a{font-size:13.5px;font-weight:600;}
+
+/* Post cards in a Query Loop. */
+.post-card .wp-block-post-featured-image{margin:0;}
+.post-card .wp-block-post-featured-image img{width:100%;height:230px;object-fit:cover;}
+.post-card .pc-body{display:block;padding:22px 26px;}
+.post-card .wp-block-read-more.go{display:inline-block;margin-top:13px;font-size:13.5px;font-weight:600;color:var(--amethyst);}
+.post-card .wp-block-post-date.eyebrow{display:block;}
+.carousel-track.wp-block-post-template{list-style:none;margin:0;}
+.carousel-track > li{flex:0 0 min(320px,82%);scroll-snap-align:start;margin:0;}
+.carousel-track .post-card .wp-block-post-featured-image img{height:190px;}
+section:has(.carousel-track):not(:has(.post-card)){display:none;}
+@media (max-width:900px){ .post-card .wp-block-post-featured-image img{height:180px;} }
+
+/* Single post. */
+.post-head .wp-block-post-title{font-family:'Playfair Display',Georgia,serif;font-size:44px;line-height:1.12;
+  font-weight:500;margin:10px 0 0;letter-spacing:-.4px;}
+.post-head .wp-block-post-date.eyebrow{display:block;}
+.post-head .wp-block-post-excerpt p{font-size:19px;line-height:1.55;color:var(--ink-soft);margin:14px 0 0;}
+.post-head .back{margin:0;}
+.post-head .back a{font-size:13.5px;color:var(--ink-faint);display:inline-block;margin-bottom:22px;}
+.post-head .back a:hover{color:var(--terracotta);}
+.post-cover.wp-block-post-featured-image{width:100%;max-width:980px;margin:0 auto 40px;}
+.post-cover.wp-block-post-featured-image img{width:100%;max-height:460px;object-fit:cover;border-radius:var(--radius);}
+.post-body .wp-block-image{margin:30px 0;}
+.post-body .wp-block-image img{margin:0;}
+.wp-block-post-terms.tags{display:flex;flex-wrap:wrap;gap:8px;margin:16px auto 0;max-width:38em;padding-bottom:20px;}
+.wp-block-post-terms.tags .wp-block-post-terms__separator{display:none;}
+.wp-block-post-terms.tags a{font-size:13px;padding:6px 14px;border-radius:20px;background:rgba(141,121,166,.16);
+  color:var(--wp--custom--tone--tag-amethyst);border:1px solid rgba(141,121,166,.35);}
+@media (max-width:900px){ .post-head .wp-block-post-title{font-size:33px;} }
+
+/* Paragraphs standing in for the spans the static markup used. */
+.stat p{margin:0;}
+.bc-txt,.bc-plate p,.photo-slot p,.note-card p,.series-name,.sc-label,.sec-label{margin-top:0;margin-bottom:0;}
+.series-name{margin-top:14px;}
+.sc-label{margin-bottom:14px;}
+.sec-label{margin-bottom:12px;}
+.step-n{margin:0 0 6px;}
+.bookcard > figure{line-height:0;}
+.bookcard.is-noted > figure{flex:0 0 78px;}
+.bookcard.is-noted .bc-txt{display:flex;flex-direction:column;justify-content:center;}
+dl.wp-block-group{margin:0;}
+dt.wp-block-group p,dd.wp-block-group p{margin:0;font:inherit;color:inherit;}
+.era-rail .tl-label{margin:0;}
+.era-line.wp-block-group,.steps.wp-block-group{list-style:none;padding:0;margin:0;}
+.obsess-art{margin:14px auto 0;}
+.obsess-art img{width:100%;height:auto;}
+.note-card .wp-block-post-featured-image{margin:0;}
+.note-card .wp-block-post-featured-image img{width:100%;height:120px;object-fit:cover;}
+.note-card .nc-body{display:block;padding:14px 16px 16px;}
+.note-card .wp-block-post-date{font-size:11.5px;color:var(--ink-faint);}
+.notes-grid .wp-block-query,.notes-grid .wp-block-post-template,.notes-grid .wp-block-post-template > li{display:contents;}
+.notes-grid:not(:has(.wp-block-post)){grid-template-columns:minmax(240px,330px);justify-content:center;}
+.note-card.is-soon .wp-block-image img{width:54px;height:54px;object-fit:contain;margin-top:10px;}
+.sign-off .find-me{margin:0 0 16px;}
+
+/* Social Links block, drawn as the site's framed icons. */
+ul.wp-block-social-links.social{display:flex;justify-content:center;gap:14px;margin:0;padding:0;list-style:none;}
+ul.wp-block-social-links.social .wp-social-link{margin:0;background:none;font-size:inherit;}
+ul.wp-block-social-links.social .wp-social-link a{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
+  padding:0;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);}
+ul.wp-block-social-links.social .wp-social-link svg{width:18px;height:18px;fill:currentColor;display:block;}
+footer ul.wp-block-social-links.social{gap:9px;margin:0;}
+footer ul.wp-block-social-links.social .wp-social-link a{width:32px;height:32px;background:rgba(247,243,235,.07);
+  border-color:rgba(247,243,235,.22);color:rgba(247,243,235,.80);}
+footer ul.wp-block-social-links.social .wp-social-link a:hover{background:rgba(247,243,235,.16);color:#FFFFFF;border-color:rgba(247,243,235,.45);}
+footer ul.wp-block-social-links.social .wp-social-link svg{width:15px;height:15px;}
+footer .logo .wp-block-image,footer .wp-block-image.logo{background:var(--ivory);border-radius:50%;display:grid;place-items:center;padding:8px;}
+footer .foot-nav.wp-block-navigation{margin:0 0 0 auto;font-size:13.5px;}
+footer .foot-nav .wp-block-navigation__container{gap:6px 15px;}
+/* Size and underline space come from .wp-block-navigation a, as on the static site, where nav a reached the footer too. */
+footer .foot-nav a,footer .foot-nav a.wp-block-navigation-item__content{color:rgba(247,243,235,.86);}
+footer .foot-nav a:hover{color:#FFFFFF;}
+footer .foot-nav a.is-soon{color:rgba(247,243,235,.45);}
+footer .foot-nav a.is-soon::after{color:rgba(247,243,235,.55);}
+.legal p{margin:0;}
+.legal .legal-tools a{margin-left:14px;}
+@media (max-width:820px){ footer .foot-nav.wp-block-navigation{margin-left:0;} }
+footer{margin-top:0;}
+
+/* Links page. */
+body.lt-page{background:linear-gradient(180deg,var(--ivory) 0%,var(--bg-wash) 100%);}
+.lt-avatar{line-height:0;}
+.lt-share-wrap{display:contents;}
+/* The block wrapper carries .lt-link too; the pill belongs to the link inside, so the wrapper drops it. */
+.lt-link.wp-block-button,.lt-link.wp-block-button:hover{width:100%;display:block;min-height:0;padding:0;background:none;border:0;border-radius:0;box-shadow:none;transform:none;}
+.lt-link .wp-block-button__link,.wp-block-button.lt-link .wp-block-button__link{position:relative;width:100%;display:flex;align-items:center;justify-content:center;
+  min-height:58px;padding:14px 64px;background:var(--sage);border:1px solid transparent;border-radius:999px;box-shadow:var(--shadow);
+  color:var(--ink);font-size:15.5px;font-weight:600;letter-spacing:0;text-transform:none;line-height:1.65;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;}
+.lt-link .wp-block-button__link:hover{transform:translateY(-2px);border-color:var(--sage-deep);
+  box-shadow:0 1px 2px rgba(46,61,47,.04),0 16px 30px -16px rgba(46,61,47,.38);}
+.wp-block-buttons.lt-links{display:grid;gap:14px;}
+.lt-tile p{margin:0;}
+.lt-tile .wp-block-image img{width:52px;height:52px;object-fit:contain;}
+.lt-foot .wp-block-image img{width:34px;height:34px;margin:0 auto;opacity:.85;}
+.lt-group p.lt-label,.lt-group .lt-label{margin:0 0 12px;}
+.lt-feature .wp-block-post-featured-image{margin:0;}
+.lt-feature .wp-block-post-featured-image img{width:100%;height:200px;object-fit:cover;}
+.lt-feature .lt-title{margin:0;font-size:22px;color:var(--ink);}
+.lt-feature .wp-block-post-excerpt p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink-soft);}
+.lt-feature .wp-block-post-excerpt{margin:0;}
+.lt-feature .wp-block-read-more{color:var(--amethyst);margin-top:2px;font-size:13.5px;font-weight:600;}
+.lt-rows .wp-block-post-template{list-style:none;margin:0;padding:0;display:grid;gap:14px;}
+.lt-row{position:relative;display:flex;align-items:center;justify-content:center;min-height:58px;padding:14px 64px;
+  background:var(--sage);border:1px solid transparent;border-radius:999px;box-shadow:var(--shadow);color:var(--ink);font-size:15.5px;font-weight:600;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;}
+.lt-row:hover{transform:translateY(-2px);border-color:var(--sage-deep);}
+.lt-row .wp-block-post-featured-image{position:absolute;left:7px;top:50%;transform:translateY(-50%);margin:0;width:46px;height:46px;}
+.lt-row .wp-block-post-featured-image img{width:46px;height:46px;border-radius:50%;object-fit:cover;}
+.lt-row .wp-block-post-title{font-family:'Playfair Display',Georgia,serif;font-size:17px;font-weight:500;line-height:1.25;margin:0;}
+.lt-row .wp-block-post-title a{color:inherit;}
+.lt-row .wp-block-post-title a::after{content:"";position:absolute;inset:0;}
+.lt-row .wp-block-post-date{font-size:12px;font-weight:500;color:var(--sage-deep);}
+@media (max-width:400px){ .lt-row,.lt-link .wp-block-button__link{padding:14px 58px;} }
+
+/* A signed-in reader of a coming-soon page sees the page, not its panel. */
+.is-soon-preview .soon-panel{display:none;}
+
+/* The 404 message. Inline styles on the static 404, given a class here. */
+.not-found{padding-top:70px;padding-bottom:70px;text-align:center;}
+.not-found h1{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:2em;margin:.67em 0;}
+.not-found .wp-block-buttons.is-centered{margin-top:16px;}
+
+/* ---------- merged from the page conversions (2026-11-03) ---------- */
+
+/* Inventory: the back link was a bare <a class="back-to">; a link inside rich
+   text cannot carry a class, so the paragraph carries it and the link inherits. */
+p.back-to{margin-top:0;}
+p.back-to a{color:inherit;}
+p.back-to a:hover{color:var(--terracotta);}
+
+/* Adapter rules from the plants, chickens and crochet conversion. */
+
+/* Plants: the two lines under the collection numbers carried inline styles. */
+.panel .stat-note{margin-bottom:0;font-size:14px;color:var(--ink-soft);}
+.panel .stat-link{margin:14px 0 0;font-size:14px;}
+
+/* dl.wp-block-group{margin:0} outranks .inv-fields, which keeps a top margin. */
+dl.wp-block-group.inv-fields{margin:14px 0 0;}
+
+/* The progress block's wrapper is an extra span around the static .bar. */
+.ja-progress{display:inline;}
+
+/* Adapter, books and links pages.
+   Book cards: the static card's text was spans and a <b> inside one span. In
+   blocks the title, author and note are paragraphs, and the author is <strong>
+   (RichText's bold), so the span/b rules are restated for those. .author-card p
+   (0,1,1) would otherwise give every paragraph in a card its blurb's size,
+   colour and top margin, hence the doubled selectors. */
+.bookcard p,.author-card .bookcard p{margin:0;font-size:inherit;color:inherit;line-height:inherit;}
+.bookcard strong{display:block;font-weight:400;font-size:11px;color:var(--ink-faint);margin-top:3px;}
+.bookcard p.bc-note,.author-card .bookcard p.bc-note{margin-top:5px;font-size:17px;line-height:1.3;
+  color:var(--ink-soft);font-weight:500;}
+.bookcard .bc-plate p,.author-card .bookcard .bc-plate p{font-family:'Playfair Display',Georgia,serif;font-weight:500;
+  font-size:15px;line-height:1.25;color:var(--ink-soft);}
+
+/* The static books page set these through body.books-page, which WordPress
+   does not give a page. The obsession art appears on no other page. */
+body:has(.bk-hero) section.tight{padding-top:14px;}
+.wp-block-image.obsess-art{max-width:330px;margin-top:22px;}
+
+/* Links page. The latest-posts group was hidden until the script filled it;
+   with Query Loops it is simply hidden when they return nothing. */
+.lt-latest:not(:has(.wp-block-post)){display:none;}
+/* The Social Links adapter rules outrank the static .lt .social ones. */
+.lt ul.wp-block-social-links.social{margin-bottom:30px;}
+.lt ul.wp-block-social-links.social .wp-social-link a{color:var(--terracotta-dim);}
+
+/* Bold toggled in the editor is <strong>, not <b>. The static rules target b, so
+   these follow them, or re-bolding a number or a kit item would drop its style. */
+.stat strong{font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:600;}
+.kit li strong{color:var(--terracotta);font-weight:500;margin-right:7px;}
+
+/* Core's navigation CSS sets color:inherit on every link with a three-class
+   selector (.wp-block-navigation .wp-block-navigation-item__content twice), which
+   outranks the ported rules above: soon links stopped greying and footer links
+   went dark on the green. The doubled class matches its weight, and coming later wins. */
+.wp-block-navigation a.wp-block-navigation-item__content.wp-block-navigation-item__content{color:var(--ink-soft);}
+.wp-block-navigation a.wp-block-navigation-item__content.wp-block-navigation-item__content:hover{color:var(--ink);}
+.wp-block-navigation a.wp-block-navigation-item__content.wp-block-navigation-item__content[aria-current="page"]{color:var(--terracotta);}
+.wp-block-navigation a.wp-block-navigation-item__content.wp-block-navigation-item__content.is-soon{color:var(--ink-faint);}
+footer .foot-nav a.wp-block-navigation-item__content.wp-block-navigation-item__content{color:rgba(247,243,235,.86);}
+footer .foot-nav a.wp-block-navigation-item__content.wp-block-navigation-item__content:hover{color:#FFFFFF;}
+footer .foot-nav a.wp-block-navigation-item__content.wp-block-navigation-item__content.is-soon{color:rgba(247,243,235,.45);}
+footer .foot-nav a.wp-block-navigation-item__content.wp-block-navigation-item__content[aria-current="page"]{color:rgba(247,243,235,.86);border-bottom-color:transparent;}
+/* The card's link line is a paragraph here (a span on the static site), so
+   .cards.explore .card p outranked the rule that swaps the arrow for "Coming soon". */
+.cards .card.is-soon p.go{font-size:0;}
+/* The eyebrow is a paragraph here (a span on the static site), so .soon-panel p
+   outranked .eyebrow and made it body-sized and left-set. */
+.soon-panel p.eyebrow{font-size:11.5px;color:var(--amethyst);max-width:none;margin:0;}
+/* A soon page is also the current page while you are on it; the footer keeps it muted, as live does. */
+footer .foot-nav a.wp-block-navigation-item__content.wp-block-navigation-item__content.is-soon[aria-current]{color:rgba(247,243,235,.45);}
+/* Core gives Image blocks a 1em bottom margin, centred captions and a 1em gap under
+   the caption. The page photos keep the static site's spacing and left-set captions. */
+figure.wp-block-image.wall-photo{margin:0;}
+figure.wp-block-image.attempt-photo{margin:18px 0 20px;}
+figure.wp-block-image.origin-photo{margin:18px 0 0;}
+.wall-photo .wp-element-caption,.attempt-photo .wp-element-caption,.origin-photo .wp-element-caption{text-align:left;margin-bottom:0;}
