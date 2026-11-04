@@ -1,18 +1,18 @@
-# Deploys the WordPress theme, and only the theme, to the STAGING site.
+# Deploys the WordPress theme, and only the theme, to the STAGING site, over SFTP.
 #
-# Built from GoDaddy's provisioned godaddy-workflow.yml, which syncs the whole
-# repo to the WordPress root when its deployment_dest input is left blank. That
-# input is gone: source and destination are fixed here and nothing a person types
-# can change them. GoDaddy's action is kept rather than plain rsync because it
-# handles a subfolder (source_path / deployment_dest), deletes files removed from
-# the source, and runs a WordPress health check with rollback after deploying.
+# Why not GoDaddy's gd-wordpress-deployer action (the provisioned
+# godaddy-workflow.yml): it runs commands over SSH, and the staging site allows
+# SFTP only. Two runs failed on 2026-11-04, first at ssh-keyscan (the provisioned
+# file names the web host, whose port 22 is closed), then at SSH authentication.
+# Production has SSH, but production is out of bounds until a later phase.
 #
-# The destination folder must already exist on the server; the action refuses to
-# create it. It was created once over SFTP before the first run.
+# Source and destination are fixed here; nothing a person types can change them.
+# mirror --delete removes files from the theme folder that were deleted from
+# wordpress/justamanda/, and touches nothing outside that folder.
 #
-# Pinned to @v1, not a commit SHA, on purpose: the action checks out its helper
-# repo (godaddy-wordpress/git-deploy-poc) at a ref named after its own tag, so a
-# SHA pin makes that checkout fail. v1 = v0.0.4 = 201e88c as of 2026-11-03.
+# Secrets (added by Amanda in repo settings): STAGING_SFTP_HOST, STAGING_SFTP_USER,
+# STAGING_SFTP_PASSWORD. The password reaches lftp through LFTP_PASSWORD, never on
+# a command line, and nothing here prints it.
 name: Deploy theme to staging
 
 on:
@@ -34,14 +34,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
 
-      - name: Deploy wordpress/justamanda to wp-content/themes/justamanda
-        uses: godaddy-wordpress/gd-wordpress-deployer@v1
-        with:
-          # The .ssh. host. GoDaddy's provisioned file named the web host, whose
-          # port 22 is closed, so the first run died at ssh-keyscan with no message.
-          remote_host: "1311999.us21.ssh.myftpupload.com"
-          ssh_user: "git_deployer_e0299d279c_1311999"
-          ssh_private_key: ${{ secrets.PRIVATE_KEY }}
-          source_path: "wordpress/justamanda"
-          deployment_dest: "wp-content/themes/justamanda"
-          cleanup_deleted_files: "yes"
+      - name: Install lftp
+        run: sudo apt-get update -q && sudo apt-get install -y -q lftp
+
+      - name: Mirror wordpress/justamanda to html/wp-content/themes/justamanda
+        env:
+          SFTP_HOST: ${{ secrets.STAGING_SFTP_HOST }}
+          SFTP_USER: ${{ secrets.STAGING_SFTP_USER }}
+          LFTP_PASSWORD: ${{ secrets.STAGING_SFTP_PASSWORD }}
+        run: |
+          set -euo pipefail
+          # Staging only: refuse any host that is not this site's.
+          case "$SFTP_HOST" in *1311999*) ;; *) echo "::error::STAGING_SFTP_HOST is not the staging site"; exit 1;; esac
+          lftp -c "
+            set cmd:fail-exit yes;
+            set net:max-retries 2;
+            set net:timeout 30;
+            set sftp:connect-program 'ssh -a -x -o StrictHostKeyChecking=accept-new';
+            open --env-password -u \"$SFTP_USER\" \"sftp://$SFTP_HOST\";
+            cd html/wp-content/themes/justamanda;
+            lcd wordpress/justamanda;
+            mirror --reverse --delete --verbose=1 --parallel=4 --exclude-glob .DS_Store . .;
+            bye
+          "
+
+      - name: Check the deployed stylesheet is the one just pushed
+        run: |
+          set -euo pipefail
+          want=$(grep -m1 '^Version:' wordpress/justamanda/style.css)
+          got=$(curl -fsS "https://1311999.us21.myftpupload.com/wp-content/themes/justamanda/style.css?nocache=$GITHUB_RUN_ID" | grep -m1 '^Version:' || true)
+          echo "repo: $want / staging: ${got:-not readable}"
+          if [ -n "$got" ] && [ "$got" != "$want" ]; then
+            echo "::warning::staging serves a different theme version (cache, or the web address is not this site)"
+          fi

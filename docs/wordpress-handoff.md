@@ -77,10 +77,11 @@ setting is changed in wp-admin. With `sftp`, pipe the commands on stdin;
   a signed-in staging wp-admin tab: uploads images from justamanda.net into the
   Media Library, copies the 2 published journal posts, creates the 10 pages as
   **drafts** with their templates and tokens filled.
-- `.github/workflows/deploy-staging.yml` — GoDaddy's deployer action,
-  `wordpress/justamanda` to `wp-content/themes/justamanda`, deletions
-  propagate, health check with rollback. Pinned to `@v1`, not a SHA, because
-  the action checks out its helper repo at a ref named after its own tag.
+- `.github/workflows/deploy-staging.yml` — lftp `mirror --reverse --delete` over
+  SFTP, `wordpress/justamanda` to `html/wp-content/themes/justamanda`, on pushes
+  to `wordpress/justamanda/**` or Run workflow. Secrets `STAGING_SFTP_HOST`,
+  `STAGING_SFTP_USER`, `STAGING_SFTP_PASSWORD`. Not GoDaddy's deployer action:
+  that needs SSH, and staging allows SFTP only (decided 2026-11-04).
 - `_config.yml` — keeps the working files (`CLAUDE.md`, `README.md`, `docs/`,
   `wordpress/`, `sql/`, `tools/`, `content/`) off Pages, as approved in the audit (0.3).
   Every page and asset the site uses is still served.
@@ -100,12 +101,10 @@ setting is changed in wp-admin. With `sftp`, pipe the commands on stdin;
 ### Step 2, deploy
 - [x] Empty `html/wp-content/themes/justamanda` created on staging (775), 2026-11-04.
 - [x] Committed and pushed (cf74105, 70572f3).
-- [ ] **Blocked: deploy Action fails "SSH authentication failed".** Host and user
-      are right (the host offers publickey to that user); the `PRIVATE_KEY` repo
-      secret does not match the key GoDaddy registered. Amanda re-copies the key
-      from GoDaddy CI/CD settings into the secret, then re-run the workflow
-      (Actions → Deploy theme to staging → Run workflow). Do not use the
-      `DEPLOY_HOST` / `DEPLOY_USER` secrets: nobody has confirmed they are staging.
+- [x] GoDaddy's SSH action can't reach SFTP-only staging; switched to SFTP (lftp).
+- [ ] **Waiting on Amanda:** the three `STAGING_SFTP_*` repo secrets. Then
+      Actions → Deploy theme to staging → Run workflow. Never use the
+      `DEPLOY_HOST` / `DEPLOY_USER` / `PRIVATE_KEY` secrets: unconfirmed which site they reach.
 - [ ] Deploy Action green; `journal.yml` untouched; every
       justamanda.net page still loads after `_config.yml`.
 - [ ] Amanda activates the theme (Appearance → Themes).
