@@ -43,7 +43,9 @@ plant inventory block, redirects, DNS, anything on production.
 | Local WordPress for testing (Playground) | probably not | yes |
 | wp-admin on staging | Amanda does it in her browser | Amanda, or Claude via Chrome in her signed-in tab |
 
-The staging login is **SFTP-only** (no shell, no WP-CLI), so every WordPress
+SSH and SFTP go to `1311999.us21.ssh.myftpupload.com`, not the web host
+`1311999.us21.myftpupload.com` that GoDaddy's provisioned workflow names
+(its port 22 is closed). The staging login is **SFTP-only** (no shell, no WP-CLI), so every WordPress
 setting is changed in wp-admin. With `sftp`, pipe the commands on stdin;
 `sftp -b` forces batch mode, which disables password auth.
 
