@@ -81,7 +81,9 @@ setting is changed in wp-admin. With `sftp`, pipe the commands on stdin;
   `wordpress/justamanda` to `wp-content/themes/justamanda`, deletions
   propagate, health check with rollback. Pinned to `@v1`, not a SHA, because
   the action checks out its helper repo at a ref named after its own tag.
-- `_config.yml` — keeps `wordpress/` and `docs/` out of the Pages build. Nothing else, so the live site serves exactly what it did.
+- `_config.yml` — keeps the working files (`CLAUDE.md`, `README.md`, `docs/`,
+  `wordpress/`, `sql/`, `tools/`, `content/`) off Pages, as approved in the audit (0.3).
+  Every page and asset the site uses is still served.
 
 ## Checklist
 
@@ -97,7 +99,14 @@ setting is changed in wp-admin. With `sftp`, pipe the commands on stdin;
 
 ### Step 2, deploy
 - [x] Empty `html/wp-content/themes/justamanda` created on staging (775), 2026-11-04.
-- [ ] Commit + push; deploy Action green; `journal.yml` untouched; every
+- [x] Committed and pushed (cf74105, 70572f3).
+- [ ] **Blocked: deploy Action fails "SSH authentication failed".** Host and user
+      are right (the host offers publickey to that user); the `PRIVATE_KEY` repo
+      secret does not match the key GoDaddy registered. Amanda re-copies the key
+      from GoDaddy CI/CD settings into the secret, then re-run the workflow
+      (Actions → Deploy theme to staging → Run workflow). Do not use the
+      `DEPLOY_HOST` / `DEPLOY_USER` secrets: nobody has confirmed they are staging.
+- [ ] Deploy Action green; `journal.yml` untouched; every
       justamanda.net page still loads after `_config.yml`.
 - [ ] Amanda activates the theme (Appearance → Themes).
 

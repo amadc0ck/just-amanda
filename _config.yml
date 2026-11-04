@@ -1,6 +1,11 @@
-# GitHub Pages publishes this repo's root. The WordPress migration's working
-# files are not pages, so they are not served. Only folders added for the
-# migration are listed: anything the site served before keeps being served.
+# GitHub Pages publishes this repo's root. These are the working files of the
+# site and its WordPress migration, not pages, so they are not served.
+# Approved by Amanda 2026-11-03 (docs/migration-audit.md 0.3).
 exclude:
+  - CLAUDE.md
+  - README.md
   - docs
   - wordpress
+  - sql
+  - tools
+  - content
