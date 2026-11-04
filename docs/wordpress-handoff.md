@@ -38,7 +38,7 @@ plant inventory block, redirects, DNS, anything on production.
 | --- | --- | --- |
 | Edit theme, content, docs; commit; push | yes | yes |
 | Deploy to staging (push to `wordpress/justamanda/**` runs the Action) | yes | yes |
-| Check Action runs (`curl -s https://api.github.com/repos/amadc0ck/just-amanda/actions/runs`) | yes | yes |
+| Check Action runs (`curl -s https://api.github.com/repos/amadc0ck/just-amanda/actions/runs`; the anonymous limit is 60 an hour, so poll gently, or read github.com/amadc0ck/just-amanda/actions in Chrome) | yes | yes |
 | SFTP to staging (needs `.env` + sshpass) | **no** | yes |
 | Local WordPress for testing (Playground) | probably not | yes |
 | wp-admin on staging | Amanda does it in her browser | Amanda, or Claude via Chrome in her signed-in tab |
@@ -72,7 +72,21 @@ setting is changed in wp-admin. With `sftp`, pipe the commands on stdin;
 - `wordpress/content/` — the 10 pages as block markup (not deployed). Tokens:
   `{{id:FILE}}`, `{{url:FILE}}` (Media Library attachment), `{{tag:SLUG}}`
   (term ID). See its README.
-- `wordpress/tools/playground-seed.php` — seeds a local Playground.
+- `wordpress/tools/playground-seed.php` + `playground-blueprint.json` — a local
+  WordPress on the Mac with the theme active and all pages and posts seeded.
+  The seed reads `/ja/seed/posts.json` and covers (see the loader note below).
+  Started with `npx @wp-playground/cli@3.1.59 server --port=9400 --login
+  --blueprint=wordpress/tools/playground-blueprint.json` plus
+  `--mount-before-install=<repo>/<dir>:<vm path>` for `wordpress/justamanda`
+  → `/wordpress/wp-content/themes/justamanda`, `wordpress/content` →
+  `/ja/content`, `wordpress/tools` → `/ja/tools`, `images` → `/ja/images`, and
+  the seed folder → `/ja/seed`. Its GD writes empty WebP/AVIF files at real
+  sizes, so image format can only be verified on staging. Local test login is
+  Playground's default.
+- Visual checks were done with headless Chrome screenshots, live vs local,
+  diffed per 100px band with Pillow; phone width needs a 390px iframe, because
+  headless Chrome will not lay out narrower than about 500px. Analytics hosts
+  were blackholed so the checks never counted as visits.
 - `wordpress/tools/build-staging-loader.py` — builds a JS file Amanda runs in
   a signed-in staging wp-admin tab: uploads images from justamanda.net into the
   Media Library, copies the 2 published journal posts, creates the 10 pages as
@@ -100,13 +114,19 @@ setting is changed in wp-admin. With `sftp`, pipe the commands on stdin;
 
 ### Step 2, deploy
 - [x] Empty `html/wp-content/themes/justamanda` created on staging (775), 2026-11-04.
-- [x] Committed and pushed (cf74105, 70572f3).
+- [x] Committed and pushed: cf74105 theme + workflow, 70572f3 SSH host, 7a88611
+      approved `_config.yml` list, 4d1159b SFTP workflow.
 - [x] GoDaddy's SSH action can't reach SFTP-only staging; switched to SFTP (lftp).
 - [ ] **Waiting on Amanda:** the three `STAGING_SFTP_*` repo secrets. Then
       Actions → Deploy theme to staging → Run workflow. Never use the
       `DEPLOY_HOST` / `DEPLOY_USER` / `PRIVATE_KEY` secrets: unconfirmed which site they reach.
-- [ ] Deploy Action green; `journal.yml` untouched; every
-      justamanda.net page still loads after `_config.yml`.
+- [ ] Deploy Action green. **The SFTP workflow has never run**, so its first run
+      is the real test (lftp syntax, remote path `html/wp-content/themes/justamanda`
+      relative to the SFTP home, host-key acceptance). Its last step compares the
+      theme `Version:` served at the web address with the repo's.
+- [x] Live site checked after `_config.yml` (2026-11-04): every page, script,
+      image and journal post returns 200; the excluded working files return 404.
+      `journal.yml` untouched; Pages build green.
 - [ ] Amanda activates the theme (Appearance → Themes).
 
 ### Step 3, staging setup (Amanda, in wp-admin)
