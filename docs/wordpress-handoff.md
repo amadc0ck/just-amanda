@@ -36,7 +36,12 @@ default blog template.
 Theme 0.1.1 (2026-11-08): coming-soon links and cards are marked for signed-in
 users too (badges, greyed cards), with the link kept so the owner can preview;
 readers still get no destination. Live hides the marking when signed in, but the
-owner is always signed in here, so she never saw it. Anything below about staging, secrets or `deploy-staging.yml` is history.
+owner is always signed in here, so she never saw it.
+Theme 0.1.2 (2026-11-08): posts output BlogPosting JSON-LD like live; share
+images use the original PNG/JPEG (crawlers do not read the AVIF). Pages got the
+live meta descriptions (Excerpt) and share images (featured image). Two Factor
+0.17.0 installed and active on production; Amanda sets up her second factor.
+No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags. Anything below about staging, secrets or `deploy-staging.yml` is history.
 
 ## The goal
 
