@@ -9,4 +9,3 @@
 require_once __DIR__ . '/inc/setup.php';
 require_once __DIR__ . '/inc/coming-soon.php';
 require_once __DIR__ . '/inc/meta.php';
-require_once __DIR__ . '/inc/nicename-once.php'; // One-off. Remove with the file.

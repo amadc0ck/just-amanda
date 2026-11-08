@@ -12,7 +12,12 @@ Staging and the GitHub deploy Action are dropped for now. Target is the
 still points at GitHub Pages). Its login is **SFTP-only**, like staging, so: theme
 uploaded from the Mac over SFTP (done 2026-11-08, all files verified), then settings
 in wp-admin through Amanda's signed-in Chrome. Automatic deploys come later as their
-own step. Anything below about staging, secrets or `deploy-staging.yml` is history.
+own step.
+
+Done on production 2026-11-08: theme active; search engines discouraged (was
+already on); permalinks `/%postname%/` (was `//%postname%/`); display name
+Amanda; `/author/amanda/` resolves; `nicename-once.php` removed after it ran.
+Next: draft test pages, then side-by-side screenshots. Anything below about staging, secrets or `deploy-staging.yml` is history.
 
 ## The goal
 
