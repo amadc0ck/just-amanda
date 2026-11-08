@@ -16,6 +16,26 @@ function justamanda_is_reader() {
 	return ! is_user_logged_in();
 }
 
+/**
+ * Is this page unopened? True for a page on the Coming soon template and, since
+ * 2026-11-08, for any page nested under one: Photography's albums are child pages,
+ * and an album must not be readable while its section is still curtained.
+ *
+ * @param WP_Post|int|null $page Page, ID, or null for the current one.
+ */
+function justamanda_page_is_soon( $page = null ) {
+	$page = get_post( $page );
+	if ( ! $page || 'page' !== $page->post_type ) {
+		return false;
+	}
+	foreach ( array_merge( array( $page->ID ), get_post_ancestors( $page ) ) as $id ) {
+		if ( 'coming-soon' === get_page_template_slug( $id ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
 /** Is this site-relative or absolute URL a coming-soon page on this site? */
 function justamanda_url_is_soon( $url ) {
 	static $seen = array();
@@ -27,7 +47,7 @@ function justamanda_url_is_soon( $url ) {
 	$soon = false;
 	if ( $path && trim( $path, '/' ) && ( ! $host || wp_parse_url( home_url(), PHP_URL_HOST ) === $host ) ) {
 		$page = get_page_by_path( trim( $path, '/' ) );
-		$soon = $page && 'coming-soon' === get_page_template_slug( $page );
+		$soon = $page && justamanda_page_is_soon( $page );
 	}
 	$seen[ $url ] = $soon;
 	return $soon;
@@ -55,7 +75,7 @@ add_filter(
 add_filter(
 	'the_content',
 	function ( $content ) {
-		if ( ! is_page_template( 'coming-soon' ) || justamanda_is_reader() || ! in_the_loop() ) {
+		if ( ! is_page() || ! justamanda_page_is_soon() || justamanda_is_reader() || ! in_the_loop() ) {
 			return $content;
 		}
 		return '<div class="preview-banner">' . esc_html__( 'Coming soon · hidden from the public, only you can see this page', 'justamanda' ) . '</div>' . $content;
@@ -66,7 +86,7 @@ add_filter(
 add_filter(
 	'body_class',
 	function ( $classes ) {
-		if ( is_page_template( 'coming-soon' ) && ! justamanda_is_reader() ) {
+		if ( is_page() && justamanda_page_is_soon() && ! justamanda_is_reader() ) {
 			$classes[] = 'is-soon-preview';
 		}
 		return $classes;
@@ -76,12 +96,30 @@ add_filter(
 add_filter(
 	'wp_robots',
 	function ( $robots ) {
-		if ( is_page_template( 'coming-soon' ) ) {
+		if ( is_page() && justamanda_page_is_soon() ) {
 			$robots['noindex'] = true;
 			unset( $robots['max-image-preview'] );
 		}
 		return $robots;
 	}
+);
+
+// A reader who reaches a page nested under an unopened one (an album under Photography)
+// is sent to the nearest coming-soon page above it, which shows its panel. 302: it opens later.
+add_action(
+	'template_redirect',
+	function () {
+		if ( ! is_page() || ! justamanda_is_reader() || is_page_template( 'coming-soon' ) || ! justamanda_page_is_soon() ) {
+			return;
+		}
+		foreach ( get_post_ancestors( get_queried_object_id() ) as $id ) {
+			if ( 'coming-soon' === get_page_template_slug( $id ) ) {
+				wp_safe_redirect( get_permalink( $id ), 302, 'justamanda' );
+				exit;
+			}
+		}
+	},
+	5
 );
 
 // Out of the core sitemap too.
@@ -94,6 +132,18 @@ add_filter(
 				array( 'key' => '_wp_page_template', 'compare' => 'NOT EXISTS' ),
 				array( 'key' => '_wp_page_template', 'value' => 'coming-soon', 'compare' => '!=' ),
 			);
+			$soon_parents = get_posts(
+				array(
+					'post_type'   => 'page',
+					'fields'      => 'ids',
+					'numberposts' => -1,
+					'meta_key'    => '_wp_page_template', // phpcs:ignore WordPress.DB.SlowDBQuery
+					'meta_value'  => 'coming-soon', // phpcs:ignore WordPress.DB.SlowDBQuery
+				)
+			);
+			if ( $soon_parents ) {
+				$args['post_parent__not_in'] = $soon_parents;
+			}
 		}
 		return $args;
 	},
@@ -133,8 +183,10 @@ add_filter(
 		if ( ! $url || ! $tags->next_tag( 'a' ) ) {
 			return $html;
 		}
-		$request = wp_parse_url( $_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH );
-		if ( trailingslashit( (string) wp_parse_url( $url, PHP_URL_PATH ) ) === trailingslashit( (string) $request ) ) {
+		$request = trailingslashit( (string) wp_parse_url( $_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH ) );
+		$link    = trailingslashit( (string) wp_parse_url( $url, PHP_URL_PATH ) );
+		// The section's link also lights up on pages inside it (an album under /photography/).
+		if ( $link === $request || ( '/' !== $link && 0 === strpos( $request, $link ) ) ) {
 			$tags->set_attribute( 'aria-current', 'page' );
 		}
 		$html = $tags->get_updated_html();

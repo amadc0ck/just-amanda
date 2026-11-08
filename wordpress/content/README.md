@@ -24,3 +24,6 @@ Added 2026-11-08 for photography.html:
   originals.
 - `{{gallery:ALBUM}}` is a core Gallery ("Enlarge on click") of the Media Library
   images LightSync Pro synced from that Lightroom album, oldest first.
+
+Albums (2026-11-08): `albums/<slug>.html` are album pages nested under Photography
+on the "Album" template; `photography.html` lists them with the album-grid pattern.

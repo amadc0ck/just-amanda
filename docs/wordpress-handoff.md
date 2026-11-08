@@ -90,6 +90,16 @@ drafts had dark vignettes). Desk still life = hero; camera with echeveria and ag
 = home card + soon panel. Done 2026-11-08: media 261 (hero, 1120x840) and 262 (card,
 600x450), transparent PNG originals kept, AVIF served; hero is the page's share image.
 Uploaded through wp-admin's uploader via Chrome (SFTP was refusing logins).
+Albums (theme 0.7.1): an album is a page nested under Photography on the "Album"
+template; Photography's grid (patterns/album-grid.php) is a Query Loop of its child
+pages in page order (inc/albums.php), cover = featured image, line = excerpt.
+CDMX 2024 = page 265 /photography/cdmx-2024/ (order 1). Coming-soon now inherits to
+nested pages (readers 302 to the parent, noindex, out of the sitemap) and a section's
+menu link is current on pages inside it.
+**Adding an album:** sync it in LightSync; Pages > Add New, pick the "Album" pattern;
+Page Attributes: Parent = Photography, Template = Album, Order = position; set the
+featured image (cover) and excerpt ("Place · Month Year"); select the synced photos
+in the gallery. Other 49 albums need LightSync Pro (her call, later).
 No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
 Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
 Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/

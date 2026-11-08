@@ -1433,3 +1433,32 @@ figure.wp-block-image.origin-photo{margin:18px 0 0;}
 @media (max-width:1180px) and (min-width:901px){
   .masthead .wp-block-navigation__container{gap:18px;}
 }
+
+/* ---- Photography albums (patterns/album-grid.php, templates/page-album.html) ----
+   Added 2026-11-08. The grid is a Query Loop of the album pages nested under
+   Photography: 3 across, 2 on tablets, 1 on phones; each card is the album's cover
+   (featured image, 4:3) over its title and date-and-place line (excerpt). */
+.album-grid .wp-block-post-template{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--wp--preset--spacing--card-gap,18px);
+  list-style:none;margin:0;padding:0;}
+.album-grid .wp-block-post-template > li{margin:0;}
+.album-card{height:100%;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;
+  transition:transform .2s,box-shadow .2s;}
+.album-card:hover{transform:translateY(-3px);}
+.album-card .wp-block-post-featured-image{margin:0;}
+.album-card .wp-block-post-featured-image img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:0;}
+.album-card-body{padding:14px 18px 18px;}
+.album-card .wp-block-post-title{font-family:'Playfair Display',Georgia,serif;font-size:21px;font-weight:500;margin:0 0 4px;}
+.album-card .wp-block-post-title a{color:var(--ink);}
+.album-card .wp-block-post-title a:hover{color:var(--terracotta);text-decoration:none;}
+.album-card .wp-block-post-excerpt,.album-card .wp-block-post-excerpt__excerpt{font-size:14px;color:var(--ink-soft);margin:0;}
+.album-card .wp-block-post-excerpt__more-text{display:none;}
+@media (max-width:900px){ .album-grid .wp-block-post-template{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:560px){ .album-grid .wp-block-post-template{grid-template-columns:1fr;} }
+
+.album-page{padding:34px 0 10px;}
+.album-page .back-to{margin:0 0 18px;}
+.album-page .album-meta,.album-page .album-meta .wp-block-post-excerpt__excerpt{margin:0 0 6px;}
+.album-page .wp-block-post-excerpt__more-text{display:none;}
+.album-page .album-title{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:44px;line-height:1.1;margin:0 0 10px;}
+.album-page .album-note{color:var(--ink-soft);max-width:38em;margin:0 0 6px;}
+@media (max-width:640px){ .album-page .album-title{font-size:34px;} }
