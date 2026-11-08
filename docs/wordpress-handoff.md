@@ -70,7 +70,11 @@ card radius/shadow, ivory lightbox) and `patterns/photo-album.php`; `inc/gallery
 makes a gallery set to "Enlarge on click" enlarge every image at render time (the
 editor only copies it to images when the setting changes). Lightroom: Amanda uses
 Classic and cloud; native galleries chosen; sync plugin trial (WP/LR Sync for
-Classic, LightSync Pro for cloud) pending her pick and approval.
+Classic, LightSync Pro for cloud): she picked LightSync Pro; 2.1.8 installed and
+active 2026-11-08 (approved), free tier, one-album trial. No front-end assets. She
+connects Adobe herself (LightSync Pro menu); then check what it writes to the Media
+Library (format, sizes, alt text) and show the album with core Gallery /
+photo-album pattern rather than its own block, so the theme styles it.
 No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
 Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
 Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/
@@ -103,7 +107,8 @@ plant inventory block, redirects, DNS, anything on production.
   with `op run --env-file=.env -- <cmd>`). STAGING_* only. Never print,
   log or write a resolved value anywhere.
 - **No page builders. Every plugin needs Amanda's approval first.** Approved:
-  Two Factor (wordpress.org/plugins/two-factor), 2026-11-04.
+  Two Factor (wordpress.org/plugins/two-factor), 2026-11-04; LightSync Pro
+  (wordpress.org/plugins/lightsyncpro), trial, 2026-11-08.
 - **Decisions go to Amanda as AskUserQuestion Q&A** (see `CLAUDE.md`).
 
 ## What a session can do from where
