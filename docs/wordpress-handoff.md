@@ -5,6 +5,19 @@ pick up the WordPress migration. Read `CLAUDE.md` first, then this, then
 `docs/migration-audit.md` for the site inventory. **Keep this file current:**
 tick items as they land, delete what stops being true. Last updated 2026-11-08.
 
+## LIVE (2026-11-08)
+
+justamanda.net now serves the WordPress site: Amanda ran GoDaddy's launch. The
+authoritative DNS (ns67/68.domaincontrol.com) points the apex at 160.153.0.107; www
+forwards to the apex; garden (CNAME amadc0ck.github.io) and Google MX untouched.
+HTTPS valid to 2027-02-06. Search engines allowed, sitemap live (coming-soon pages
+excluded), GoatCounter + GA loading (theme gates them on the justamanda.net host).
+The 1310847.us21.myftpupload.com address now 301s to justamanda.net. SFTP host and
+login are unchanged. Still to do after launch: point the Supabase `rss` function at
+/feed/; retire journal.yml and GitHub Pages after the rollback window (her call);
+move the five curtained pages from the old template to the Coming soon box
+(theme 0.9.0 reads both, so nothing is broken meanwhile).
+
 ## Current plan (2026-11-08, restarted from scratch)
 
 Staging and the GitHub deploy Action are dropped for now. Target is the
