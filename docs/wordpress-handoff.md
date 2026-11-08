@@ -108,6 +108,10 @@ reader brain", 15 covers and 6 title plates) is replaced by four era story rows
 (cards are now title tags; class has-cover -> no-cover). Theme 0.7.2: era rows stack
 (label, heading, full-width art, text in two columns on desktop, beat spanning both);
 her first write-up split from one <br> paragraph into paragraphs, last line = beat.
+All four eras written (her copy, placed verbatim): Where the Magic Started, Romance
+Moves In, Coming Back to Books, The Spiral. Art: media 267, 276, 279; The Spiral
+still has the amethyst stand-in. Era 3 art has generator typos on two spines
+("Fallen Sngels", "Lost Sogels"), flagged to her.
 **From here the production pages are the source of truth for page content.**
 wordpress/content/*.html are the original import records and are not kept in step
 (photography.html and albums/ excepted).
