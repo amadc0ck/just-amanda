@@ -40,7 +40,8 @@ owner is always signed in here, so she never saw it.
 Theme 0.1.2 (2026-11-08): posts output BlogPosting JSON-LD like live; share
 images use the original PNG/JPEG (crawlers do not read the AVIF). Pages got the
 live meta descriptions (Excerpt) and share images (featured image). Two Factor
-0.17.0 installed and active on production; Amanda sets up her second factor.
+0.17.0 installed and active on production; authenticator app (TOTP) enabled on
+Amanda's account 2026-11-08. No backup codes generated yet (lockout risk).
 No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
 Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
 Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/
