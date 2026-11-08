@@ -5,6 +5,15 @@ pick up the WordPress migration. Read `CLAUDE.md` first, then this, then
 `docs/migration-audit.md` for the site inventory. **Keep this file current:**
 tick items as they land, delete what stops being true. Last updated 2026-11-08.
 
+## Current plan (2026-11-08, restarted from scratch)
+
+Staging and the GitHub deploy Action are dropped for now. Target is the
+**production** WordPress (`1310847.us21.myftpupload.com`, not live: justamanda.net
+still points at GitHub Pages). Its login is **SFTP-only**, like staging, so: theme
+uploaded from the Mac over SFTP (done 2026-11-08, all files verified), then settings
+in wp-admin through Amanda's signed-in Chrome. Automatic deploys come later as their
+own step. Anything below about staging, secrets or `deploy-staging.yml` is history.
+
 ## The goal
 
 Move justamanda.net from GitHub Pages to a WordPress block theme on GoDaddy
