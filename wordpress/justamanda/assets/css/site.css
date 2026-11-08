@@ -1462,3 +1462,31 @@ figure.wp-block-image.origin-photo{margin:18px 0 0;}
 .album-page .album-title{font-family:'Playfair Display',Georgia,serif;font-weight:500;font-size:44px;line-height:1.1;margin:0 0 10px;}
 .album-page .album-note{color:var(--ink-soft);max-width:38em;margin:0 0 6px;}
 @media (max-width:640px){ .album-page .album-title{font-size:34px;} }
+
+/* ---- Books: reading eras (#eras, 2026-11-08) ----
+   Story rows elsewhere sit text beside picture. The era illustrations are wide
+   (the bookshelf is 16:9) and the write-ups run long, so side by side left a small
+   picture floating beside a tall column. Here each era stacks instead: label,
+   heading, the illustration across the column, then the text in two columns on
+   desktop (one on phones), with the handwritten beat spanning both. The inner text
+   group is display:contents so its children can be ordered around the picture
+   without changing the block markup. */
+.eras .story,.eras .story.is-flipped{grid-template-columns:1fr;gap:0;align-items:start;}
+.eras .story > .wp-block-group:first-child{display:contents;}
+.eras .story .era-label{order:1;margin:0 0 6px;}
+.eras .story .sec-head{order:2;}
+.eras .story .story-art,.eras .story.is-flipped .story-art{order:3;width:100%;max-width:980px;margin:4px auto 26px;}
+.eras .story .prose{order:4;}
+.eras .story + .story{margin-top:76px;}
+.eras .prose p{max-width:none;}
+.eras .prose p.beat{margin-top:6px;}
+@media (min-width:901px){
+  .eras .prose{column-count:2;column-gap:52px;}
+  .eras .prose p{break-inside:avoid-column;}
+  .eras .prose p.beat{column-span:all;text-align:center;margin-top:14px;}
+}
+@media (max-width:900px){
+  .eras .story,.eras .story.is-flipped{gap:0;}
+  .eras .story .story-art,.eras .story.is-flipped .story-art{order:3;}
+  .eras .story + .story{margin-top:54px;}
+}

@@ -105,7 +105,9 @@ reader brain", 15 covers and 6 title plates) is replaced by four era story rows
 (#eras): Where the magic began (bookshelf, media 267), 2009-2019, 2019-2023,
 2023-now. Her paragraphs, the three later era titles and their illustrations are
 [[placeholders]] / amethyst stand-ins. Current obsessions lost its 13 covers
-(cards are now title tags; class has-cover -> no-cover).
+(cards are now title tags; class has-cover -> no-cover). Theme 0.7.2: era rows stack
+(label, heading, full-width art, text in two columns on desktop, beat spanning both);
+her first write-up split from one <br> paragraph into paragraphs, last line = beat.
 **From here the production pages are the source of truth for page content.**
 wordpress/content/*.html are the original import records and are not kept in step
 (photography.html and albums/ excepted).
