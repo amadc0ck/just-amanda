@@ -1421,3 +1421,15 @@ figure.wp-block-image.origin-photo{margin:18px 0 0;}
    colour as an inline style, so this one rule needs !important to apply. */
 .wp-lightbox-overlay .scrim{background-color:var(--ivory) !important;}
 .wp-lightbox-overlay .close-button,.wp-lightbox-overlay .wp-lightbox-navigation-button{color:var(--forest);}
+
+/* Header menu with nine links (Photography, 2026-11-08). Below 1180px the five small
+   "soon" tags are what push it onto a second row (a third on phones), so the header
+   drops them there; the links stay greyed (.is-soon colour) and keep their "Coming
+   soon" title, and the home cards still say Coming soon. Tested at 901-1180px and on
+   phones: the menu is exactly as compact as it was with eight links. */
+@media (max-width:1180px){
+  .masthead .wp-block-navigation a.is-soon::after{display:none;}
+}
+@media (max-width:1180px) and (min-width:901px){
+  .masthead .wp-block-navigation__container{gap:18px;}
+}
