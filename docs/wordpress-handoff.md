@@ -42,6 +42,11 @@ images use the original PNG/JPEG (crawlers do not read the AVIF). Pages got the
 live meta descriptions (Excerpt) and share images (featured image). Two Factor
 0.17.0 installed and active on production; authenticator app (TOTP) enabled on
 Amanda's account 2026-11-08. No backup codes generated yet (lockout risk).
+Theme 0.2.1 `inc/login.php`: GoDaddy's SSO CSS hid Two Factor's code screens
+(empty box; revalidation failed, and the sign-in code prompt would have locked her
+out). Drops `wpaas-show-sso-login` on `*_2fa` actions and un-hides any login form
+holding `wp-auth-id`. Verified on revalidate; the post-password prompt is covered
+by the same CSS rule but can only be seen at her next sign-in.
 No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
 Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
 Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/
