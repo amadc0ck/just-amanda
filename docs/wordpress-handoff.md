@@ -100,6 +100,15 @@ menu link is current on pages inside it.
 Page Attributes: Parent = Photography, Template = Album, Order = position; set the
 featured image (cover) and excerpt ("Place · Month Year"); select the synced photos
 in the gallery. Other 49 albums need LightSync Pro (her call, later).
+Books rework (2026-11-08, content only): the timeline ("The books that built my
+reader brain", 15 covers and 6 title plates) is replaced by four era story rows
+(#eras): Where the magic began (bookshelf, media 267), 2009-2019, 2019-2023,
+2023-now. Her paragraphs, the three later era titles and their illustrations are
+[[placeholders]] / amethyst stand-ins. Current obsessions lost its 13 covers
+(cards are now title tags; class has-cover -> no-cover).
+**From here the production pages are the source of truth for page content.**
+wordpress/content/*.html are the original import records and are not kept in step
+(photography.html and albums/ excepted).
 No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
 Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
 Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/
