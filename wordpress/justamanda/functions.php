@@ -11,3 +11,4 @@ require_once __DIR__ . '/inc/coming-soon.php';
 require_once __DIR__ . '/inc/meta.php';
 require_once __DIR__ . '/inc/login.php';
 require_once __DIR__ . '/inc/redirects.php';
+require_once __DIR__ . '/inc/godaddy.php';

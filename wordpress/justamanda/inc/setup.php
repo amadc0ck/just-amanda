@@ -41,6 +41,7 @@ add_action(
 	function () {
 		register_block_type( get_theme_file_path( 'blocks/progress' ) );
 		register_block_type( get_theme_file_path( 'blocks/share' ) );
+		register_block_type( get_theme_file_path( 'blocks/plant-inventory' ) );
 
 		foreach ( array(
 			'primary' => __( 'Solid', 'justamanda' ),

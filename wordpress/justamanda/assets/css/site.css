@@ -746,7 +746,7 @@ article.card:hover{border-color:var(--line);}
 /* align-items:start, not the default stretch. These entries range from a full
    description with eight fields to a bare name, and equalising the row height
    leaves a short card as a tall white hole. */
-#inv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+#inv-list,.ja-inventory .inv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
   gap:18px;align-items:start;}
 .inv-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
   padding:20px 22px;box-shadow:var(--shadow);
@@ -772,7 +772,7 @@ article.card:hover{border-color:var(--line);}
 .inv-verify a:hover{color:var(--terracotta);}
 
 @media (max-width:700px){
-  #inv-list{grid-template-columns:1fr;}
+  #inv-list,.ja-inventory .inv-list{grid-template-columns:1fr;}
   .inv-row{flex-direction:column;gap:2px;}
   .inv-row dt{flex:none;}
 }

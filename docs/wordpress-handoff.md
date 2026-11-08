@@ -56,6 +56,13 @@ ABG post stays a draft with its [[placeholders]]. RSS: the feed URL is the Supab
 `rss` function, so at cutover it should 301 to /feed/. GoDaddy's edge cache ignores
 query strings and kept a deleted temp upload after Flush Cache: never upload
 anything private to uploads/, even briefly.
+Theme 0.4.0: `blocks/plant-inventory` (live species list from the garden
+project's `public_plant_inventory` view, ported from inventory.html) replaces the
+Inventory placeholder; 175 species / 268 specimens on 2026-11-08.
+Theme 0.4.1 `inc/godaddy.php`: unhooks GoDaddy Site Designer's contrast stylesheet
+and block rewrite (TT25 slugs; it blanked form fields and added 4px to Home).
+**SFTP batches can fail silently** (a whole batch, or after a few files): after
+every upload, diff the server copy (`get -r` the theme, `diff -rq`).
 No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
 Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
 Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/
