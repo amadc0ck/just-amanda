@@ -14,3 +14,4 @@ require_once __DIR__ . '/inc/redirects.php';
 require_once __DIR__ . '/inc/godaddy.php';
 require_once __DIR__ . '/inc/gallery.php';
 require_once __DIR__ . '/inc/albums.php';
+require_once __DIR__ . '/inc/tabs.php';

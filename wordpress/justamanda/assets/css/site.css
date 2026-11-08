@@ -1490,3 +1490,37 @@ figure.wp-block-image.origin-photo{margin:18px 0 0;}
   .eras .story .story-art,.eras .story.is-flipped .story-art{order:3;}
   .eras .story + .story{margin-top:54px;}
 }
+
+/* An era with a tall illustration (.story.is-tall, The Spiral's bookcase): stacking
+   it at full width would put 1000px of picture before any words, so on desktop the
+   text runs in one column on the left and the picture sits on the right, held in
+   view while the text scrolls past it. Label and heading span both. Phones stack
+   like the other eras. */
+@media (min-width:901px){
+  .eras .story.is-tall,.eras .story.is-tall.is-flipped{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);column-gap:52px;}
+  .eras .story.is-tall .era-label,.eras .story.is-tall .sec-head{grid-column:1 / -1;}
+  .eras .story.is-tall .prose{grid-column:1;grid-row:3;column-count:1;}
+  .eras .story.is-tall .story-art,.eras .story.is-tall.is-flipped .story-art{grid-column:2;grid-row:3;margin:2px 0 0;max-width:none;
+    position:sticky;top:110px;align-self:start;}
+  .eras .story.is-tall .prose p.beat{column-span:none;text-align:left;margin-top:18px;}
+}
+
+/* Tab row for .is-tabbed sections (assets/js/tabs.js). The script adds .tabs-ready;
+   until then, or without JavaScript, the panels stack as before. Each tab is a small
+   card: the era label over its title, the open one marked with a terracotta bar. */
+.tab-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 40px;}
+.tab{display:flex;flex-direction:column;gap:4px;text-align:left;font:inherit;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px 15px;
+  box-shadow:var(--shadow);color:var(--ink);transition:border-color .2s,transform .2s;}
+.tab:hover{border-color:var(--amethyst);transform:translateY(-2px);}
+.tab:focus-visible{outline:2px solid var(--lavender);outline-offset:2px;}
+.tab[aria-selected="true"]{border-color:var(--terracotta);box-shadow:var(--shadow), inset 0 -3px 0 var(--terracotta);}
+.tab-label{font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--ink-faint);font-weight:600;line-height:1.35;}
+.tab-title{font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:500;line-height:1.2;}
+.tab[aria-selected="true"] .tab-title{color:var(--terracotta);}
+.is-tabbed.tabs-ready .story[hidden]{display:none;}
+.is-tabbed.tabs-ready .story + .story{margin-top:0;}
+.is-tabbed.tabs-ready .story:focus{outline:none;}
+/* The panel already says which era it is in its tab. */
+.is-tabbed.tabs-ready .story .era-label{display:none;}
+@media (max-width:900px){ .tab-list{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:30px;} .tab-title{font-size:17px;} }

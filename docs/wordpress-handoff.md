@@ -111,7 +111,11 @@ her first write-up split from one <br> paragraph into paragraphs, last line = be
 All four eras written (her copy, placed verbatim): Where the Magic Started, Romance
 Moves In, Coming Back to Books, The Spiral. Art: media 267, 276, 279; The Spiral
 still has the amethyst stand-in. Era 3 art has generator typos on two spines
-("Fallen Sngels", "Lost Sogels"), flagged to her.
+("Fallen Sngels", "Lost Sogels"), flagged to her. The Spiral = media 281 (tall
+bookcase) on `.story.is-tall` (text left, sticky art right on desktop; 0.7.3).
+Theme 0.8.0: `.is-tabbed` groups become tabs (inc/tabs.php enqueues
+assets/js/tabs.js only where used; ARIA tabs, arrow keys, #heading-slug links; no JS
+= stacked). The Books eras section is `eras is-tabbed`.
 **From here the production pages are the source of truth for page content.**
 wordpress/content/*.html are the original import records and are not kept in step
 (photography.html and albums/ excepted).
