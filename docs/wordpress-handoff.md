@@ -62,7 +62,15 @@ Inventory placeholder; 175 species / 268 specimens on 2026-11-08.
 Theme 0.4.1 `inc/godaddy.php`: unhooks GoDaddy Site Designer's contrast stylesheet
 and block rewrite (TT25 slugs; it blanked form fields and added 4px to Home).
 **SFTP batches can fail silently** (a whole batch, or after a few files): after
-every upload, diff the server copy (`get -r` the theme, `diff -rq`).
+every upload, diff the server copy (`get -r` the theme, `diff -rq`). Cause: GoDaddy
+refuses the password when logins come in quick succession; leave a couple of
+minutes between connections and do upload + verify in ONE session.
+Theme 0.5.1 (2026-11-08): gallery styling (4:3 cropped frames, captions beneath,
+card radius/shadow, ivory lightbox) and `patterns/photo-album.php`; `inc/gallery.php`
+makes a gallery set to "Enlarge on click" enlarge every image at render time (the
+editor only copies it to images when the setting changes). Lightroom: Amanda uses
+Classic and cloud; native galleries chosen; sync plugin trial (WP/LR Sync for
+Classic, LightSync Pro for cloud) pending her pick and approval.
 No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
 Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
 Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/

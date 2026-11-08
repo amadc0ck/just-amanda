@@ -1383,3 +1383,35 @@ figure.wp-block-image.origin-photo{margin:18px 0 0;}
 .post-comments .form-submit .submit{display:inline-flex;align-items:center;padding:13px 26px;border-radius:9px;border:1.5px solid var(--forest);
   background:var(--forest);color:var(--ivory);font:inherit;font-size:13px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;cursor:pointer;}
 .post-comments .form-submit .submit:hover{background:var(--sage-deep);border-color:var(--sage-deep);}
+
+/* ---- Photo galleries (core Gallery block; patterns/photo-album.php) ----
+   Added 2026-11-08 for Lightroom albums brought into the Media Library. Any gallery
+   in a post or page gets the card language of the rest of the site: card-gap spacing,
+   the card radius and shadow, and captions set beneath the photo rather than over a
+   dark gradient on it. Click-to-enlarge is the gallery's own "Enlarge on click"
+   (linkTo: lightbox), so the page illustrations elsewhere stay plain images. */
+.wp-block-gallery.has-nested-images{gap:var(--wp--preset--spacing--card-gap,18px);margin:28px 0;}
+.wp-block-gallery.has-nested-images figure.wp-block-image{border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow);
+  flex-direction:column;align-self:flex-start;}
+.wp-block-gallery.has-nested-images figure.wp-block-image img{border-radius:0;margin:0;}
+.wp-block-gallery.has-nested-images figure.wp-block-image figcaption,
+.wp-block-gallery.has-nested-images figure.wp-block-image .wp-element-caption{position:static;background:none;max-height:none;overflow:visible;
+  color:var(--ink-soft);font-size:13px;line-height:1.5;text-align:left;padding:10px 14px 12px;margin:0;text-shadow:none;}
+/* Cropped galleries: core stretches each photo to the row's height and lays the caption
+   over it. With the caption beneath, that leaves photos squashed and cards uneven, so
+   every photo gets the same 4:3 frame instead. */
+.wp-block-gallery.has-nested-images.is-cropped figure.wp-block-image:not(#individual-image) img,
+.wp-block-gallery.has-nested-images.is-cropped figure.wp-block-image:not(#individual-image) .wp-lightbox-container img{
+  flex:none;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;}
+.wp-block-gallery.has-nested-images.is-cropped figure.wp-block-image:not(#individual-image) > a,
+.wp-block-gallery.has-nested-images.is-cropped figure.wp-block-image:not(#individual-image) .wp-lightbox-container{flex:none;display:block;}
+.wp-block-gallery .wp-lightbox-container{width:100%;}
+.post-body .wp-block-gallery{margin:30px 0;}
+.post-body .wp-block-gallery img{margin:0;}
+.photo-album{margin:0 0 40px;}
+.photo-album > .wp-block-heading{font-family:'Playfair Display',Georgia,serif;font-weight:500;margin:0 0 8px;}
+.photo-album > p{color:var(--ink-soft);margin:0 0 6px;max-width:38em;}
+/* The enlarged view sits on the site's ivory, not core's white. Core writes the scrim
+   colour as an inline style, so this one rule needs !important to apply. */
+.wp-lightbox-overlay .scrim{background-color:var(--ivory) !important;}
+.wp-lightbox-overlay .close-button,.wp-lightbox-overlay .wp-lightbox-navigation-button{color:var(--forest);}
