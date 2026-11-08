@@ -87,7 +87,9 @@ photos from --wp--style--unstable-gallery-gap). Nine nav links wrap to two rows 
 1180px (rows now match the eight-link layout). All 114 CDMX photos stay (her call).
 Photography art: Amanda is regenerating as transparent 4:3 PNG cut-outs (her first
 drafts had dark vignettes). Desk still life = hero; camera with echeveria and agave
-= home card + soon panel. Upload to the Media Library and swap the ornament stand-ins.
+= home card + soon panel. Done 2026-11-08: media 261 (hero, 1120x840) and 262 (card,
+600x450), transparent PNG originals kept, AVIF served; hero is the page's share image.
+Uploaded through wp-admin's uploader via Chrome (SFTP was refusing logins).
 No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
 Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
 Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/
