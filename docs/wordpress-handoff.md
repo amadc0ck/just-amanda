@@ -28,7 +28,11 @@ signed-out panel, comparable only once GoDaddy's Coming Soon mode is off.
 "Hello world!" and "Sample Page" trashed. Editor check on the Home draft: all 57
 blocks valid core blocks; adding a card, changing its text, swapping its image
 and reordering all work. Done with autosave locked and discarded; the draft was
-not changed (no revisions, no autosaves). Anything below about staging, secrets or `deploy-staging.yml` is history.
+not changed (no revisions, no autosaves).
+All 10 pages published 2026-11-08 (GoDaddy Coming Soon mode still hides the site
+from the public). Reading: static front page = Home; no posts page on purpose,
+because Journal has its own Query Loop and a posts page would replace it with the
+default blog template. Anything below about staging, secrets or `deploy-staging.yml` is history.
 
 ## The goal
 
