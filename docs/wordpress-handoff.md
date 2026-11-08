@@ -47,8 +47,7 @@ Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn
 Pinterest/email links, no third-party scripts) and core comments under it.
 Discussion settings: every comment held for approval, avatars off (Gravatar),
 pingbacks off, auto-close after 14 days off (it would have closed both posts).
-**Akismet is active but has no API key**: Amanda sets it up, until then spam only
-lands in the moderation queue. Anything below about staging, secrets or `deploy-staging.yml` is history.
+Akismet connected by Amanda 2026-11-08 (API key set; filtering). Anything below about staging, secrets or `deploy-staging.yml` is history.
 
 ## The goal
 
