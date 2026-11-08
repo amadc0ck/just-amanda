@@ -13,8 +13,10 @@ forwards to the apex; garden (CNAME amadc0ck.github.io) and Google MX untouched.
 HTTPS valid to 2027-02-06. Search engines allowed, sitemap live (coming-soon pages
 excluded), GoatCounter + GA loading (theme gates them on the justamanda.net host).
 The 1310847.us21.myftpupload.com address now 301s to justamanda.net. SFTP host and
-login are unchanged. Still to do after launch: point the Supabase `rss` function at
-/feed/; retire journal.yml and GitHub Pages after the rollback window (her call);
+login are unchanged. Supabase `rss` now 301s to /feed/ (adcock-plant-inventory
+6696db3, 2026-11-08). **Around 2026-11-22** (her call: two-week rollback window):
+stop journal.yml (it still commits every 30 min), turn off GitHub Pages, archive the
+static files. Still to do:
 move the five curtained pages from the old template to the Coming soon box
 (theme 0.9.0 reads both, so nothing is broken meanwhile).
 
