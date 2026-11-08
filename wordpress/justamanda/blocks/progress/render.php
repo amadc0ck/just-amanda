@@ -1,6 +1,6 @@
 <?php
 /**
- * The only custom block in the theme: core has no way to edit a bar's width.
+ * A custom block because core has no way to edit a bar's width.
  *
  * @var array $attributes
  */

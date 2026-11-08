@@ -30,6 +30,9 @@ add_action(
 		if ( is_page_template( 'page-links' ) ) {
 			wp_enqueue_script( 'justamanda-links', get_theme_file_uri( 'assets/js/links.js' ), array(), $version, array( 'strategy' => 'defer' ) );
 		}
+		if ( is_singular( 'post' ) ) {
+			wp_enqueue_script( 'justamanda-share', get_theme_file_uri( 'assets/js/share.js' ), array(), $version, array( 'strategy' => 'defer' ) );
+		}
 	}
 );
 
@@ -37,6 +40,7 @@ add_action(
 	'init',
 	function () {
 		register_block_type( get_theme_file_path( 'blocks/progress' ) );
+		register_block_type( get_theme_file_path( 'blocks/share' ) );
 
 		foreach ( array(
 			'primary' => __( 'Solid', 'justamanda' ),

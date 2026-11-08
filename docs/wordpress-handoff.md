@@ -41,7 +41,14 @@ Theme 0.1.2 (2026-11-08): posts output BlogPosting JSON-LD like live; share
 images use the original PNG/JPEG (crawlers do not read the AVIF). Pages got the
 live meta descriptions (Excerpt) and share images (featured image). Two Factor
 0.17.0 installed and active on production; Amanda sets up her second factor.
-No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags. Anything below about staging, secrets or `deploy-staging.yml` is history.
+No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
+Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
+Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/
+Pinterest/email links, no third-party scripts) and core comments under it.
+Discussion settings: every comment held for approval, avatars off (Gravatar),
+pingbacks off, auto-close after 14 days off (it would have closed both posts).
+**Akismet is active but has no API key**: Amanda sets it up, until then spam only
+lands in the moderation queue. Anything below about staging, secrets or `deploy-staging.yml` is history.
 
 ## The goal
 

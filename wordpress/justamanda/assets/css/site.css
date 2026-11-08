@@ -1336,3 +1336,50 @@ figure.wp-block-image.wall-photo{margin:0;}
 figure.wp-block-image.attempt-photo{margin:18px 0 20px;}
 figure.wp-block-image.origin-photo{margin:18px 0 0;}
 .wall-photo .wp-element-caption,.attempt-photo .wp-element-caption,.origin-photo .wp-element-caption{text-align:left;margin-bottom:0;}
+
+/* ---- Post share row (blocks/share) and comments (templates/single.html) ----
+   Added 2026-11-08; the static site had neither on posts. Same column as the post
+   body (38em), the tag pills' shape for the share links, and the journal's
+   outline-button colours for the actions, so nothing new enters the palette. */
+.ja-share{max-width:38em;margin:8px auto 0;padding:22px 0 26px;border-top:1px solid var(--line);}
+.ja-share-label{font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-faint);margin:0 0 12px;}
+.ja-share-row{display:flex;flex-wrap:wrap;gap:8px;}
+.ja-share-btn{display:inline-flex;align-items:center;font:inherit;font-size:13px;line-height:1.2;padding:7px 15px;border-radius:20px;
+  background:var(--card);color:var(--ink-soft);border:1px solid var(--line);cursor:pointer;text-decoration:none;transition:border-color .2s,color .2s;}
+.ja-share-btn:hover{border-color:var(--amethyst);color:var(--amethyst);text-decoration:none;}
+.ja-share-btn.is-primary{background:var(--forest);color:var(--ivory);border-color:var(--forest);}
+.ja-share-btn.is-primary:hover{background:var(--sage-deep);border-color:var(--sage-deep);color:var(--ivory);}
+.ja-share-btn.is-copied{border-color:var(--sage-deep);color:var(--sage-deep);}
+.ja-share-btn[hidden]{display:none;}
+
+.post-comments{max-width:38em;margin:0 auto;padding:6px 0 30px;border-top:1px solid var(--line);}
+.post-comments .wp-block-comments-title{font-family:'Playfair Display',Georgia,serif;font-size:26px;font-weight:500;margin:28px 0 18px;}
+.post-comments .wp-block-comment-template{list-style:none;margin:0;padding:0;}
+.post-comments .wp-block-comment-template ol{list-style:none;margin:0;padding-left:22px;border-left:2px solid var(--lavender);}
+.post-comments .comment{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin:0 0 14px;}
+.post-comments .comment-meta{gap:4px 12px;align-items:baseline;margin-bottom:6px;}
+.post-comments .wp-block-comment-author-name{font-weight:600;color:var(--ink);font-size:15px;}
+.post-comments .wp-block-comment-date{font-size:12.5px;color:var(--ink-faint);}
+.post-comments .wp-block-comment-date a,.post-comments .wp-block-comment-author-name a{color:inherit;}
+.post-comments .wp-block-comment-content p{font-size:16px;line-height:1.7;color:var(--ink-soft);margin:0 0 10px;}
+.post-comments .comment-actions{gap:14px;font-size:13px;}
+.post-comments .comment-actions a{color:var(--terracotta);}
+.post-comments .comment-awaiting-moderation{font-size:13px;color:var(--ink-faint);font-style:italic;}
+.post-comments .wp-block-comments-pagination{margin:10px 0 20px;font-size:14px;gap:10px;}
+
+.post-comments .comment-respond{margin-top:26px;}
+.post-comments .comment-reply-title{font-family:'Playfair Display',Georgia,serif;font-size:24px;font-weight:500;margin:0 0 6px;}
+.post-comments .comment-reply-title small{font-family:inherit;font-size:13px;margin-left:10px;}
+.post-comments .comment-notes,.post-comments .logged-in-as{font-size:13.5px;color:var(--ink-faint);margin:0 0 16px;}
+.post-comments .comment-form p{margin:0 0 14px;}
+.post-comments .comment-form label{display:block;font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:6px;}
+.post-comments .comment-form input[type=text],.post-comments .comment-form input[type=email],
+.post-comments .comment-form input[type=url],.post-comments .comment-form textarea{width:100%;box-sizing:border-box;font:inherit;font-size:15px;
+  padding:11px 14px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink);}
+.post-comments .comment-form textarea{min-height:140px;resize:vertical;}
+.post-comments .comment-form input:focus,.post-comments .comment-form textarea:focus{outline:2px solid var(--lavender);outline-offset:1px;border-color:var(--amethyst);}
+.post-comments .comment-form-cookies-consent{display:flex;gap:10px;align-items:flex-start;}
+.post-comments .comment-form-cookies-consent label{display:inline;font-weight:400;font-size:13.5px;}
+.post-comments .form-submit .submit{display:inline-flex;align-items:center;padding:13px 26px;border-radius:9px;border:1.5px solid var(--forest);
+  background:var(--forest);color:var(--ivory);font:inherit;font-size:13px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;cursor:pointer;}
+.post-comments .form-submit .submit:hover{background:var(--sage-deep);border-color:var(--sage-deep);}

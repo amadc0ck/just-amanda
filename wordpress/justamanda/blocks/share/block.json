@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "justamanda/share",
+  "title": "Share this post",
+  "category": "widgets",
+  "icon": "share",
+  "description": "Share and copy-link buttons, then links to Facebook, Threads, LinkedIn, Pinterest and email, for the post being shown.",
+  "attributes": { "label": { "type": "string", "default": "Share this post" } },
+  "usesContext": [ "postId" ],
+  "supports": { "html": false },
+  "textdomain": "justamanda",
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php"
+}
