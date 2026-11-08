@@ -47,6 +47,15 @@ Theme 0.2.1 `inc/login.php`: GoDaddy's SSO CSS hid Two Factor's code screens
 out). Drops `wpaas-show-sso-login` on `*_2fa` actions and un-hides any login form
 holding `wp-auth-id`. Verified on revalidate; the post-password prompt is covered
 by the same CSS rule but can only be seen at her next sign-in.
+Theme 0.3.0 `inc/redirects.php`: /ig /fb /threads -> /links/?ref=<network>, every
+/<page>.html, /journal/<slug>/ -> /<slug>/ (301, before redirect_canonical).
+Journal imported 2026-11-08 (posts read with `supabase db query --linked`, drafts
+included): 3 posts, every image now in the Media Library as `ja:journal/<file>`,
+bodies converted to blocks (wp.blocks.rawHandler), no supabase.co refs left. The
+ABG post stays a draft with its [[placeholders]]. RSS: the feed URL is the Supabase
+`rss` function, so at cutover it should 301 to /feed/. GoDaddy's edge cache ignores
+query strings and kept a deleted temp upload after Flush Cache: never upload
+anything private to uploads/, even briefly.
 No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
 Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
 Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/
