@@ -75,6 +75,15 @@ active 2026-11-08 (approved), free tier, one-album trial. No front-end assets. S
 connects Adobe herself (LightSync Pro menu); then check what it writes to the Media
 Library (format, sizes, alt text) and show the album with core Gallery /
 photo-album pattern rather than its own block, so the theme styles it.
+Photography section (2026-11-08): page 258 `/photography/` on the coming-soon
+template (content: wordpress/content/photography.html), album "CDMX 2024" = 114
+LightSync photos (2048px WebP, dated 2025-06-17..21; alt text is "— cdmx-2024"
+until Amanda adds Lightroom titles and re-syncs). Nav link after Tech in header and
+footer; sixth home card (.is-photography, forest). Hero art, card line and page copy
+are visible [[placeholders]], and the home card's is on the public home page:
+fill before launch. Theme 0.6.1 fixed galleries dropping to two columns (core sizes
+photos from --wp--style--unstable-gallery-gap). Nine nav links wrap to two rows at
+901-1180px and three on phones; badge-hiding fix tested, awaiting her call.
 No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
 Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
 Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/

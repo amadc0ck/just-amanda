@@ -23,6 +23,8 @@
 <!-- wp:navigation-link {"label":"Crochet","url":"/crochet/","kind":"custom"} /-->
 <!-- wp:navigation-link {"label":"Books","url":"/books/","kind":"custom"} /-->
 <!-- wp:navigation-link {"label":"Tech","url":"/tech/","kind":"custom"} /-->
+
+<!-- wp:navigation-link {"label":"Photography","url":"/photography/","kind":"custom"} /-->
 <!-- wp:navigation-link {"label":"Journal","url":"/journal/","kind":"custom"} /-->
 <!-- /wp:navigation --></div>
 <!-- /wp:group -->

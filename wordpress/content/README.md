@@ -16,3 +16,10 @@ Images are written as tokens, replaced at load time with the Media Library copy:
 
 Links between pages use the WordPress slugs: `/`, `/about/`, `/plants/`,
 `/inventory/`, `/journal/`, `/links/`, `/chickens/`, `/crochet/`, `/books/`, `/tech/`.
+
+Added 2026-11-08 for photography.html:
+
+- `{{placeholder}}` is a stand-in image (the theme's ornament) until Amanda supplies
+  the section illustration.
+- `{{gallery:ALBUM}}` is a core Gallery ("Enlarge on click") of the Media Library
+  images LightSync Pro synced from that Lightroom album, oldest first.
