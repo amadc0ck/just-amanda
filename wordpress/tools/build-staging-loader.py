@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Builds a one-shot JS loader that puts the draft pages and the two live posts on
-STAGING, for side-by-side comparison. Never deployed; nothing here touches production.
+a WordPress site for side-by-side comparison (staging first, production from
+2026-11-08, which is not live until DNS cutover). Never deployed with the theme.
 
     python3 wordpress/tools/build-staging-loader.py posts.json > loader.js
 
@@ -52,7 +53,9 @@ print(r"""
   const upload = async (key, url) => {
     if (media.has(key)) return media.get(key);
     const blob = await (await fetch(url)).blob();
-    const name = key.split("/").pop().replace(/^cover:/, "");
+    // From the URL, not the key: a cover's key is "cover:<slug>", which has no
+    // extension, and WordPress refuses an upload it cannot type by name.
+    const name = new URL(url).pathname.split("/").pop();
     const m = await api({ path: "/wp/v2/media", method: "POST", body: blob,
       headers: { "Content-Disposition": `attachment; filename="${name}"`, "Content-Type": blob.type } });
     const done = await api({ path: `/wp/v2/media/${m.id}`, method: "POST", data: { title: "ja:" + key } });

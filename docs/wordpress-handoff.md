@@ -17,7 +17,14 @@ own step.
 Done on production 2026-11-08: theme active; search engines discouraged (was
 already on); permalinks `/%postname%/` (was `//%postname%/`); display name
 Amanda; `/author/amanda/` resolves; `nicename-once.php` removed after it ran.
-Next: draft test pages, then side-by-side screenshots. Anything below about staging, secrets or `deploy-staging.yml` is history.
+Test content loaded 2026-11-08 with `build-staging-loader.py` (served from
+uploads for one run, then deleted): 64 images, 2 posts, 10 draft pages (ids
+75-84). GoDaddy writes AVIF at every size, none empty. Screenshots at 1280 and
+390: home, journal, books match. Differences are not theme bugs: draft previews
+highlight Home (nav matches the URL path, previews load at `/?page_id=`);
+Journal lists WordPress's default "Hello world!" post; GoDaddy's admin-only
+banner adds 87px at phone width; Books shows signed-in full page vs the live
+signed-out panel, comparable only once GoDaddy's Coming Soon mode is off. Anything below about staging, secrets or `deploy-staging.yml` is history.
 
 ## The goal
 
