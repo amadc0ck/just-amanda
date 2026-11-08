@@ -41,7 +41,22 @@ Consequence for validation: "justamanda.net unchanged" cannot pass until this is
 fixed, and browser comparison shots need either the restored domain or a local
 server over this repo.
 
-### 0.2 Staging login works, but only for SFTP (re-verified 2026-11-03)
+### 0.2 Staging login works, but only for SFTP (re-verified 2026-11-08)
+
+**2026-11-08:** unchanged. Host `1311999.us21.ssh.myftpupload.com`; the remote
+command still returns `This service allows sftp connections only.` SFTP listing:
+stock WordPress in `html/`, themes `twentytwentyfive` plus an **empty**
+`justamanda/` folder (created 2026-11-04 for the deploy, nothing in it), plugins
+`akismet` only, no static site files in the root. Logged out, the staging URL serves
+GoDaddy's holding page (`robots: nofollow`), and the REST API (`?rest_route=`)
+returns 401, so the user list, active theme and search-engine setting can only be
+read in wp-admin.
+
+**CI deploy user (2026-11-08):** `git_deployer_e0299d279c_1311999` exists on the
+`.ssh.` host and offers `password,publickey`; the web host's port 22 is closed. The
+2026-11-04 deploy run that reached the right host failed with `SSH authentication
+failed`, so the `PRIVATE_KEY` repo secret most likely does not match the public key
+GoDaddy registered for that user. Unverifiable from here: the secret cannot be read.
 
 **2026-11-03:** unchanged. The password is accepted; `ssh ... "wp --info"` returns
 `This service allows sftp connections only.` So `wp --info`, `wp user list`,
@@ -111,9 +126,20 @@ secrets for them.
 
 2026-11-03: still true. `https://justamanda.net/CLAUDE.md` returns 200.
 
-### 0.4 GitHub Actions history (2026-11-03)
+2026-11-04: approved and done. `_config.yml` (commit `7a88611`) excludes the working
+files; the live pages, posts and assets all still return 200.
 
-The last 89 runs are only two workflows: `pages build and deployment` (67, of which
+### 0.4 GitHub Actions history (updated 2026-11-08)
+
+**2026-11-08:** 100 most recent runs: `pages build and deployment` (57),
+`Journal pages` (41, latest scheduled runs all green), and **`Deploy theme to
+staging` (2, both failed, 2026-11-04)**: the first at `ssh-keyscan` against the web
+host (port 22 closed), the second at SSH authentication on the `.ssh.` host (see
+0.2). Neither copied anything. The provisioned `godaddy-workflow.yml` has still never
+run: it is untracked, so GitHub does not know it exists. Repo secrets present:
+`PRIVATE_KEY`, `DEPLOY_HOST`, `DEPLOY_USER`; no `STAGING_SFTP_*` yet.
+
+**2026-11-03:** the last 89 runs are only two workflows: `pages build and deployment` (67, of which
 4 cancelled, the rest succeeded) and `Journal pages` (22: 20 scheduled, 2 on push,
 all succeeded). No other workflow has ever run, so **the GoDaddy workflow has never
 run** against this repo.
@@ -407,8 +433,10 @@ Asset split:
 - **`godaddy-workflow.yml`.** Stays untracked in the root. Step 2 writes a separate
   `deploy-staging.yml` from it. As provided it syncs the repo root when
   `deployment_dest` is blank, and has never run (0.4).
-- **`.gitignore`** has an uncommitted change adding `.env` (one line, as of
-  2026-11-03). Worth committing.
+- **`.gitignore`** ignores `.env` (committed in `cf74105`, 2026-11-04).
+  `images/blog/`, `theme-abg.html` and `theme-rich.html` are kept out of `git
+  status` by `.git/info/exclude`; `godaddy-workflow.yml` is not, so it is the one
+  file `git status` shows.
 
 ## 6. Phase 1 conflicts to resolve
 

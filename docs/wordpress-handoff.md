@@ -3,7 +3,7 @@
 The file a fresh Claude Code session (iPad, web, or a new Mac session) reads to
 pick up the WordPress migration. Read `CLAUDE.md` first, then this, then
 `docs/migration-audit.md` for the site inventory. **Keep this file current:**
-tick items as they land, delete what stops being true. Last updated 2026-11-04.
+tick items as they land, delete what stops being true. Last updated 2026-11-08.
 
 ## The goal
 
@@ -41,7 +41,7 @@ plant inventory block, redirects, DNS, anything on production.
 | Check Action runs (`curl -s https://api.github.com/repos/amadc0ck/just-amanda/actions/runs`; the anonymous limit is 60 an hour, so poll gently, or read github.com/amadc0ck/just-amanda/actions in Chrome) | yes | yes |
 | SFTP to staging (needs `.env` + sshpass) | **no** | yes |
 | Local WordPress for testing (Playground) | probably not | yes |
-| wp-admin on staging | Amanda does it in her browser | Amanda, or Claude via Chrome in her signed-in tab |
+| wp-admin on staging | Amanda does it in her browser | Claude via Chrome in her signed-in tab (decided 2026-11-08) |
 
 SSH and SFTP go to `1311999.us21.ssh.myftpupload.com`, not the web host
 `1311999.us21.myftpupload.com` that GoDaddy's provisioned workflow names
@@ -91,11 +91,12 @@ setting is changed in wp-admin. With `sftp`, pipe the commands on stdin;
   a signed-in staging wp-admin tab: uploads images from justamanda.net into the
   Media Library, copies the 2 published journal posts, creates the 10 pages as
   **drafts** with their templates and tokens filled.
-- `.github/workflows/deploy-staging.yml` — lftp `mirror --reverse --delete` over
-  SFTP, `wordpress/justamanda` to `html/wp-content/themes/justamanda`, on pushes
-  to `wordpress/justamanda/**` or Run workflow. Secrets `STAGING_SFTP_HOST`,
-  `STAGING_SFTP_USER`, `STAGING_SFTP_PASSWORD`. Not GoDaddy's deployer action:
-  that needs SSH, and staging allows SFTP only (decided 2026-11-04).
+- `.github/workflows/deploy-staging.yml` — GoDaddy's `gd-wordpress-deployer@v1`
+  as deploy user `git_deployer_e0299d279c_1311999` with secret `PRIVATE_KEY`,
+  `wordpress/justamanda` to `wp-content/themes/justamanda`, deleted files removed,
+  on pushes to `wordpress/justamanda/**` or Run workflow. Source and destination
+  are fixed, no inputs. Must stay `@v1` (a SHA breaks its companion checkout).
+  Decided 2026-11-08: fix the key rather than put the SFTP password in GitHub.
 - `_config.yml` — keeps the working files (`CLAUDE.md`, `README.md`, `docs/`,
   `wordpress/`, `sql/`, `tools/`, `content/`) off Pages, as approved in the audit (0.3).
   Every page and asset the site uses is still served.
@@ -117,13 +118,13 @@ setting is changed in wp-admin. With `sftp`, pipe the commands on stdin;
 - [x] Committed and pushed: cf74105 theme + workflow, 70572f3 SSH host, 7a88611
       approved `_config.yml` list, 4d1159b SFTP workflow.
 - [x] GoDaddy's SSH action can't reach SFTP-only staging; switched to SFTP (lftp).
-- [ ] **Waiting on Amanda:** the three `STAGING_SFTP_*` repo secrets. Then
-      Actions → Deploy theme to staging → Run workflow. Never use the
-      `DEPLOY_HOST` / `DEPLOY_USER` / `PRIVATE_KEY` secrets: unconfirmed which site they reach.
-- [ ] Deploy Action green. **The SFTP workflow has never run**, so its first run
-      is the real test (lftp syntax, remote path `html/wp-content/themes/justamanda`
-      relative to the SFTP home, host-key acceptance). Its last step compares the
-      theme `Version:` served at the web address with the repo's.
+- [x] 2026-11-08: the Nov 4 SSH run failed at **authentication** on the right
+      host, so `PRIVATE_KEY` does not match the deploy user's registered key.
+      Workflow back on GoDaddy's action (the SFTP variant never ran).
+- [ ] **Waiting on Amanda:** re-copy (or regenerate) the staging deploy key from
+      GoDaddy's CI/CD settings into the `PRIVATE_KEY` repo secret. Then Run workflow.
+- [ ] Deploy Action green. Unknown until it runs: the action calls
+      `html/git-deployer-app`, which the SFTP login cannot see.
 - [x] Live site checked after `_config.yml` (2026-11-04): every page, script,
       image and journal post returns 200; the excluded working files return 404.
       `journal.yml` untouched; Pages build green.
