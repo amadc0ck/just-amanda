@@ -83,7 +83,11 @@ footer; sixth home card (.is-photography, forest). Hero art, card line and page 
 are visible [[placeholders]], and the home card's is on the public home page:
 fill before launch. Theme 0.6.1 fixed galleries dropping to two columns (core sizes
 photos from --wp--style--unstable-gallery-gap). Nine nav links wrap to two rows at
-901-1180px and three on phones; badge-hiding fix tested, awaiting her call.
+901-1180px and three on phones; fixed in 0.6.2 by hiding header SOON badges below
+1180px (rows now match the eight-link layout). All 114 CDMX photos stay (her call).
+Photography art: Amanda is regenerating as transparent 4:3 PNG cut-outs (her first
+drafts had dark vignettes). Desk still life = hero; camera with echeveria and agave
+= home card + soon panel. Upload to the Media Library and swap the ornament stand-ins.
 No SEO plugin: core + inc/meta.php cover it, and one would duplicate the tags.
 Theme 0.2.0 (2026-11-08): posts get a share row (`blocks/share`: native Share +
 Copy link revealed by `assets/js/share.js`, then plain Facebook/Threads/LinkedIn/
