@@ -3,7 +3,8 @@
  * Pages not open yet. A page on the "Coming soon" template shows readers only its
  * .soon-panel group: the rest is never sent, which is stronger than the static
  * site's curtain, where the words stayed in the source. Signed-in users see the
- * whole page under a banner, and links to these pages go quiet for readers.
+ * whole page under a banner. Links to these pages are marked for everyone and go
+ * quiet (no destination) for readers only.
  *
  * Opening a page means switching it to the default template. Nothing else.
  *
@@ -100,12 +101,23 @@ add_filter(
 	2
 );
 
-/** Take the destination off every link in a chunk of HTML. A greyed link that still navigated would be worse than no marking. */
-function justamanda_silence_links( $html ) {
+/**
+ * Mark every link in a chunk of HTML as leading to an unopened page.
+ *
+ * Readers: the destination comes off too. A greyed link that still navigated would
+ * be worse than no marking. Signed-in users ($keep_href): same marking, link kept,
+ * so the owner sees the site as readers will and can still click through to the
+ * page preview. Before 2026-11-08 signed-in users got no marking at all, copied from
+ * the static site, but there the owner is usually signed out and here always in,
+ * so the badges were never visible to the person checking them.
+ */
+function justamanda_silence_links( $html, $keep_href = false ) {
 	$tags = new WP_HTML_Tag_Processor( $html );
 	while ( $tags->next_tag( 'a' ) ) {
-		$tags->remove_attribute( 'href' );
-		$tags->set_attribute( 'aria-disabled', 'true' );
+		if ( ! $keep_href ) {
+			$tags->remove_attribute( 'href' );
+			$tags->set_attribute( 'aria-disabled', 'true' );
+		}
 		$tags->set_attribute( 'title', __( 'Coming soon', 'justamanda' ) );
 		$tags->add_class( 'is-soon' );
 	}
@@ -126,7 +138,7 @@ add_filter(
 			$tags->set_attribute( 'aria-current', 'page' );
 		}
 		$html = $tags->get_updated_html();
-		return justamanda_is_reader() && justamanda_url_is_soon( $url ) ? justamanda_silence_links( $html ) : $html;
+		return justamanda_url_is_soon( $url ) ? justamanda_silence_links( $html, ! justamanda_is_reader() ) : $html;
 	},
 	10,
 	2
@@ -136,9 +148,6 @@ add_filter(
 add_filter(
 	'render_block_core/group',
 	function ( $html, $block ) {
-		if ( ! justamanda_is_reader() ) {
-			return $html;
-		}
 		$classes = ' ' . ( $block['attrs']['className'] ?? '' ) . ' ';
 		if ( false === strpos( $classes, ' card ' ) && false === strpos( $classes, ' lt-tile ' ) ) {
 			return $html;
@@ -147,7 +156,7 @@ add_filter(
 		if ( ! $tags->next_tag( 'a' ) || ! justamanda_url_is_soon( (string) $tags->get_attribute( 'href' ) ) ) {
 			return $html;
 		}
-		$tags = new WP_HTML_Tag_Processor( justamanda_silence_links( $html ) );
+		$tags = new WP_HTML_Tag_Processor( justamanda_silence_links( $html, ! justamanda_is_reader() ) );
 		$tags->next_tag();
 		$tags->add_class( 'is-soon' );
 		return $tags->get_updated_html();

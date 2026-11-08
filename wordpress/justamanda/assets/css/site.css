@@ -590,6 +590,8 @@ footer .social svg{width:15px;height:15px;}
 /* Links to those pages, for the public: present, so the site's shape reads,
    but plainly not a door yet. */
 a.is-soon{cursor:default;}
+/* Signed-in users keep the link (inc/coming-soon.php), so it should still look clickable. */
+a.is-soon[href]{cursor:pointer;}
 .wp-block-navigation a.is-soon,.wp-block-navigation a.is-soon:hover{color:var(--ink-faint);}
 .wp-block-navigation a.is-soon::after{content:"soon";margin-left:5px;font-size:9.5px;font-weight:600;
   letter-spacing:.6px;text-transform:uppercase;vertical-align:2px;color:var(--amethyst);}

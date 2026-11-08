@@ -32,7 +32,11 @@ not changed (no revisions, no autosaves).
 All 10 pages published 2026-11-08 (GoDaddy Coming Soon mode still hides the site
 from the public). Reading: static front page = Home; no posts page on purpose,
 because Journal has its own Query Loop and a posts page would replace it with the
-default blog template. Anything below about staging, secrets or `deploy-staging.yml` is history.
+default blog template.
+Theme 0.1.1 (2026-11-08): coming-soon links and cards are marked for signed-in
+users too (badges, greyed cards), with the link kept so the owner can preview;
+readers still get no destination. Live hides the marking when signed in, but the
+owner is always signed in here, so she never saw it. Anything below about staging, secrets or `deploy-staging.yml` is history.
 
 ## The goal
 
