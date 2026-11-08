@@ -41,7 +41,7 @@ Theme 0.1.2 (2026-11-08): posts output BlogPosting JSON-LD like live; share
 images use the original PNG/JPEG (crawlers do not read the AVIF). Pages got the
 live meta descriptions (Excerpt) and share images (featured image). Two Factor
 0.17.0 installed and active on production; authenticator app (TOTP) enabled on
-Amanda's account 2026-11-08. No backup codes generated yet (lockout risk).
+Amanda's account 2026-11-08, plus 10 recovery codes (kept in 1Password).
 Theme 0.2.1 `inc/login.php`: GoDaddy's SSO CSS hid Two Factor's code screens
 (empty box; revalidation failed, and the sign-in code prompt would have locked her
 out). Drops `wpaas-show-sso-login` on `*_2fa` actions and un-hides any login form
