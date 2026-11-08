@@ -24,7 +24,11 @@ uploads for one run, then deleted): 64 images, 2 posts, 10 draft pages (ids
 highlight Home (nav matches the URL path, previews load at `/?page_id=`);
 Journal lists WordPress's default "Hello world!" post; GoDaddy's admin-only
 banner adds 87px at phone width; Books shows signed-in full page vs the live
-signed-out panel, comparable only once GoDaddy's Coming Soon mode is off. Anything below about staging, secrets or `deploy-staging.yml` is history.
+signed-out panel, comparable only once GoDaddy's Coming Soon mode is off.
+"Hello world!" and "Sample Page" trashed. Editor check on the Home draft: all 57
+blocks valid core blocks; adding a card, changing its text, swapping its image
+and reordering all work. Done with autosave locked and discarded; the draft was
+not changed (no revisions, no autosaves). Anything below about staging, secrets or `deploy-staging.yml` is history.
 
 ## The goal
 
