@@ -2,28 +2,38 @@
 
 Loaded automatically in this repo, on top of `~/Projects/CLAUDE.md` (which
 still applies: whole SQL blocks, the secret scan, output economy). This file is
-the site-specific part. The README explains the design; this is how to work.
+the site-specific part.
+
+**Since 2026-11-08 justamanda.net is a WordPress site** on GoDaddy Managed
+WordPress, with the block theme in `wordpress/justamanda/`. Read the "Start here"
+section of `docs/wordpress-handoff.md` first: it has the current state, how to
+deploy, and the open items. The static files at the repo root are the old site,
+kept only as a rollback until it is retired (around 2026-11-22).
 
 ## Shipping
 
-- **Plain HTML/CSS/JS, no build step, GitHub Pages from `main`.** Repo
-  `amadc0ck/just-amanda`. No `gh` CLI; check Action runs with
-  `curl -s https://api.github.com/repos/amadc0ck/just-amanda/actions/runs`.
+- **Theme changes:** edit `wordpress/justamanda/`, bump `Version:` in its
+  `style.css`, upload over SFTP (PRODUCTION_* from `.env` via `op run`, host
+  contains 1310847), and in the same session `get -r` the theme and `diff -rq` it
+  against the repo. GoDaddy refuses logins that come close together: wait and
+  retry once, never loop. Details in the handoff.
+- **Content changes** happen in WordPress, through Amanda's signed-in Chrome
+  (wp-admin, or `wp.apiFetch` on a wp-admin page). Production pages are the
+  source of truth; `wordpress/content/` holds the original import records.
+- **Plugins need Amanda's approval first.** Installed: Akismet, Two Factor,
+  LightSync Pro. No page builders.
+- **Never create accounts, enter passwords, or handle 2FA codes**, even on her own
+  site. Ask her to do those steps.
 - **Approval to build includes the push.** When Amanda says go, commit and push
-  when it is verified. Do not ask again. Do flag anything that must happen
-  first (SQL she has to run), because pushing early breaks the live site.
-- **`git pull --rebase origin main` before every push.** The journal Action
-  commits to `main` every 30 minutes.
+  when it is verified. Do not ask again.
+- **`git pull --rebase origin main` before every push** while the old journal
+  Action still runs (it commits to `main` every 30 minutes).
 - **Stage explicit paths. Never `git add -A`, `git add .` or `'*.html'`.**
-  `theme-abg.html`, `theme-rich.html` and `images/blog/` are hers and
-  untracked; a glob committed and published the theme files once (2026-10-30).
-  Check `git status --short` before committing.
-- **Bump stamps with `python3 tools/stamp.py`**, never sed, whenever
-  `style.css`, `site.js`, `markdown.js`, `edit.js` or `admin.html` change. It
-  globs `*.html`, so it also rewrites the untracked theme files: copy them
-  aside first and put them back after.
-- **Load the page before calling it shipped.** Local check through Chrome, then
-  curl the live URL after the push (Pages takes about a minute).
+  `theme-abg.html`, `theme-rich.html`, `images/blog/` and `godaddy-workflow.yml`
+  are untracked on purpose. Check `git status --short` before committing.
+- **Load the page before calling it shipped**: signed in through Chrome for the
+  editor view, and `curl https://justamanda.net/<path>?v=$RANDOM` for what the
+  public sees.
 - Report a ship in 2 or 3 sentences. Commit subject plus at most 5 lines.
 
 ## Decisions and clarifications: always Q&A (mandatory)
@@ -35,62 +45,56 @@ recommended option first and marked "(Recommended)", with each option's
 tradeoff in its description. Each question must stand on its own, because the
 dialog may hide the surrounding text.
 
-## Every public page carries
+## What the theme provides on every public page
 
-GoatCounter, then the Google tag (`G-00ZH9LDQ5B`, with the `skipgc` line so
-signed-in visits are not counted), the RSS alternate link, canonical + `og:*` +
-`twitter:card`, and the standard footer socials. New public pages also go in
-`STATIC_PAGES` in `tools/build-journal.mjs` so they reach the sitemap.
+Canonical, description (the page or post Excerpt), `og:*` with the featured
+image's original PNG/JPEG, `twitter:card`, BlogPosting JSON-LD on posts, the RSS
+link (`/feed/`), and GoatCounter + Google tag `G-00ZH9LDQ5B`, loaded only on the
+justamanda.net host and never for signed-in visits (`inc/meta.php`). The sitemap
+is WordPress's own (`/wp-sitemap.xml`).
 
-Not on admin, the style guide, or the `/ig` `/fb` `/threads` redirects.
-`post.html` is the template for `404.html` and every `journal/<slug>/` page:
-change it, then run `node tools/build-journal.mjs`. Never hand-edit `journal/`.
-
-**Coming soon:** pages in `COMING_SOON` (`site.js`) are curtained for the
-public, carry `noindex`, and stay out of the sitemap. Opening one means
-removing it from that list, the `is-soon` class and the `noindex` tag.
+**Coming soon:** a page is curtained by the "Coming soon" box in its page
+settings (meta `_justamanda_coming_soon`; the old "Coming soon" template still
+counts). Readers see only its `.soon-panel` group, links and cards to it are
+marked SOON, it is noindex and out of the sitemap, and pages nested under it
+inherit the curtain. Releasing it = untick the box and Save.
 
 **Socials:** Instagram `justamanda_net`, Facebook `justamanda.net`, Threads
-`@justamanda_net`, plus LinkedIn and GitHub. Bio links use `/ig` `/fb` `/threads`.
+`@justamanda_net`, plus LinkedIn and GitHub. Bio links use `/ig` `/fb` `/threads`,
+which the theme redirects to `/links/?ref=<network>`.
 
 ## Journal posts
 
-Posts live in Supabase (`posts` table, project `fsckwgicmvviefuivgza`), not in
-the repo. A brief from Amanda (a `.md`, usually with a zip of images) becomes a
-**draft**, never published by me.
+Posts are WordPress posts. A brief from Amanda (a `.md`, usually with a zip of
+images) becomes a **draft**, never published by me.
 
 1. Unzip into its own scratchpad folder, never into the repo.
-2. **Images:** screenshots to WebP (`cwebp -q 85 -metadata none`, max 1600px
-   wide); photographs through `tools/prep-photo.py` so GPS is provably gone.
-   Upload to the public `journal` bucket from `~/Projects/adcock-plant-inventory`
-   (the linked project):
-   `supabase storage cp <file> ss:///journal/<slug>-<name> --content-type <type> --experimental --linked`.
-   Reference them by full public URL. Look at any screenshot that might show
-   an email, address or key before uploading.
-3. **Body:** Markdown rendered through `markdown.js` (the same code admin uses),
-   with images as raw `<figure>` / `<img width height loading="lazy" alt>` /
-   `<figcaption>` blocks, no blank lines inside. Real alt text, not empty.
+2. **Images:** photographs through `tools/prep-photo.py` so GPS is provably gone;
+   look at any screenshot that might show an email, address or key. Upload to
+   the Media Library through wp-admin's uploader; the theme makes AVIF/WebP sizes.
+3. **Body:** core blocks (build with `wp.blocks`, check every block is valid),
+   images as Image blocks with real alt text.
 4. **Placeholders** she must fill stay visible as `[[LABEL: what is needed]]`.
    Fill only what can be verified, and say which ones I filled.
 5. **Check claims against the records.** For app posts, `git log` and
    `REFERENCE.md` / `BACKLOG.md` in `adcock-plant-inventory-app`. Flag a claim
    that the records contradict; do not silently rewrite her words.
-6. Insert with `supabase db query -f sql/NNN-<slug>.sql --linked`. Use `-f`:
-   inline SQL that starts with a `--` comment is parsed as a CLI flag. Keep the
-   file in `sql/` as the record, with `on conflict (slug) do nothing`.
-7. Preview locally (throwaway file, deleted after) and confirm every image loads.
+6. Save as a draft and preview it signed in; confirm every image loads.
+
+**Her words are placed verbatim.** Formatting help (paragraph breaks, a closing
+line as the handwritten beat) is fine; rewording is not, unless she asks.
 
 **Copy style: no em dashes** in post copy or site text.
 
 ## Quality bars
 
-- **Contrast 4.5:1 for text**, using palette tokens only. Known failures: white
-  on sage (2.1:1), amethyst on lavender (2.6:1). Lighthouse flagged the masthead
-  tagline, current-nav link, card titles and footer small text (2026-10-30).
-- **Images:** WebP or properly sized JPEG. The home page PNGs are about 890 KB
-  heavier than they need to be; `avatar.png` is 322 KB for a 124px circle.
+- **Contrast 4.5:1 for text**, using palette tokens only (`theme.json` /
+  `site.css` variables; no new hex values). Known failures: white on sage
+  (2.1:1), amethyst on lavender (2.6:1).
+- **Illustrations** are transparent PNG cut-outs (no backdrop, no vignette);
+  hero art about 1120x840, card art about 600x450.
 - **PageSpeed:** the anonymous API quota is usually exhausted; read her report
-  link in Chrome instead. "Efficient cache lifetimes" cannot be fixed on GitHub
-  Pages; the `?v=` stamps already handle freshness.
-- **Secrets:** the Supabase publishable key in `site.js` is public by design.
-  Never a service-role key or Meta/Google tokens in this repo.
+  link in Chrome instead. GoDaddy sends pages with a 31-day browser cache.
+- **Secrets:** the Supabase publishable key (in `site.js` and the inventory
+  block) is public by design. Never a service-role key, Meta/Google tokens or
+  any `.env` value in this repo.

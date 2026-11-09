@@ -5,6 +5,64 @@ pick up the WordPress migration. Read `CLAUDE.md` first, then this, then
 `docs/migration-audit.md` for the site inventory. **Keep this file current:**
 tick items as they land, delete what stops being true. Last updated 2026-11-08.
 
+## Start here (status at close, 2026-11-08)
+
+**justamanda.net is the WordPress site** (GoDaddy Managed WordPress, launched by
+Amanda 2026-11-08). The old GitHub Pages site is only a rollback now. Everything
+below this section is history: read it for the why, not for what to do.
+
+### How to work on the live site
+- **Theme** (`wordpress/justamanda/`, version in `style.css`, now 0.9.0): edit in
+  the repo, bump `Version:` (it cache-busts site.css), then upload over SFTP with
+  `op run --env-file=.env` + `sshpass -e sftp` (PRODUCTION_* only; host contains
+  1310847). **One SFTP session per change: put the files, then `get -r` the theme
+  and `diff -rq` against the repo.** GoDaddy refuses the password when logins come
+  close together; if refused, wait about 3 minutes (background `sleep`), retry
+  once. Put new `inc/*.php` before the `functions.php` that requires them. No local
+  PHP: review PHP by eye, then load pages signed in and check for "critical error".
+- **Content** lives in WordPress (production pages are the source of truth;
+  `wordpress/content/*.html` are old import records). Edit through Amanda's
+  signed-in Chrome: wp-admin pages expose `wp.apiFetch` / `wp.blocks`
+  (site-editor.php is a reliable page to run them from). Always build blocks with
+  `wp.blocks.createBlock`, check `isValid` before saving, and guard edits so they
+  only replace what you expect.
+- **Images**: upload through `/wp-admin/media-new.php?browser-uploader` with the
+  Chrome file-upload tool (files from the scratchpad), then set title `ja:<file>`
+  and alt text over REST. Never stage anything private in `uploads/`: GoDaddy's
+  edge cache ignores query strings and outlived a deletion.
+- **Releasing a hobby**: untick "Coming soon" in the page settings sidebar, Save.
+  Pages nested under a coming-soon page are curtained with it.
+- Signed-out checks: `curl https://justamanda.net/<path>?v=$RANDOM`. Pages carry
+  `Cache-Control: max-age=2678400` from GoDaddy, so browsers can show stale pages.
+
+### Open items, in priority order
+1. **CDMX 2024 album is public with leftovers**: the `[[ALBUM NOTE]]` placeholder
+   (page /photography/cdmx-2024/), and all 114 photos have alt text "— cdmx-2024"
+   until Amanda adds Lightroom titles and re-syncs. Album name says 2024, photos are
+   dated June 2025: hers to resolve.
+2. **Everyday Editor account**: Amanda creates it (we never create accounts or
+   handle passwords). Then: give it slug `amanda` and credit posts/pages to it over
+   REST, give the admin an unlisted slug, check no login name appears publicly.
+3. **Retire the old site around 2026-11-22**: disable `.github/workflows/journal.yml`
+   (still commits every 30 min), turn off GitHub Pages, archive the static files,
+   then retire the site's Supabase parts (posts, site_text, home_cards, the journal
+   bucket; never the project, the garden app uses it). Then rewrite the journal
+   section of `CLAUDE.md`.
+4. **HTML cached 31 days by GoDaddy**: offered to try a shorter `Cache-Control` for
+   pages from the theme (may be overridden at GoDaddy's edge); not started.
+5. **Era 3 shelf art** (Books, "Coming Back to Books", media 279) has generator
+   typos on two spines ("Fallen Sngels", "Lost Sogels"); Amanda may regenerate.
+6. **Photography library**: ~49 more Lightroom albums need LightSync Pro's paid tier
+   (her decision); storage grows ~25 MB per 100 photos, so a media-offload plugin
+   becomes worth it. Adding an album: see "Adding an album" below.
+
+### Done this session (details further down)
+Theme built and live; redirects (/ig /fb /threads, *.html, /journal/<slug>/);
+journal imported with images in the Media Library; plant inventory block; Two
+Factor + recovery codes; Akismet; share row + moderated comments; Photography
+section with album grid and album pages; Books reworked into four tabbed eras;
+Coming soon checkbox; Supabase rss 301s to /feed/.
+
 ## LIVE (2026-11-08)
 
 justamanda.net now serves the WordPress site: Amanda ran GoDaddy's launch. The
@@ -24,7 +82,7 @@ hobby = untick the box, Update. Pending: Amanda creates an Editor account for
 everyday posting, then it takes /author/amanda/ and the posts' credit, and the
 admin gets an unlisted slug (via REST, no one-off PHP).
 
-## Current plan (2026-11-08, restarted from scratch)
+## History: plan after the restart (2026-11-08)
 
 Staging and the GitHub deploy Action are dropped for now. Target is the
 **production** WordPress (`1310847.us21.myftpupload.com`, not live: justamanda.net
@@ -243,7 +301,7 @@ setting is changed in wp-admin. With `sftp`, pipe the commands on stdin;
   `wordpress/`, `sql/`, `tools/`, `content/`) off Pages, as approved in the audit (0.3).
   Every page and asset the site uses is still served.
 
-## Checklist
+## History: Phase 1 checklist (staging, superseded)
 
 ### Step 0, audit
 - [x] State check and `docs/migration-audit.md` refreshed (2026-11-03).
