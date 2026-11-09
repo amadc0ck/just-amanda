@@ -17,8 +17,12 @@ login are unchanged. Supabase `rss` now 301s to /feed/ (adcock-plant-inventory
 6696db3, 2026-11-08). **Around 2026-11-22** (her call: two-week rollback window):
 stop journal.yml (it still commits every 30 min), turn off GitHub Pages, archive the
 static files. Still to do:
-move the five curtained pages from the old template to the Coming soon box
-(theme 0.9.0 reads both, so nothing is broken meanwhile).
+(done 2026-11-08) the five curtained pages (81 chickens, 82 crochet, 83 books, 84
+tech, 258 photography) moved to the Coming soon box on the default template; the
+box was tested end to end in the editor on a throwaway page (trashed). Releasing a
+hobby = untick the box, Update. Pending: Amanda creates an Editor account for
+everyday posting, then it takes /author/amanda/ and the posts' credit, and the
+admin gets an unlisted slug (via REST, no one-off PHP).
 
 ## Current plan (2026-11-08, restarted from scratch)
 
